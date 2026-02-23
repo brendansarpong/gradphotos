@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brendan's Photos</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+  <div class="logo">BOS</div>
+
+  <nav class="nav-left">
+    <a href="#" id="tocBtn">INDEX / TOC</a>
+  </nav>
+
+  <nav class="nav-center">
+    <a href="#">PRICING</a>
+  </nav>
+
+  <nav class="nav-right">
+    <a href="#">CONTACT</a>
+  </nav>
+</header>
+
+<!-- CENTER TITLE -->
+<h1 id="mainTitle">Brendan's Photos</h1>
+
+<!-- COLLAGE THUMBNAILS -->
+<section class="collage" id="collage">
+
+<img src="images/places/1.jpg" class="thumb" data-category="PLACES">
+<img src="images/studio/1.jpg" class="thumb" data-category="STUDIO">
+<img src="images/people/1.jpg" class="thumb" data-category="PEOPLE">
+<img src="images/events/1.jpg" class="thumb" data-category="EVENTS">
+<img src="images/grad/1.jpg" class="thumb" data-category="GRAD">
+<img src="images/film/1.jpg" class="thumb" data-category="FILM">
+
+</section>
+
+<!-- GALLERY -->
+<section id="gallery"></section>
+
+<!-- DESCRIPTION BOX -->
+<div id="descriptionBox"></div>
+
+<!-- IMAGE VIEWER -->
+<div id="lightbox">
+  <span id="closeLightbox">✕</span>
+  <img id="lightboxImg">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
