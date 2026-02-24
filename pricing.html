@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — Brendan's Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .pricing-page { background: #C5D3D0; min-height: 100vh; padding: 100px 24px 80px; }
+    .pricing-page .header { position: relative; }
+    .pricing-page h1 { font-family: "Source Code Pro", monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 48px; }
+    .pricing-table { width: 100%; max-width: 900px; margin: 0 auto; border-collapse: collapse; font-size: 13px; }
+    .pricing-table th, .pricing-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08); font-weight: 400; }
+    .pricing-table th { font-weight: 500; color: #333; }
+    .pricing-table thead th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; padding-top: 0; padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.15); }
+    .pricing-table .col-package { width: 22%; }
+    .pricing-table .col-digital { width: 26%; }
+    .pricing-table .col-digital-film { width: 26%; }
+    .pricing-table .col-full { width: 26%; }
+    .pricing-table .price { font-weight: 600; font-size: 18px; }
+    .pricing-table .y { color: #333; }
+    .pricing-table .n { color: #999; }
+    .pricing-note { max-width: 900px; margin: 32px auto 0; font-size: 12px; color: #666; line-height: 1.6; }
+    .addons { max-width: 900px; margin: 56px auto 0; }
+    .addons h2 { font-family: "Source Code Pro", monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; color: #333; }
+    .addons table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .addons th, .addons td { padding: 8px 0; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.06); font-weight: 400; }
+    .addons .addon-price { font-weight: 500; }
+  </style>
+</head>
+<body class="pricing-page">
+  <header class="header">
+    <a href="index.html" class="logo">BOS</a>
+    <nav class="nav-item"><a href="pricing.html">PRICING</a></nav>
+    <nav class="nav-item"><a href="#">ABOUT ME</a></nav>
+    <nav class="nav-item"><a href="index.html">INDEX</a></nav>
+  </header>
+
+  <h1>Grad photo packages</h1>
+
+  <table class="pricing-table">
+    <thead>
+      <tr>
+        <th class="col-package"></th>
+        <th class="col-digital">Digital Session</th>
+        <th class="col-digital-film">Digital + Film</th>
+        <th class="col-full">Full Memory Package</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Price</th>
+        <td class="price">$70</td>
+        <td class="price">$150</td>
+        <td class="price">$180</td>
+      </tr>
+      <tr>
+        <th>Location</th>
+        <td class="y">Campus only</td>
+        <td class="y">Campus + 1 outside location</td>
+        <td class="y">2–3 areas</td>
+      </tr>
+      <tr>
+        <th>Outfits</th>
+        <td class="y">1 outfit</td>
+        <td class="y">Up to 2 outfits</td>
+        <td class="y">Up to 2 outfits</td>
+      </tr>
+      <tr>
+        <th>Edited digital photos</th>
+        <td class="y">12 photos</td>
+        <td class="y">20 photos</td>
+        <td class="y">20 photos</td>
+      </tr>
+      <tr>
+        <th>Online gallery</th>
+        <td class="y">✓</td>
+        <td class="y">✓</td>
+        <td class="y">✓</td>
+      </tr>
+      <tr>
+        <th>1 roll film (6–8 scans)</th>
+        <td class="n">—</td>
+        <td class="y">✓</td>
+        <td class="y">✓</td>
+      </tr>
+      <tr>
+        <th>30-sec camcorder highlight</th>
+        <td class="n">—</td>
+        <td class="n">—</td>
+        <td class="y">✓</td>
+      </tr>
+      <tr>
+        <th>Turnaround</th>
+        <td class="y">5–7 days</td>
+        <td class="y">10–14 days</td>
+        <td class="y">10–14 days</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="pricing-note">25% deposit before booking. Anywhere on campus counts as 1 location.</p>
+
+  <section class="addons">
+    <h2>Add-ons</h2>
+    <table class="addons">
+      <tr><td>Video postcard (30–60 sec aesthetic location clip)</td><td class="addon-price">+$20</td></tr>
+      <tr><td>Extra location</td><td class="addon-price">+$10</td></tr>
+      <tr><td>Extra outfit</td><td class="addon-price">+$10</td></tr>
+      <tr><td>Extra edited photo</td><td class="addon-price">$4</td></tr>
+      <tr><td>Additional film roll</td><td class="addon-price">+$20</td></tr>
+      <tr><td>Camcorder snippet (if not included)</td><td class="addon-price">+$10</td></tr>
+      <tr><td>Rush delivery (48 hrs for digital/video)</td><td class="addon-price">+$15</td></tr>
+    </table>
+  </section>
+</body>
+</html>
