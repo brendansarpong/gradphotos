@@ -5,6 +5,8 @@ const descriptionBox = document.getElementById("descriptionBox");
 const loadingTitle = document.getElementById("loadingTitle");
 const brandText = document.getElementById("brandText");
 const categoryLabel = document.getElementById("categoryLabel");
+const backToTopBtn = document.getElementById("backToTopBtn");
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
 let currentCategory = null;
 let currentGalleryImages = [];
 let currentImageIndex = 0;
@@ -18,6 +20,15 @@ document.querySelector(".header .logo").addEventListener("click", (e) => {
 });
 
 title.classList.add("hidden");
+
+// Fade-in thumbnails once loaded
+thumbs.forEach(img => {
+  if (img.complete) {
+    img.classList.add("loaded");
+  } else {
+    img.addEventListener("load", () => img.classList.add("loaded"));
+  }
+});
 
 // Dismiss loading title after 2s or first thumb interaction (whichever first)
 let loadingDismissed = false;
@@ -100,28 +111,18 @@ const galleries = {
 const thumbSpeed = [1.25, 0.65, 1, 0.85]; // PLACES, STUDIO, PEOPLE, GRAD
 const moveStrength = 44; // slightly faster movement
 
-document.addEventListener("mousemove", e => {
-  const baseX = (e.clientX / window.innerWidth - 0.5) * -moveStrength;
-  const baseY = (e.clientY / window.innerHeight - 0.5) * -moveStrength;
+if (!isMobile) {
+  document.addEventListener("mousemove", e => {
+    const baseX = (e.clientX / window.innerWidth - 0.5) * -moveStrength;
+    const baseY = (e.clientY / window.innerHeight - 0.5) * -moveStrength;
 
-  thumbs.forEach((img, i) => {
-    const s = thumbSpeed[i] ?? 1;
-    img.style.transform =
-      `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
+    thumbs.forEach((img, i) => {
+      const s = thumbSpeed[i] ?? 1;
+      img.style.transform =
+        `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
+    });
   });
-});
-
-document.addEventListener("touchmove", e => {
-  const touch = e.touches[0];
-  const baseX = (touch.clientX / window.innerWidth - 0.5) * -moveStrength;
-  const baseY = (touch.clientY / window.innerHeight - 0.5) * -moveStrength;
-
-  thumbs.forEach((img, i) => {
-    const s = thumbSpeed[i] ?? 1;
-    img.style.transform =
-      `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
-  });
-});
+}
 
 thumbs.forEach(thumb => {
   thumb.addEventListener("click", () => {
@@ -143,6 +144,8 @@ thumbs.forEach(thumb => {
       image.classList.add("gallery-img");
       image.dataset.index = index;
 
+      image.addEventListener("load", () => image.classList.add("loaded"));
+
       image.addEventListener("click", () => openLightbox(index));
       
       gallery.appendChild(image);
@@ -151,8 +154,9 @@ thumbs.forEach(thumb => {
     
     updateScrolledState();
 
+    const targetTop = gallery.offsetTop;
     window.scrollTo({
-      top: window.innerHeight,
+      top: targetTop,
       behavior: "smooth"
     });
 
@@ -219,3 +223,12 @@ function showNextImage() {
 
 prevLightbox.addEventListener("click", showPrevImage);
 nextLightbox.addEventListener("click", showNextImage);
+
+if (backToTopBtn) {
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.body.classList.remove("in-category", "scrolled");
+    currentCategory = null;
+    if (categoryLabel) categoryLabel.classList.remove("visible");
+  });
+}
