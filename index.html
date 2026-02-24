@@ -18,13 +18,22 @@
 
 <header class="header">
   <a href="#" class="logo">BOS</a>
-  <nav class="nav-item"><a href="#">PRICING</a></nav>
+  <nav class="nav-item"><a href="pricing.html">PRICING</a></nav>
   <nav class="nav-item"><a href="#">ABOUT ME</a></nav>
   <nav class="nav-item"><a href="#">INDEX</a></nav>
 </header>
 
-<!-- CENTER TITLE -->
+<!-- LOADING TITLE (fades out after 2s or first thumb interaction) -->
+<h1 id="loadingTitle">Brendan's Portfolio</h1>
+
+<!-- CENTER TITLE (category on hover) -->
 <h1 id="mainTitle">Brendan's Photos</h1>
+
+<!-- FIXED BOTTOM-LEFT BRAND (fades in as loading title fades out) -->
+<div id="brandText">BRENDAN'S PORTFOLIO</div>
+
+<!-- CATEGORY LABEL (fades in on left when a category is selected) -->
+<div id="categoryLabel"></div>
 
 <!-- COLLAGE THUMBNAILS (_TN = category thumbnail) -->
 <section class="collage" id="collage">

@@ -2,16 +2,33 @@ const thumbs = document.querySelectorAll(".thumb");
 const gallery = document.getElementById("gallery");
 const title = document.getElementById("mainTitle");
 const descriptionBox = document.getElementById("descriptionBox");
+const loadingTitle = document.getElementById("loadingTitle");
+const brandText = document.getElementById("brandText");
+const categoryLabel = document.getElementById("categoryLabel");
 
 document.querySelector(".header .logo").addEventListener("click", (e) => {
   e.preventDefault();
   window.scrollTo({ top: 0, behavior: "smooth" });
+  categoryLabel.classList.remove("visible");
 });
 
 title.classList.add("hidden");
 
+// Dismiss loading title after 2s or first thumb interaction (whichever first)
+let loadingDismissed = false;
+let loadingTimeout = setTimeout(dismissLoading, 2000);
+
+function dismissLoading() {
+  if (loadingDismissed) return;
+  loadingDismissed = true;
+  clearTimeout(loadingTimeout);
+  loadingTitle.classList.add("dismissed");
+  brandText.classList.add("visible");
+}
+
 thumbs.forEach(thumb => {
   thumb.addEventListener("mouseenter", () => {
+    dismissLoading();
     title.innerText = thumb.dataset.category;
     title.classList.remove("hidden");
   });
@@ -38,7 +55,13 @@ const galleries = {
     "places_cali_paintedladies.jpg",
     "places_cali_thethinker.jpg",
     "places_capitol.jpg",
-    "places_mexicanspot.JPG"
+    "places_mexicanspot.JPG",
+    "places_amsterdamwater.JPG",
+    "places_amsterdamauntie.JPG",
+    "places_amsterdamtrainstop.JPG",
+    "places_dczoo.jpeg",
+    "places_eiffeltower.JPG",
+    "places_parisguy.JPG"
   ],
   STUDIO: [
     "studio_birthday.JPG",
@@ -52,17 +75,24 @@ const galleries = {
     "people_lindacar.jpg",
     "people_me_faces.JPG",
     "people_peoplesjazznight_beyourself.JPG",
-    "people_peoplesjazznight_keyanna.JPG"
+    "people_peoplesjazznight_keyanna.JPG",
+    "people_joesclothesbros.JPG",
+    "people_miaguitar.jpeg",
+    "people_oisin.jpeg",
+    "people_adpfriends.jpeg",
+    "people_miahutton.jpeg",
+    "people_lawrencecigarette.jpeg"
   ],
   GRAD: []
 };
 
-// Float thumbs opposite to cursor; different speeds per thumb for depth
+// Float thumbs opposite to cursor; different speeds per thumb for depth (stronger effect)
 const thumbSpeed = [1.25, 0.65, 1, 0.85]; // PLACES, STUDIO, PEOPLE, GRAD
+const moveStrength = 36; // more pronounced movement (was 20)
 
 document.addEventListener("mousemove", e => {
-  const baseX = (e.clientX / window.innerWidth - 0.5) * -20;
-  const baseY = (e.clientY / window.innerHeight - 0.5) * -20;
+  const baseX = (e.clientX / window.innerWidth - 0.5) * -moveStrength;
+  const baseY = (e.clientY / window.innerHeight - 0.5) * -moveStrength;
 
   thumbs.forEach((img, i) => {
     const s = thumbSpeed[i] ?? 1;
@@ -73,8 +103,8 @@ document.addEventListener("mousemove", e => {
 
 document.addEventListener("touchmove", e => {
   const touch = e.touches[0];
-  const baseX = (touch.clientX / window.innerWidth - 0.5) * -20;
-  const baseY = (touch.clientY / window.innerHeight - 0.5) * -20;
+  const baseX = (touch.clientX / window.innerWidth - 0.5) * -moveStrength;
+  const baseY = (touch.clientY / window.innerHeight - 0.5) * -moveStrength;
 
   thumbs.forEach((img, i) => {
     const s = thumbSpeed[i] ?? 1;
@@ -85,11 +115,13 @@ document.addEventListener("touchmove", e => {
 
 thumbs.forEach(thumb => {
   thumb.addEventListener("click", () => {
+    dismissLoading();
 
     const category = thumb.dataset.category;
 
-    title.innerText = category;
-    title.classList.remove("hidden");
+    title.classList.add("hidden");
+    categoryLabel.textContent = category;
+    categoryLabel.classList.add("visible");
     descriptionBox.innerText = descriptions[category];
 
     gallery.innerHTML = "";

@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background: #f4f1ea;
+    background: #C5D3D0;
     overflow-x: hidden;
   }
   
@@ -34,6 +34,42 @@ body {
     color: black;
   }
   
+  #loadingTitle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Poppins", sans-serif;
+    font-size: 8vw;
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 6;
+    white-space: nowrap;
+    transition: opacity 0.5s ease;
+  }
+
+  #loadingTitle.dismissed {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #brandText {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    font-family: "Source Code Pro", monospace;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  #brandText.visible {
+    opacity: 1;
+  }
+
   #mainTitle {
     position: fixed;
     top: 50%;
@@ -44,7 +80,7 @@ body {
     font-weight: 700;
     pointer-events: none;
     z-index: 5;
-    transition: opacity 0.3s ease, left 0.4s ease, top 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.3s ease;
     white-space: nowrap;
   }
 
@@ -53,10 +89,22 @@ body {
     pointer-events: none;
   }
 
-  body.scrolled #mainTitle {
-    left: 40px;
-    top: calc(50% - 60px);
+  #categoryLabel {
+    position: fixed;
+    left: 20px;
+    top: 50%;
     transform: translateY(-50%);
+    font-family: "Source Code Pro", monospace;
+    font-size: 13px;
+    font-weight: 400;
+    color: #333;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  #categoryLabel.visible {
+    opacity: 1;
   }
   
   .collage {
@@ -70,17 +118,22 @@ body {
   .thumb {
     position: absolute;
     width: 340px;
-    border: 1px dashed rgba(0, 0, 0, 0.18);
+    border: 2px dashed transparent;
+    border-image: repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.24) 0 3px,
+      #C5D3D0 3px 6px
+    ) 2 round;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     transform-style: preserve-3d;
     cursor: pointer;
     box-sizing: border-box;
   }
   
-  .thumb:nth-child(1) { left: 5%;  top: 10%; width: 380px; }   /* PLACES - larger */
-  .thumb:nth-child(2) { left: 32%; top: 38%; width: 280px; }   /* STUDIO - smaller, overlaps GRAD */
-  .thumb:nth-child(3) { left: 62%; top: 52%; }                 /* PEOPLE - bottom right */
-  .thumb:nth-child(4) { left: 22%; top: 48%; }                 /* GRAD - overlaps STUDIO */
+  .thumb:nth-child(1) { left: 5%;  top: 10%; width: 420px; }   /* PLACES - larger */
+  .thumb:nth-child(2) { left: calc(50% - 140px); top: 38%; width: 280px; }   /* STUDIO - centered */
+  .thumb:nth-child(3) { left: 62%; top: 52%; width: 400px; }  /* PEOPLE - larger */
+  .thumb:nth-child(4) { left: 8%;  top: 54%; }                /* GRAD - tucks under bottom-left of STUDIO only */
   
   .thumb:hover {
     box-shadow: 0 20px 50px rgba(0,0,0,0.25);
@@ -88,19 +141,21 @@ body {
   
   #gallery {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 120px 24px 80px;
+    padding: 120px 24px 120px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px 32px;
+    gap: 40px 28px;
     box-sizing: border-box;
   }
   
   .gallery-img {
     width: 100%;
+    max-width: 420px;
     height: auto;
     display: block;
+    margin: 0 auto;
     transition: transform 0.2s ease;
     cursor: pointer;
   }
