@@ -19,7 +19,7 @@ body {
   }
   
   .header .logo {
-    font-weight: 500;
+    font-weight: 700;
     justify-self: start;
     margin-left: 40px;
   }
@@ -77,10 +77,10 @@ body {
     box-sizing: border-box;
   }
   
-  .thumb:nth-child(1) { left: 6%;  top: 12%; }
-  .thumb:nth-child(2) { left: 38%; top: 8%; }
-  .thumb:nth-child(3) { left: 58%; top: 28%; }
-  .thumb:nth-child(4) { left: 18%; top: 48%; }
+  .thumb:nth-child(1) { left: 5%;  top: 10%; width: 380px; }   /* PLACES - larger */
+  .thumb:nth-child(2) { left: 32%; top: 38%; width: 280px; }   /* STUDIO - smaller, overlaps GRAD */
+  .thumb:nth-child(3) { left: 62%; top: 52%; }                 /* PEOPLE - bottom right */
+  .thumb:nth-child(4) { left: 22%; top: 48%; }                 /* GRAD - overlaps STUDIO */
   
   .thumb:hover {
     box-shadow: 0 20px 50px rgba(0,0,0,0.25);

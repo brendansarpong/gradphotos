@@ -57,25 +57,29 @@ const galleries = {
   GRAD: []
 };
 
-// Float thumbs opposite to cursor direction (positions set in CSS)
-document.addEventListener("mousemove", e => {
-  const x = (e.clientX / window.innerWidth - 0.5) * -20;
-  const y = (e.clientY / window.innerHeight - 0.5) * -20;
+// Float thumbs opposite to cursor; different speeds per thumb for depth
+const thumbSpeed = [1.25, 0.65, 1, 0.85]; // PLACES, STUDIO, PEOPLE, GRAD
 
-  thumbs.forEach(img => {
+document.addEventListener("mousemove", e => {
+  const baseX = (e.clientX / window.innerWidth - 0.5) * -20;
+  const baseY = (e.clientY / window.innerHeight - 0.5) * -20;
+
+  thumbs.forEach((img, i) => {
+    const s = thumbSpeed[i] ?? 1;
     img.style.transform =
-      `translateX(${x}px) translateY(${y}px) translateZ(40px)`;
+      `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
   });
 });
 
 document.addEventListener("touchmove", e => {
   const touch = e.touches[0];
-  const x = (touch.clientX / window.innerWidth - 0.5) * -20;
-  const y = (touch.clientY / window.innerHeight - 0.5) * -20;
+  const baseX = (touch.clientX / window.innerWidth - 0.5) * -20;
+  const baseY = (touch.clientY / window.innerHeight - 0.5) * -20;
 
-  thumbs.forEach(img => {
+  thumbs.forEach((img, i) => {
+    const s = thumbSpeed[i] ?? 1;
     img.style.transform =
-      `translateX(${x}px) translateY(${y}px) translateZ(40px)`;
+      `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
   });
 });
 
