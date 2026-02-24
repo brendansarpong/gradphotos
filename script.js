@@ -5,11 +5,16 @@ const descriptionBox = document.getElementById("descriptionBox");
 const loadingTitle = document.getElementById("loadingTitle");
 const brandText = document.getElementById("brandText");
 const categoryLabel = document.getElementById("categoryLabel");
+let currentCategory = null;
+let currentGalleryImages = [];
+let currentImageIndex = 0;
 
 document.querySelector(".header .logo").addEventListener("click", (e) => {
   e.preventDefault();
   window.scrollTo({ top: 0, behavior: "smooth" });
   categoryLabel.classList.remove("visible");
+  document.body.classList.remove("in-category", "scrolled");
+  currentCategory = null;
 });
 
 title.classList.add("hidden");
@@ -83,12 +88,17 @@ const galleries = {
     "people_miahutton.jpeg",
     "people_lawrencecigarette.jpeg"
   ],
-  GRAD: []
+  GRAD: [
+    "grad_miapillar.png",
+    "grad_miasubway.png",
+    "grad_miasunlight.png",
+    "grad_miaalma.png"
+  ]
 };
 
-// Float thumbs opposite to cursor; different speeds per thumb for depth (stronger effect)
+// Float thumbs opposite to cursor; different speeds per thumb for depth
 const thumbSpeed = [1.25, 0.65, 1, 0.85]; // PLACES, STUDIO, PEOPLE, GRAD
-const moveStrength = 36; // more pronounced movement (was 20)
+const moveStrength = 44; // slightly faster movement
 
 document.addEventListener("mousemove", e => {
   const baseX = (e.clientX / window.innerWidth - 0.5) * -moveStrength;
@@ -118,23 +128,28 @@ thumbs.forEach(thumb => {
     dismissLoading();
 
     const category = thumb.dataset.category;
+    currentCategory = category;
+    document.body.classList.add("in-category");
 
     title.classList.add("hidden");
-    categoryLabel.textContent = category;
-    categoryLabel.classList.add("visible");
     descriptionBox.innerText = descriptions[category];
-
+    
     gallery.innerHTML = "";
-
-    galleries[category].forEach(img => {
+    currentGalleryImages = [];
+    
+    galleries[category].forEach((img, index) => {
       const image = document.createElement("img");
       image.src = `images/${img}`;
       image.classList.add("gallery-img");
+      image.dataset.index = index;
 
-      image.addEventListener("click", () => openLightbox(image.src));
-
+      image.addEventListener("click", () => openLightbox(index));
+      
       gallery.appendChild(image);
+      currentGalleryImages.push(image.src);
     });
+    
+    updateScrolledState();
 
     window.scrollTo({
       top: window.innerHeight,
@@ -146,7 +161,20 @@ thumbs.forEach(thumb => {
 
 function updateScrolledState() {
   const threshold = window.innerHeight * 0.4;
-  document.body.classList.toggle("scrolled", window.scrollY > threshold);
+  const inCategory = document.body.classList.contains("in-category");
+  const scrolledPast = window.scrollY > threshold;
+  const shouldShowCategoryUI = inCategory && scrolledPast;
+
+  document.body.classList.toggle("scrolled", shouldShowCategoryUI);
+
+  if (categoryLabel) {
+    if (shouldShowCategoryUI && currentCategory) {
+      categoryLabel.textContent = currentCategory;
+      categoryLabel.classList.add("visible");
+    } else {
+      categoryLabel.classList.remove("visible");
+    }
+  }
 }
 
 window.addEventListener("scroll", () => {
@@ -163,11 +191,31 @@ const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
 const closeLightbox = document.getElementById("closeLightbox");
 
-function openLightbox(src) {
+const prevLightbox = document.getElementById("prevLightbox");
+const nextLightbox = document.getElementById("nextLightbox");
+
+function openLightbox(index) {
+  if (!currentGalleryImages.length) return;
+  currentImageIndex = index;
   lightbox.style.display = "flex";
-  lightboxImg.src = src;
+  lightboxImg.src = currentGalleryImages[currentImageIndex];
 }
 
 closeLightbox.addEventListener("click", () => {
   lightbox.style.display = "none";
 });
+
+function showPrevImage() {
+  if (!currentGalleryImages.length) return;
+  currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+  lightboxImg.src = currentGalleryImages[currentImageIndex];
+}
+
+function showNextImage() {
+  if (!currentGalleryImages.length) return;
+  currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
+  lightboxImg.src = currentGalleryImages[currentImageIndex];
+}
+
+prevLightbox.addEventListener("click", showPrevImage);
+nextLightbox.addEventListener("click", showNextImage);

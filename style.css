@@ -18,6 +18,11 @@ body {
     font-size: 14px;
   }
   
+  .scrolled .header {
+    background: rgba(197, 211, 208, 0.96);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  
   .header .logo {
     font-weight: 700;
     justify-self: start;
@@ -130,9 +135,9 @@ body {
     box-sizing: border-box;
   }
   
-  .thumb:nth-child(1) { left: 5%;  top: 10%; width: 420px; }   /* PLACES - larger */
-  .thumb:nth-child(2) { left: calc(50% - 140px); top: 38%; width: 280px; }   /* STUDIO - centered */
-  .thumb:nth-child(3) { left: 62%; top: 52%; width: 400px; }  /* PEOPLE - larger */
+  .thumb:nth-child(1) { left: 5%;  top: 18%; width: 483px; }   /* PLACES - larger, lowered & enlarged */
+  .thumb:nth-child(2) { left: calc(50% - 161px); top: 38%; width: 322px; }   /* STUDIO - centered, enlarged */
+  .thumb:nth-child(3) { left: 62%; top: 52%; width: 460px; }  /* PEOPLE - larger */
   .thumb:nth-child(4) { left: 8%;  top: 54%; }                /* GRAD - tucks under bottom-left of STUDIO only */
   
   .thumb:hover {
@@ -190,6 +195,25 @@ body {
     max-width: 80%;
     max-height: 80%;
     animation: zoomIn 0.4s ease;
+  }
+  
+  .lightbox-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 36px;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    padding: 0 16px;
+  }
+  
+  .lightbox-arrow-left {
+    left: 40px;
+  }
+  
+  .lightbox-arrow-right {
+    right: 40px;
   }
   
   #closeLightbox {
