@@ -154,9 +154,8 @@ thumbs.forEach(thumb => {
     
     updateScrolledState();
 
-    const targetTop = gallery.offsetTop;
     window.scrollTo({
-      top: targetTop,
+      top: 0,
       behavior: "smooth"
     });
 
