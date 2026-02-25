@@ -30,7 +30,7 @@ thumbs.forEach(img => {
   }
 });
 
-// Dismiss loading title after 2s or first thumb interaction (whichever first)
+// Dismiss loading title after fixed 2s only (no early dismiss on interaction)
 let loadingDismissed = false;
 let loadingTimeout = setTimeout(dismissLoading, 2000);
 
@@ -44,7 +44,6 @@ function dismissLoading() {
 
 thumbs.forEach(thumb => {
   thumb.addEventListener("mouseenter", () => {
-    dismissLoading();
     title.innerText = thumb.dataset.category;
     title.classList.remove("hidden");
   });
@@ -124,14 +123,14 @@ if (!isMobile) {
   });
 }
 
+const GALLERY_SCROLL_TOP = () => window.innerHeight;
+
 thumbs.forEach(thumb => {
   thumb.addEventListener("click", () => {
     dismissLoading();
 
     const category = thumb.dataset.category;
     currentCategory = category;
-    document.body.classList.add("in-category");
-
     title.classList.add("hidden");
     descriptionBox.innerText = descriptions[category];
     
@@ -145,20 +144,16 @@ thumbs.forEach(thumb => {
       image.dataset.index = index;
 
       image.addEventListener("load", () => image.classList.add("loaded"));
-
       image.addEventListener("click", () => openLightbox(index));
       
       gallery.appendChild(image);
       currentGalleryImages.push(image.src);
     });
     
+    document.body.classList.add("in-category");
     updateScrolledState();
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
+    // Smooth scroll so thumbnails and gallery slide up together
+    window.scrollTo({ top: GALLERY_SCROLL_TOP(), behavior: "smooth" });
   });
 });
 
@@ -180,7 +175,23 @@ function updateScrolledState() {
   }
 }
 
+let scrollingBackToTop = false;
+
 window.addEventListener("scroll", () => {
+  const inCategory = document.body.classList.contains("in-category");
+  const minScroll = GALLERY_SCROLL_TOP();
+  
+  if (inCategory && !scrollingBackToTop && window.scrollY < minScroll - 10) {
+    window.scrollTo({ top: minScroll, behavior: "auto" });
+  }
+  if (inCategory && scrollingBackToTop && window.scrollY < 20) {
+    document.body.classList.remove("in-category", "scrolled");
+    currentCategory = null;
+    if (categoryLabel) categoryLabel.classList.remove("visible");
+    scrollingBackToTop = false;
+    window.scrollTo(0, 0);
+  }
+  
   document.querySelectorAll(".gallery-img").forEach(img => {
     const speed = 0.15;
     const offset = window.scrollY * speed;
@@ -225,9 +236,7 @@ nextLightbox.addEventListener("click", showNextImage);
 
 if (backToTopBtn) {
   backToTopBtn.addEventListener("click", () => {
+    scrollingBackToTop = true;
     window.scrollTo({ top: 0, behavior: "smooth" });
-    document.body.classList.remove("in-category", "scrolled");
-    currentCategory = null;
-    if (categoryLabel) categoryLabel.classList.remove("visible");
   });
 }
