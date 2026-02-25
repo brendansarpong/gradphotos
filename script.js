@@ -123,7 +123,7 @@ if (!isMobile) {
   });
 }
 
-const GALLERY_SCROLL_TOP = () => window.innerHeight;
+const GALLERY_SCROLL_TOP = () => gallery.offsetTop || window.innerHeight;
 
 thumbs.forEach(thumb => {
   thumb.addEventListener("click", () => {
@@ -192,11 +192,7 @@ window.addEventListener("scroll", () => {
     window.scrollTo(0, 0);
   }
   
-  document.querySelectorAll(".gallery-img").forEach(img => {
-    const speed = 0.15;
-    const offset = window.scrollY * speed;
-    img.style.transform = `translateY(${offset}px)`;
-  });
+  // Remove extra scroll-based transforms on gallery images to avoid jitter
   updateScrolledState();
 }, { passive: true });
 updateScrolledState();
