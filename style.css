@@ -19,7 +19,7 @@ body {
     width: 100%;
     padding: 20px 0;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr 1fr; /* logo + 3 evenly spaced links */
     align-items: center;
     justify-items: center;
     z-index: 1000;
@@ -40,13 +40,8 @@ body {
   
   .header .logo img {
     display: block;
-    height: 32px;
+    height: 42px;
     width: auto;
-  }
-  
-  .header .nav-item:last-child {
-    justify-self: end;
-    margin-right: 40px;
   }
   
   .header a {
@@ -313,54 +308,27 @@ body {
     .header {
       padding: 14px 8px;
       font-size: 11px;
-      grid-template-columns: auto 1fr auto auto;
+      grid-template-columns: auto 1fr 1fr 1fr;
       column-gap: 10px;
-      justify-items: start;
+      justify-items: center;
     }
 
     .header .logo {
       margin-left: 12px;
+      justify-self: start;
     }
 
     .header .logo img {
-      height: 28px;
-    }
-
-    .header .nav-item:last-child {
-      justify-self: end;
-      margin-right: 12px;
+      height: 36px;
     }
 
     .header .nav-item a {
       white-space: nowrap;
     }
 
-    .collage {
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 16px 40px;
-      gap: 24px;
-    }
-
+    /* Keep desktop collage layout on mobile, but add subtle float animation */
     .thumb {
-      position: relative;
-      left: auto;
-      top: auto;
-      width: 75vw;
-      max-width: 320px;
       animation: slowFloat 12s ease-in-out infinite;
-    }
-
-    .thumb:nth-child(1),
-    .thumb:nth-child(2),
-    .thumb:nth-child(3),
-    .thumb:nth-child(4) {
-      left: auto;
-      top: auto;
-      width: 75vw;
     }
 
     #gallery {
