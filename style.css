@@ -104,7 +104,7 @@ body {
   }
 
   .projects-contacts img {
-    height: 28px;
+    height: 30px;
     width: auto;
     display: block;
     opacity: 0.8;
@@ -517,19 +517,20 @@ body {
     }
 
     .collage {
-      height: auto;
+      min-height: calc(100vh - 140px);
       padding: 96px 16px 40px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      align-content: flex-start;
+      align-content: center;
       gap: 14px;
     }
 
     .thumb {
       position: static;
-      width: 44vw;
-      max-width: 220px;
+      height: auto;
+      width: auto;
+      max-width: 44vw;
       animation: mobileFloat 3s ease-in-out infinite;
     }
 
