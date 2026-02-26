@@ -279,23 +279,3 @@ if (backToTopBtn) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
-
-if (isMobile) {
-  const labelEls = document.querySelectorAll(".thumb-label");
-  labelEls.forEach(label => {
-    label.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const category = label.dataset.category;
-      if (!category) return;
-      dismissLoading();
-      title.innerText = category;
-      title.classList.remove("hidden");
-      if (mobileTitleTimeout) {
-        clearTimeout(mobileTitleTimeout);
-      }
-      mobileTitleTimeout = setTimeout(() => {
-        title.classList.add("hidden");
-      }, 1300);
-    });
-  });
-}
