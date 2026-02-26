@@ -132,9 +132,12 @@ if (!isMobile) {
 
 const GALLERY_SCROLL_TOP = () => gallery.offsetTop || window.innerHeight;
 
+const mobileHint = document.querySelector(".collage-mobile-hint");
+
 thumbs.forEach(thumb => {
   thumb.addEventListener("click", () => {
     dismissLoading();
+    if (mobileHint) mobileHint.classList.add("dismissed");
 
     const category = thumb.dataset.category;
     currentCategory = category;

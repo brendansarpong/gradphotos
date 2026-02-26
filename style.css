@@ -541,6 +541,9 @@ body {
       color: #666;
       text-align: center;
     }
+    .collage-mobile-hint.dismissed {
+      display: none;
+    }
 
     /* Reorder: PEOPLE (top), STUDIO + GRAD (middle), PLACES (bottom). DOM: 1=PLACES 2=STUDIO 3=PEOPLE 4=GRAD */
     .thumb:nth-child(1) {
