@@ -141,6 +141,7 @@ thumbs.forEach(thumb => {
       const image = document.createElement("img");
       image.src = `images/${img}`;
       image.classList.add("gallery-img");
+      if (img === "places_parisguy.JPG") image.classList.add("rotate-cw");
       image.dataset.index = index;
 
       image.addEventListener("load", () => image.classList.add("loaded"));
@@ -204,27 +205,62 @@ const closeLightbox = document.getElementById("closeLightbox");
 const prevLightbox = document.getElementById("prevLightbox");
 const nextLightbox = document.getElementById("nextLightbox");
 
+function closeLightboxView() {
+  lightbox.style.display = "none";
+  document.removeEventListener("keydown", lightboxKeydown);
+}
+
+function updateLightboxArrows() {
+  const n = currentGalleryImages.length;
+  prevLightbox.style.visibility = n > 1 && currentImageIndex > 0 ? "visible" : "hidden";
+  nextLightbox.style.visibility = n > 1 && currentImageIndex < n - 1 ? "visible" : "hidden";
+}
+
 function openLightbox(index) {
   if (!currentGalleryImages.length) return;
   currentImageIndex = index;
   lightbox.style.display = "flex";
   lightboxImg.src = currentGalleryImages[currentImageIndex];
+  updateLightboxArrows();
+  document.addEventListener("keydown", lightboxKeydown);
 }
 
-closeLightbox.addEventListener("click", () => {
-  lightbox.style.display = "none";
-});
+function lightboxKeydown(e) {
+  if (e.key === "Escape") {
+    closeLightboxView();
+    return;
+  }
+  if (e.key === "ArrowLeft") {
+    if (currentImageIndex > 0) {
+      currentImageIndex--;
+      lightboxImg.src = currentGalleryImages[currentImageIndex];
+      updateLightboxArrows();
+    }
+    return;
+  }
+  if (e.key === "ArrowRight") {
+    if (currentImageIndex < currentGalleryImages.length - 1) {
+      currentImageIndex++;
+      lightboxImg.src = currentGalleryImages[currentImageIndex];
+      updateLightboxArrows();
+    }
+  }
+}
+
+closeLightbox.addEventListener("click", closeLightboxView);
 
 function showPrevImage() {
   if (!currentGalleryImages.length) return;
-  currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+  currentImageIndex = Math.max(0, currentImageIndex - 1);
   lightboxImg.src = currentGalleryImages[currentImageIndex];
+  updateLightboxArrows();
 }
 
 function showNextImage() {
   if (!currentGalleryImages.length) return;
-  currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
+  currentImageIndex = Math.min(currentGalleryImages.length - 1, currentImageIndex + 1);
   lightboxImg.src = currentGalleryImages[currentImageIndex];
+  updateLightboxArrows();
 }
 
 prevLightbox.addEventListener("click", showPrevImage);
