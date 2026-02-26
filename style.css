@@ -150,6 +150,20 @@ body {
     box-sizing: border-box;
   }
 
+  .thumb-label {
+    position: absolute;
+    font-family: "Source Code Pro", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    color: #ffffff;
+    mix-blend-mode: difference;
+    pointer-events: auto;
+    display: none;
+    z-index: 6;
+  }
+
   .thumb.loaded {
     opacity: 1;
   }
@@ -203,6 +217,13 @@ body {
 
   .gallery-img.rotate-cw:hover {
     transform: rotate(90deg) scale(1.02);
+  }
+
+  #lightboxImg.rotate-cw {
+    animation: none;
+    transform: rotate(90deg) scale(0.9);
+    max-width: 70%;
+    max-height: 70%;
   }
   
   #descriptionBox {
@@ -304,6 +325,12 @@ body {
     100% { transform: translateY(0); }
   }
 
+  @keyframes mobileFloat {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-22px); }
+    100% { transform: translateY(0); }
+  }
+
   @media (max-width: 768px) {
     .header {
       padding: 14px 8px;
@@ -326,14 +353,38 @@ body {
       white-space: nowrap;
     }
 
-    /* Keep desktop collage layout on mobile, but make thumbs a bit larger and add subtle float animation */
-    .thumb:nth-child(1) { width: 32vw; }
-    .thumb:nth-child(2) { width: 26vw; }
-    .thumb:nth-child(3) { width: 30vw; }
-    .thumb:nth-child(4) { width: 22vw; }
+    /* Keep desktop collage layout on mobile, but make thumbs larger and float them more noticeably */
+    .thumb:nth-child(1) { width: 36vw; }
+    .thumb:nth-child(2) { width: 30vw; }
+    .thumb:nth-child(3) { width: 34vw; }
+    .thumb:nth-child(4) { width: 26vw; }
 
     .thumb {
-      animation: slowFloat 5s ease-in-out infinite;
+      animation: mobileFloat 3s ease-in-out infinite;
+    }
+
+    .thumb-label {
+      display: block;
+    }
+
+    .thumb-label-places {
+      left: 14%;
+      top: 20%;
+    }
+
+    .thumb-label-studio {
+      left: 52%;
+      top: 40%;
+    }
+
+    .thumb-label-people {
+      right: 12%;
+      top: 52%;
+    }
+
+    .thumb-label-grad {
+      left: 18%;
+      bottom: 16%;
     }
 
     #gallery {
