@@ -266,6 +266,10 @@ body {
   .in-category .collage {
     margin-bottom: 40px;
   }
+
+  .collage-mobile-hint {
+    display: none;
+  }
   
   .thumb {
     position: absolute;
@@ -527,35 +531,46 @@ body {
       gap: 14px;
     }
 
+    .collage-mobile-hint {
+      display: block;
+      width: 100%;
+      order: 5;
+      margin: 16px 0 0;
+      font-family: "Source Code Pro", monospace;
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+    }
+
     /* Reorder: PEOPLE (top), STUDIO + GRAD (middle), PLACES (bottom). DOM: 1=PLACES 2=STUDIO 3=PEOPLE 4=GRAD */
     .thumb:nth-child(1) {
       order: 4;
-      width: 100%;
-      max-width: 100%;
+      width: 82%;
+      max-width: 82%;
       height: auto;
       display: block;
       animation: mobileFloat 3s ease-in-out infinite;
     }
     .thumb:nth-child(2) {
       order: 2;
-      width: calc(50% - 7px);
-      max-width: calc(50% - 7px);
+      width: calc(41% - 7px);
+      max-width: calc(41% - 7px);
       height: auto;
       display: block;
       animation: mobileFloat 3s ease-in-out infinite;
     }
     .thumb:nth-child(3) {
       order: 1;
-      width: 100%;
-      max-width: 100%;
+      width: 82%;
+      max-width: 82%;
       height: auto;
       display: block;
       animation: mobileFloat 3s ease-in-out infinite;
     }
     .thumb:nth-child(4) {
       order: 3;
-      width: calc(50% - 7px);
-      max-width: calc(50% - 7px);
+      width: calc(41% - 7px);
+      max-width: calc(41% - 7px);
       height: auto;
       display: block;
       animation: mobileFloat 3s ease-in-out infinite;
