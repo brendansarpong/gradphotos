@@ -210,20 +210,15 @@ body {
   .gallery-img:hover {
     transform: scale(1.02);
   }
-
-  .gallery-img.rotate-cw {
-    transform: rotate(90deg);
-  }
-
-  .gallery-img.rotate-cw:hover {
-    transform: rotate(90deg) scale(1.02);
-  }
-
-  #lightboxImg.rotate-cw {
-    animation: none;
-    transform: rotate(90deg) scale(0.9);
-    max-width: 70%;
-    max-height: 70%;
+  
+  #galleryLoading {
+    font-family: "Source Code Pro", monospace;
+    font-size: 12px;
+    text-align: center;
+    padding: 40px 0;
+    color: #777;
+    opacity: 0.9;
+    animation: galleryPulse 1.2s ease-in-out infinite;
   }
   
   #descriptionBox {
@@ -321,8 +316,14 @@ body {
 
   @keyframes slowFloat {
     0% { transform: translateY(0); }
-    50% { transform: translateY(-13px); }
+    50% { transform: translateY(-10px); }
     100% { transform: translateY(0); }
+  }
+
+  @keyframes galleryPulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
   }
 
   @keyframes mobileFloat {
@@ -354,10 +355,10 @@ body {
     }
 
     /* Keep desktop collage layout on mobile, but make thumbs larger and float them more noticeably */
-    .thumb:nth-child(1) { width: 36vw; }
-    .thumb:nth-child(2) { width: 30vw; }
-    .thumb:nth-child(3) { width: 34vw; }
-    .thumb:nth-child(4) { width: 26vw; }
+    .thumb:nth-child(1) { width: 44vw; }
+    .thumb:nth-child(2) { width: 36vw; }
+    .thumb:nth-child(3) { width: 42vw; }
+    .thumb:nth-child(4) { width: 32vw; }
 
     .thumb {
       animation: mobileFloat 3s ease-in-out infinite;
@@ -365,26 +366,27 @@ body {
 
     .thumb-label {
       display: block;
+      animation: mobileFloat 3s ease-in-out infinite;
     }
 
     .thumb-label-places {
-      left: 14%;
-      top: 20%;
+      left: calc(12% + 22vw);
+      top: calc(12% + 44vw + 6px);
     }
 
     .thumb-label-studio {
-      left: 52%;
-      top: 40%;
+      left: calc(50% + 7vw);
+      top: calc(26% + 36vw + 6px);
     }
 
     .thumb-label-people {
-      right: 12%;
-      top: 52%;
+      left: calc(58% + 21vw);
+      top: calc(38% + 42vw + 6px);
     }
 
     .thumb-label-grad {
-      left: 18%;
-      bottom: 16%;
+      left: calc(14% + 16vw);
+      top: calc(46% + 32vw + 6px);
     }
 
     #gallery {

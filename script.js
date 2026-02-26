@@ -58,9 +58,9 @@ thumbs.forEach(thumb => {
 
 const descriptions = {
   PLACES: "Places I've been.",
-  STUDIO: "Studio portraits.",
-  PEOPLE: "Portraits of people.",
-  GRAD: "Graduation  friend Mia."
+  STUDIO: "Studio pictures.",
+  PEOPLE: "Portraits of  I know.",
+  GRAD: "Graduation photos of my friend Mia."
 };
 
 // Filenames in /images/; _TN files are category thumbnails, not in gallery grid
@@ -137,15 +137,27 @@ thumbs.forEach(thumb => {
     
     gallery.innerHTML = "";
     currentGalleryImages = [];
+
+    const loader = document.createElement("div");
+    loader.id = "galleryLoading";
+    loader.textContent = "Loading photos…";
+    gallery.appendChild(loader);
+
+    let remaining = galleries[category].length;
     
     galleries[category].forEach((img, index) => {
       const image = document.createElement("img");
       image.src = `images/${img}`;
       image.classList.add("gallery-img");
-      if (img === "places_parisguy.JPG") image.classList.add("rotate-cw");
       image.dataset.index = index;
 
-      image.addEventListener("load", () => image.classList.add("loaded"));
+      image.addEventListener("load", () => {
+        image.classList.add("loaded");
+        remaining -= 1;
+        if (remaining <= 0 && loader.parentNode) {
+          loader.parentNode.removeChild(loader);
+        }
+      });
       image.addEventListener("click", () => openLightbox(index));
       
       gallery.appendChild(image);
@@ -177,24 +189,13 @@ function updateScrolledState() {
   }
 }
 
-let scrollingBackToTop = false;
-
 window.addEventListener("scroll", () => {
   const inCategory = document.body.classList.contains("in-category");
-  const minScroll = GALLERY_SCROLL_TOP();
-  
-  if (inCategory && !scrollingBackToTop && window.scrollY < minScroll - 10) {
-    window.scrollTo({ top: minScroll, behavior: "auto" });
-  }
-  if (inCategory && scrollingBackToTop && window.scrollY < 20) {
+  if (inCategory && window.scrollY <= 0) {
     document.body.classList.remove("in-category", "scrolled");
     currentCategory = null;
     if (categoryLabel) categoryLabel.classList.remove("visible");
-    scrollingBackToTop = false;
-    window.scrollTo(0, 0);
   }
-  
-  // Remove extra scroll-based transforms on gallery images to avoid jitter
   updateScrolledState();
 }, { passive: true });
 updateScrolledState();
@@ -208,13 +209,8 @@ const nextLightbox = document.getElementById("nextLightbox");
 
 function applyLightboxImage() {
   if (!currentGalleryImages.length) return;
-  const src = currentGalleryImages[currentImageIndex];
-  lightboxImg.src = src;
-  if (src.includes("places_parisguy.JPG")) {
-    lightboxImg.classList.add("rotate-cw");
-  } else {
-    lightboxImg.classList.remove("rotate-cw");
-  }
+  lightboxImg.classList.remove("rotate-cw");
+  lightboxImg.src = currentGalleryImages[currentImageIndex];
 }
 
 function closeLightboxView() {
@@ -280,7 +276,6 @@ nextLightbox.addEventListener("click", showNextImage);
 
 if (backToTopBtn) {
   backToTopBtn.addEventListener("click", () => {
-    scrollingBackToTop = true;
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
