@@ -59,7 +59,7 @@ thumbs.forEach(thumb => {
 const descriptions = {
   PLACES: "Places I've been.",
   STUDIO: "Studio pictures.",
-  PEOPLE: "Portraits of  I know.",
+  PEOPLE: "Portraits of people I know.",
   GRAD: "Graduation photos of my friend Mia."
 };
 
