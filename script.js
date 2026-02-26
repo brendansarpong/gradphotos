@@ -63,9 +63,10 @@ const descriptions = {
   GRAD: "Graduation photos of my friend Mia."
 };
 
-// Filenames in /images/; _TN files are category thumbnails, not in gallery grid
+// Filenames in /images/; _TN files also appear in category gallery
 const galleries = {
   PLACES: [
+    "places_cali_mountains_TN.jpg",
     "places_cali_betweentrees.jpg",
     "places_cali_mountainswithme.jpg",
     "places_cali_paintedladies.jpg",
@@ -80,14 +81,15 @@ const galleries = {
     "places_parisguy.JPG"
   ],
   STUDIO: [
+    "studio_pyc_wk2 (hands)_TN.JPG",
     "studio_birthday.JPG",
     "studio_pyc_wk2 (ezinne).JPG",
     "studio_pyc_wk2.JPG",
     "studio_sayffoot.JPG",
     "studio_sayfsit.JPG",
-    "studio_wambuihands.JPG"
   ],
   PEOPLE: [
+    "people_caymanfriends_TN.jpg",
     "people_aashi.JPG",
     "people_aashistreet.JPG",
     "people_friendspoint.jpg",
@@ -103,6 +105,7 @@ const galleries = {
     "people_lawrencecigarette.jpeg"
   ],
   GRAD: [
+    "grad_mia_TN.png",
     "grad_miapillar.png",
     "grad_miasubway.png",
     "grad_miasunlight.png",
