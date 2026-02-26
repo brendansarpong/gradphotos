@@ -104,7 +104,7 @@ body {
   }
 
   .projects-contacts img {
-    height: 22px;
+    height: 28px;
     width: auto;
     display: block;
     opacity: 0.8;
@@ -184,7 +184,7 @@ body {
   
   #loadingTitle {
     position: fixed;
-    top: 24px;
+    top: 34px;
     left: 50%;
     transform: translateX(-50%);
     font-family: "Poppins", sans-serif;
@@ -488,6 +488,11 @@ body {
       white-space: nowrap;
     }
 
+    .nav-photos::after,
+    .nav-about::after {
+      display: none;
+    }
+
     .projects-main {
       padding: 80px 16px 56px;
     }
@@ -511,13 +516,20 @@ body {
       margin: 0;
     }
 
-    /* Keep desktop collage layout on mobile, but make thumbs larger and float them more noticeably */
-    .thumb:nth-child(1) { width: 44vw; }
-    .thumb:nth-child(2) { width: 36vw; }
-    .thumb:nth-child(3) { width: 42vw; }
-    .thumb:nth-child(4) { width: 32vw; }
+    .collage {
+      height: auto;
+      padding: 96px 16px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: flex-start;
+      gap: 14px;
+    }
 
     .thumb {
+      position: static;
+      width: 44vw;
+      max-width: 220px;
       animation: mobileFloat 3s ease-in-out infinite;
     }
 

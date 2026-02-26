@@ -82,7 +82,10 @@ const galleries = {
   STUDIO: [
     "studio_birthday.JPG",
     "studio_pyc_wk2 (ezinne).JPG",
-    "studio_pyc_wk2.JPG"
+    "studio_pyc_wk2.JPG",
+    "studio_sayffoot.JPG",
+    "studio_sayfsit.JPG",
+    "studio_wambuihands.JPG"
   ],
   PEOPLE: [
     "people_aashi.JPG",
