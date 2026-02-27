@@ -162,7 +162,6 @@ body {
   }
 
   .project-card:hover {
-    transform: translateY(-10px);
     box-shadow: 0 22px 46px rgba(0, 0, 0, 0.20);
     background: #ffffff;
   }
@@ -185,7 +184,7 @@ body {
   
   #loadingTitle {
     position: fixed;
-    top: 34px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     font-family: "Poppins", sans-serif;
@@ -204,12 +203,12 @@ body {
 
   #brandText {
     position: fixed;
-    bottom: 20px;
+    bottom: 16px;
     left: 20px;
     font-family: "Source Code Pro", monospace;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
-    color: #333;
+    color: #666;
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease;
@@ -465,10 +464,9 @@ body {
   }
 
   @keyframes thumbPulse {
-    0%, 60%, 100% { transform: scale(1); }
-    10% { transform: scale(1.03); }
-    20% { transform: scale(1.06); }
-    30% { transform: scale(1.03); }
+    0%, 100% { transform: scale(1); }
+    10% { transform: scale(1.06); }
+    20% { transform: scale(1); }
   }
 
   @keyframes mobileFloat {
@@ -504,13 +502,14 @@ body {
     .menu-toggle {
       display: inline-block;
       border-radius: 999px;
-      border: 1px solid rgba(20, 12, 6, 0.9);
-      background: #1c120a;
+      border: 1px solid rgba(60, 40, 25, 0.8);
+      background: #2a1b10;
       color: #fff;
       font-family: "Source Code Pro", monospace;
       font-size: 11px;
-      padding: 4px 10px;
+      padding: 4px 12px;
       cursor: pointer;
+      margin-right: 8px;
     }
 
     .header .nav-item {
@@ -519,17 +518,33 @@ body {
 
     .header.nav-open {
       grid-template-columns: auto;
-      row-gap: 8px;
-      align-items: start;
+      row-gap: 0;
+      align-items: stretch;
+      background: rgba(42, 27, 16, 0.98);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
     }
 
     .header.nav-open .menu-toggle {
       justify-self: end;
+      margin-top: 2px;
+      margin-bottom: 4px;
     }
 
     .header.nav-open .nav-item {
       display: block;
-      justify-self: end;
+      justify-self: stretch;
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .header.nav-open .nav-item a {
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background: transparent;
+      display: block;
+      padding: 10px 18px;
+      text-align: left;
     }
 
     #brandText {
