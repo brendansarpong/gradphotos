@@ -53,6 +53,14 @@ body {
     color: black;
   }
 
+  .nav-item a {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(245, 245, 240, 0.75);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
 .nav-photos::after,
 .nav-about::after {
     content: "work in progress";
@@ -463,6 +471,13 @@ body {
     100% { opacity: 0.3; }
   }
 
+  @keyframes thumbPulse {
+    0%, 60%, 100% { transform: scale(1); }
+    10% { transform: scale(1.03); }
+    20% { transform: scale(1.06); }
+    30% { transform: scale(1.03); }
+  }
+
   @keyframes mobileFloat {
     0% { transform: translateY(0); }
     50% { transform: translateY(-22px); }
@@ -548,35 +563,39 @@ body {
     /* Reorder: PEOPLE (top), STUDIO + GRAD (middle), PLACES (bottom). DOM: 1=PLACES 2=STUDIO 3=PEOPLE 4=GRAD */
     .thumb:nth-child(1) {
       order: 4;
-      width: 82%;
-      max-width: 82%;
+      width: 76%;
+      max-width: 76%;
       height: auto;
       display: block;
-      animation: mobileFloat 3s ease-in-out infinite;
+      animation: thumbPulse 8s ease-in-out infinite;
+      animation-delay: 4.5s;
     }
     .thumb:nth-child(2) {
       order: 2;
-      width: calc(41% - 7px);
-      max-width: calc(41% - 7px);
+      width: calc(38% - 7px);
+      max-width: calc(38% - 7px);
       height: auto;
       display: block;
-      animation: mobileFloat 3s ease-in-out infinite;
+      animation: thumbPulse 8s ease-in-out infinite;
+      animation-delay: 1.5s;
     }
     .thumb:nth-child(3) {
       order: 1;
-      width: 82%;
-      max-width: 82%;
+      width: 76%;
+      max-width: 76%;
       height: auto;
       display: block;
-      animation: mobileFloat 3s ease-in-out infinite;
+      animation: thumbPulse 8s ease-in-out infinite;
+      animation-delay: 0s;
     }
     .thumb:nth-child(4) {
       order: 3;
-      width: calc(41% - 7px);
-      max-width: calc(41% - 7px);
+      width: calc(38% - 7px);
+      max-width: calc(38% - 7px);
       height: auto;
       display: block;
-      animation: mobileFloat 3s ease-in-out infinite;
+      animation: thumbPulse 8s ease-in-out infinite;
+      animation-delay: 3s;
     }
 
     .thumb {
