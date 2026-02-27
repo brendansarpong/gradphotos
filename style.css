@@ -56,9 +56,10 @@ body {
   .nav-item a {
     padding: 6px 16px;
     border-radius: 999px;
-    border: 1px solid rgba(0,0,0,0.12);
-    background: rgba(245, 245, 240, 0.75);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.7);
+    background: #000;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
   }
 
 .nav-photos::after,
