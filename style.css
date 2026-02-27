@@ -618,8 +618,8 @@ body {
       max-width: 76%;
       height: auto;
       display: block;
-      animation: thumbPulse 8s ease-in-out infinite;
-      animation-delay: 4.5s;
+      animation: thumbPulse 5s ease-in-out infinite;
+      animation-delay: 2.8s;
     }
     .thumb:nth-child(2) {
       order: 2;
@@ -627,8 +627,8 @@ body {
       max-width: calc(38% - 7px);
       height: auto;
       display: block;
-      animation: thumbPulse 8s ease-in-out infinite;
-      animation-delay: 1.5s;
+      animation: thumbPulse 5s ease-in-out infinite;
+      animation-delay: 1.0s;
     }
     .thumb:nth-child(3) {
       order: 1;
@@ -636,7 +636,7 @@ body {
       max-width: 76%;
       height: auto;
       display: block;
-      animation: thumbPulse 8s ease-in-out infinite;
+      animation: thumbPulse 5s ease-in-out infinite;
       animation-delay: 0s;
     }
     .thumb:nth-child(4) {
@@ -645,8 +645,8 @@ body {
       max-width: calc(38% - 7px);
       height: auto;
       display: block;
-      animation: thumbPulse 8s ease-in-out infinite;
-      animation-delay: 3s;
+      animation: thumbPulse 5s ease-in-out infinite;
+      animation-delay: 1.9s;
     }
 
     .thumb {
