@@ -652,6 +652,16 @@ body {
     .thumb {
       position: static;
       box-sizing: border-box;
+      border: none;
+      border-radius: 14px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .thumb:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
     }
 
     #gallery {
