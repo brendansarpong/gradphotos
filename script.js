@@ -63,7 +63,9 @@ const descriptions = {
   GRAD: "Graduation photos of my friend Mia."
 };
 
-// Filenames in /images/; _TN files also appear in category gallery
+// Compressed images in images/jpegs (smaller size)/image compress/
+const IMAGE_BASE = "images/jpegs (smaller size)/image compress/";
+
 const galleries = {
   PLACES: [
     "places_cali_mountains_TN.jpg",
@@ -72,44 +74,44 @@ const galleries = {
     "places_cali_paintedladies.jpg",
     "places_cali_thethinker.jpg",
     "places_capitol.jpg",
-    "places_mexicanspot.JPG",
-    "places_amsterdamwater.JPG",
-    "places_amsterdamauntie.JPG",
-    "places_amsterdamtrainstop.JPG",
-    "places_dczoo.jpeg",
-    "places_eiffeltower.JPG",
-    "places_parisguy.JPG"
+    "places_mexicanspot.jpg",
+    "places_amsterdamwater.jpg",
+    "places_amsterdamauntie.jpg",
+    "places_amsterdamtrainstop.jpg",
+    "places_dczoo.jpg",
+    "places_eiffeltower.jpg",
+    "places_parisguy.jpg"
   ],
   STUDIO: [
-    "studio_pyc_wk2 (hands)_TN.JPG",
-    "studio_birthday.JPG",
-    "studio_pyc_wk2 (ezinne).JPG",
-    "studio_pyc_wk2.JPG",
-    "studio_sayffoot.JPG",
-    "studio_sayfsit.JPG",
+    "studio_pyc_wk2 (hands)_TN.jpg",
+    "studio_birthday.jpg",
+    "studio_pyc_wk2 (ezinne).jpg",
+    "studio_pyc_wk2.jpg",
+    "studio_sayffoot.jpg",
+    "studio_sayfsit.jpg"
   ],
   PEOPLE: [
     "people_caymanfriends_TN.jpg",
-    "people_aashi.JPG",
-    "people_aashistreet.JPG",
+    "people_aashi.jpg",
+    "people_aashistreet.jpg",
     "people_friendspoint.jpg",
     "people_lindacar.jpg",
-    "people_me_faces.JPG",
-    "people_peoplesjazznight_beyourself.JPG",
-    "people_peoplesjazznight_keyanna.JPG",
-    "people_joesclothesbros.JPG",
-    "people_miaguitar.jpeg",
-    "people_oisin.jpeg",
-    "people_adpfriends.jpeg",
-    "people_miahutton.jpeg",
-    "people_lawrencecigarette.jpeg"
+    "people_me_faces.jpg",
+    "people_peoplesjazznight_beyourself.jpg",
+    "people_peoplesjazznight_keyanna.jpg",
+    "people_joesclothesbros.jpg",
+    "people_miaguitar.jpg",
+    "people_oisin.jpg",
+    "people_adpfriends.jpg",
+    "people_miahutton.jpg",
+    "people_lawrencecigarette.jpg"
   ],
   GRAD: [
-    "grad_mia_TN.png",
-    "grad_miapillar.png",
-    "grad_miasubway.png",
-    "grad_miasunlight.png",
-    "grad_miaalma.png"
+    "grad_mia_TN.jpg",
+    "grad_miapillar.jpg",
+    "grad_miasubway.jpg",
+    "grad_miasunlight.jpg",
+    "grad_miaalma.jpg"
   ]
 };
 
@@ -156,7 +158,9 @@ thumbs.forEach(thumb => {
     
     galleries[category].forEach((img, index) => {
       const image = document.createElement("img");
-      image.src = `images/${img}`;
+      image.src = `${IMAGE_BASE}${img}`;
+      image.loading = "lazy";
+      image.decoding = "async";
       image.classList.add("gallery-img");
       image.dataset.index = index;
 
