@@ -290,17 +290,13 @@ body {
   .thumb {
     position: absolute;
     width: 240px;
-    border: 2px dashed transparent;
-    border-image: repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.4) 0 3px,
-      rgba(78, 97, 81, 0.6) 3px 6px
-    ) 2 round;
     opacity: 0;
     transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
     transform-style: preserve-3d;
     cursor: pointer;
     box-sizing: border-box;
+    border-radius: 12px;
+    overflow: hidden;
   }
 
   .thumb-label {
@@ -655,7 +651,6 @@ body {
       max-height: 420px;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
       background: #4E6151;
       display: flex;
       align-items: center;
@@ -674,10 +669,26 @@ body {
 
     .carousel-caption {
       flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       padding: 20px 24px 0;
       text-align: left;
       min-height: 72px;
     }
+    .carousel-caption-inner {
+      flex: 1;
+      min-width: 0;
+    }
+    .carousel-swipe-hint {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .carousel-swipe-hint-left { margin-right: 4px; }
+    .carousel-swipe-hint-right { margin-left: 4px; }
     .carousel-title {
       font-family: "Poppins", sans-serif;
       font-weight: 700;
