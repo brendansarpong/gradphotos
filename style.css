@@ -693,4 +693,23 @@ body {
       top: 90px;
       transform: none;
     }
+
+    /* Lightbox adjustments on mobile: keep arrows on the side, off the photo */
+    #lightbox img {
+      max-width: 74%;
+      max-height: 70%;
+    }
+
+    .lightbox-arrow {
+      font-size: 30px;
+      padding: 0 8px;
+    }
+
+    .lightbox-arrow-left {
+      left: 8px;
+    }
+
+    .lightbox-arrow-right {
+      right: 8px;
+    }
   }
