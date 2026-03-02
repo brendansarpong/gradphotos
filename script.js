@@ -136,53 +136,100 @@ const GALLERY_SCROLL_TOP = () => gallery.offsetTop || window.innerHeight;
 
 const mobileHint = document.querySelector(".collage-mobile-hint");
 
-thumbs.forEach(thumb => {
-  thumb.addEventListener("click", () => {
-    dismissLoading();
-    if (mobileHint) mobileHint.classList.add("dismissed");
+function enterCategory(category) {
+  dismissLoading();
+  if (mobileHint) mobileHint.classList.add("dismissed");
 
-    const category = thumb.dataset.category;
-    currentCategory = category;
-    title.classList.add("hidden");
-    descriptionBox.innerText = descriptions[category];
-    
-    gallery.innerHTML = "";
-    currentGalleryImages = [];
+  currentCategory = category;
+  title.classList.add("hidden");
+  descriptionBox.innerText = descriptions[category];
 
-    const loader = document.createElement("div");
-    loader.id = "galleryLoading";
-    loader.textContent = "Loading photos…";
-    gallery.appendChild(loader);
+  gallery.innerHTML = "";
+  currentGalleryImages = [];
 
-    let remaining = galleries[category].length;
-    
-    galleries[category].forEach((img, index) => {
-      const image = document.createElement("img");
-      image.src = `${IMAGE_BASE}${img}`;
-      image.loading = "lazy";
-      image.decoding = "async";
-      image.classList.add("gallery-img");
-      image.dataset.index = index;
+  const loader = document.createElement("div");
+  loader.id = "galleryLoading";
+  loader.textContent = "Loading photos…";
+  gallery.appendChild(loader);
 
-      image.addEventListener("load", () => {
-        image.classList.add("loaded");
-        remaining -= 1;
-        if (remaining <= 0 && loader.parentNode) {
-          loader.parentNode.removeChild(loader);
-        }
-      });
-      image.addEventListener("click", () => openLightbox(index));
-      
-      gallery.appendChild(image);
-      currentGalleryImages.push(image.src);
+  let remaining = galleries[category].length;
+
+  galleries[category].forEach((img, index) => {
+    const image = document.createElement("img");
+    image.src = `${IMAGE_BASE}${img}`;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.classList.add("gallery-img");
+    image.dataset.index = index;
+
+    image.addEventListener("load", () => {
+      image.classList.add("loaded");
+      remaining -= 1;
+      if (remaining <= 0 && loader.parentNode) {
+        loader.parentNode.removeChild(loader);
+      }
     });
-    
-    document.body.classList.add("in-category");
-    updateScrolledState();
-    // Smooth scroll so thumbnails and gallery slide up together
-    window.scrollTo({ top: GALLERY_SCROLL_TOP(), behavior: "smooth" });
+    image.addEventListener("click", () => openLightbox(index));
+
+    gallery.appendChild(image);
+    currentGalleryImages.push(image.src);
   });
+
+  document.body.classList.add("in-category");
+  updateScrolledState();
+  window.scrollTo({ top: GALLERY_SCROLL_TOP(), behavior: "smooth" });
+}
+
+thumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => enterCategory(thumb.dataset.category));
 });
+
+// Mobile-only: horizontal card carousel — swipe to change card, tap to open category
+const mobileCarousel = document.getElementById("mobileCarousel");
+const carouselTrack = document.getElementById("carouselTrack");
+const carouselTitle = document.getElementById("carouselTitle");
+const carouselDesc = document.getElementById("carouselDesc");
+const carouselCaption = document.querySelector(".carousel-caption");
+
+if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
+  mobileCarousel.setAttribute("aria-hidden", "false");
+
+  const cards = carouselTrack.querySelectorAll(".carousel-card");
+  let lastActiveIndex = 0;
+
+  function setCaption(index) {
+    const card = cards[index];
+    if (!card) return;
+    const cat = card.dataset.category;
+    carouselTitle.textContent = cat;
+    carouselDesc.textContent = descriptions[cat] || "";
+    if (carouselCaption) {
+      carouselCaption.classList.remove("animate");
+      void carouselCaption.offsetWidth;
+      carouselCaption.classList.add("animate");
+      setTimeout(() => carouselCaption.classList.remove("animate"), 420);
+    }
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const idx = Array.from(cards).indexOf(entry.target);
+        if (idx === -1 || idx === lastActiveIndex) return;
+        lastActiveIndex = idx;
+        setCaption(idx);
+      });
+    },
+    { root: carouselTrack, threshold: 0.5 }
+  );
+  cards.forEach((card) => observer.observe(card));
+  setCaption(0);
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => enterCategory(card.dataset.category));
+  });
+}
 
 function updateScrolledState() {
   const threshold = window.innerHeight * 0.4;
