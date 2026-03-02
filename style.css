@@ -523,10 +523,8 @@ body {
     .mobile-nav-panel {
       position: fixed;
       top: 64px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 24px);
-      max-width: 480px;
+      left: 10px;
+      right: 10px;
       background: rgba(42, 27, 16, 0.98);
       border-radius: 12px;
       box-shadow: 0 10px 24px rgba(0,0,0,0.25);
@@ -590,14 +588,13 @@ body {
 
     .collage {
       min-height: calc(100vh - 140px);
-      padding: 84px 16px 60px;
+      padding: 96px 16px 40px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-content: center;
       align-items: flex-start;
-      gap: 18px;
-      padding-bottom: calc(60px + env(safe-area-inset-bottom));
+      gap: 14px;
     }
 
     .collage-mobile-hint {
@@ -653,7 +650,7 @@ body {
     }
 
     .thumb {
-      position: relative;
+      position: static;
       box-sizing: border-box;
       border: none;
       border-radius: 14px;
@@ -661,17 +658,6 @@ body {
       overflow: hidden;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       -webkit-tap-highlight-color: transparent;
-    }
-    .thumb::after {
-      content: attr(data-label);
-      display: block;
-      font-family: "Source Code Pro", monospace;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #555;
-      text-align: center;
-      margin-top: 4px;
     }
     .thumb:active {
       transform: scale(0.97);
@@ -697,7 +683,6 @@ body {
 
     #loadingTitle {
       font-size: 1.25rem;
-      top: 56px;
     }
 
     #mainTitle {
@@ -707,27 +692,5 @@ body {
     #categoryLabel {
       top: 90px;
       transform: none;
-    }
-
-    #lightbox img {
-      max-width: 88%;
-      max-height: 72%;
-    }
-
-    .lightbox-arrow {
-      font-size: 30px;
-    }
-
-    .lightbox-arrow-left {
-      left: 8px;
-    }
-
-    .lightbox-arrow-right {
-      right: 8px;
-    }
-
-    #closeLightbox {
-      top: 22px;
-      right: 18px;
     }
   }
