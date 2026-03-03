@@ -194,13 +194,38 @@ const carouselCaption = document.querySelector(".carousel-caption");
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
-  const cards = carouselTrack.querySelectorAll(".carousel-card");
-  let lastActiveIndex = 0;
+  const baseCards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
+  if (baseCards.length) {
+    // Make it feel infinite by cloning ends and recentering when swiping past them
+    const firstClone = baseCards[0].cloneNode(true);
+    const lastClone = baseCards[baseCards.length - 1].cloneNode(true);
+    firstClone.classList.add("carousel-clone");
+    lastClone.classList.add("carousel-clone");
+    carouselTrack.insertBefore(lastClone, baseCards[0]);
+    carouselTrack.appendChild(firstClone);
+  }
 
-  function setCaption(index) {
+  const cards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
+  if (!cards.length) return;
+
+  const firstRealIndex = 1;
+  const lastRealIndex = cards.length - 2;
+  let lastActiveLogicalIndex = 0; // index into baseCards order
+
+  function centerOnIndex(index, behavior = "auto") {
     const card = cards[index];
     if (!card) return;
-    const cat = card.dataset.category;
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+    const target = cardCenter - carouselTrack.clientWidth / 2;
+    carouselTrack.scrollTo({ left: target, behavior });
+  }
+
+  function setCaptionFromLogicalIndex(logicalIndex) {
+    const baseCard = (logicalIndex >= 0 && logicalIndex < baseCards.length)
+      ? baseCards[logicalIndex]
+      : null;
+    if (!baseCard) return;
+    const cat = baseCard.dataset.category;
     carouselTitle.textContent = cat;
     carouselDesc.textContent = descriptions[cat] || "";
     if (carouselCaption) {
@@ -211,21 +236,54 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     }
   }
 
+  // Observe which card is centered and map clones back to logical indices
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const idx = Array.from(cards).indexOf(entry.target);
-        if (idx === -1 || idx === lastActiveIndex) return;
-        lastActiveIndex = idx;
-        setCaption(idx);
+        const idx = cards.indexOf(entry.target);
+        if (idx === -1) return;
+
+        // Map physical index (with clones) to logical index (0..baseCards.length-1)
+        let logicalIndex = idx - firstRealIndex;
+        if (logicalIndex < 0) logicalIndex = baseCards.length - 1;
+        if (logicalIndex >= baseCards.length) logicalIndex = 0;
+        if (logicalIndex === lastActiveLogicalIndex) return;
+
+        lastActiveLogicalIndex = logicalIndex;
+        setCaptionFromLogicalIndex(logicalIndex);
       });
     },
-    { root: carouselTrack, threshold: 0.5 }
+    { root: carouselTrack, threshold: 0.6 }
   );
   cards.forEach((card) => observer.observe(card));
-  setCaption(0);
 
+  // Initial state: show the first real slide (index 1 after prepending lastClone)
+  centerOnIndex(firstRealIndex, "auto");
+  setCaptionFromLogicalIndex(0);
+
+  // Jump seamlessly when the user swipes onto a cloned edge card
+  carouselTrack.addEventListener("scroll", () => {
+    const firstClone = cards[0];
+    const lastClone = cards[cards.length - 1];
+    if (!firstClone || !lastClone) return;
+
+    const viewportWidth = carouselTrack.clientWidth;
+    const firstCloneCenter = firstClone.offsetLeft + firstClone.offsetWidth / 2;
+    const lastCloneCenter = lastClone.offsetLeft + lastClone.offsetWidth / 2;
+    const currentCenter = carouselTrack.scrollLeft + viewportWidth / 2;
+    const threshold = firstClone.offsetWidth * 0.2;
+
+    if (Math.abs(currentCenter - firstCloneCenter) < threshold) {
+      // Jump to last real slide
+      centerOnIndex(lastRealIndex, "auto");
+    } else if (Math.abs(currentCenter - lastCloneCenter) < threshold) {
+      // Jump to first real slide
+      centerOnIndex(firstRealIndex, "auto");
+    }
+  });
+
+  // Tap card to enter that category
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));
   });
