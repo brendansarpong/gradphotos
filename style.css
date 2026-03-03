@@ -242,11 +242,11 @@ body {
     transition: opacity 0.3s ease;
     white-space: nowrap;
     color: rgba(255, 255, 255, 0.95);
+    opacity: 0;
   }
 
-  #mainTitle.hidden {
-    opacity: 0;
-    pointer-events: none;
+  #mainTitle:not(.hidden) {
+    opacity: 1;
   }
 
   #categoryLabel {
@@ -273,6 +273,7 @@ body {
     perspective: 1200px;
     padding: 5%;
     box-sizing: border-box;
+    z-index: 8;
   }
   
   .in-category .collage {
@@ -769,5 +770,15 @@ body {
 
     .lightbox-arrow-right {
       right: 8px;
+    }
+  }
+
+  /* Desktop only: ensure collage and thumbnails show; hide mobile carousel */
+  @media (min-width: 769px) {
+    .collage {
+      display: block !important;
+    }
+    .mobile-carousel-wrap {
+      display: none !important;
     }
   }
