@@ -290,7 +290,7 @@ body {
   .thumb {
     position: absolute;
     width: 240px;
-    opacity: 0;
+    opacity: 1;
     transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
     transform-style: preserve-3d;
     cursor: pointer;
