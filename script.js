@@ -125,7 +125,7 @@ if (!isMobile) {
     const baseY = (e.clientY / window.innerHeight - 0.5) * -moveStrength;
 
     thumbs.forEach((img, i) => {
-      const s = thumbSpeed[i] ?? 1;
+      const s = (typeof thumbSpeed[i] === "number") ? thumbSpeed[i] : 1;
       img.style.transform =
         `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
     });
@@ -191,7 +191,7 @@ const carouselTitle = document.getElementById("carouselTitle");
 const carouselDesc = document.getElementById("carouselDesc");
 const carouselCaption = document.querySelector(".carousel-caption");
 
-if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
+if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc && typeof IntersectionObserver !== "undefined") {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
   // Base cards as they appear in the DOM (we'll expect GRAD to be first there)
