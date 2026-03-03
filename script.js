@@ -194,6 +194,7 @@ const carouselCaption = document.querySelector(".carousel-caption");
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc && typeof IntersectionObserver !== "undefined") {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
+<<<<<<< HEAD
   // Base cards as they appear in the DOM (we'll expect GRAD to be first there)
   const baseCards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
   if (!baseCards.length) return;
@@ -230,6 +231,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
   function setCaptionFromLogical(logicalIndex) {
     const card = baseCards[logicalIndex];
+=======
+  const cards = carouselTrack.querySelectorAll(".carousel-card");
+  let lastActiveIndex = 0;
+
+  function setCaption(index) {
+    const card = cards[index];
+>>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
     if (!card) return;
     const cat = card.dataset.category;
     carouselTitle.textContent = cat;
@@ -242,24 +250,35 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     }
   }
 
+<<<<<<< HEAD
   let lastLogicalActive = 0;
 
   // Watch for whichever card is visually centered and update caption
+=======
+>>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
+<<<<<<< HEAD
         const physicalIdx = cards.indexOf(entry.target);
         if (physicalIdx === -1) return;
         const logicalIdx = physicalToLogicalIndex(physicalIdx);
         if (logicalIdx === lastLogicalActive) return;
         lastLogicalActive = logicalIdx;
         setCaptionFromLogical(logicalIdx);
+=======
+        const idx = Array.from(cards).indexOf(entry.target);
+        if (idx === -1 || idx === lastActiveIndex) return;
+        lastActiveIndex = idx;
+        setCaption(idx);
+>>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
       });
     },
     { root: carouselTrack, threshold: 0.55 }
   );
   cards.forEach((card) => observer.observe(card));
+<<<<<<< HEAD
 
   // On load, center on the first real card (expected to be GRAD) and set its caption
   centerOnCard(firstRealIndex, "auto");
@@ -288,6 +307,9 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       centerOnCard(firstRealIndex, "auto");
     }
   });
+=======
+  setCaption(0);
+>>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
 
   // Tap a card to enter that category
   cards.forEach((card) => {

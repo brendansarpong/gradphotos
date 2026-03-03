@@ -636,7 +636,7 @@ body {
 
     .carousel-card {
       flex: 0 0 auto;
-      width: 82vw;
+      width: calc(100vw - 24px);
       max-width: 420px;
       scroll-snap-align: center;
       scroll-snap-stop: always;
@@ -736,7 +736,10 @@ body {
     }
 
     #descriptionBox {
-      display: none;
+      position: static;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 24px;
     }
 
     #loadingTitle {
