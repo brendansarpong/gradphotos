@@ -636,7 +636,7 @@ body {
 
     .carousel-card {
       flex: 0 0 auto;
-      width: 82vw;
+      width: calc(100vw - 24px);
       max-width: 420px;
       scroll-snap-align: center;
       scroll-snap-stop: always;
@@ -672,9 +672,9 @@ body {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 24px 8px;
+      padding: 20px 24px 0;
       text-align: left;
-      min-height: 88px;
+      min-height: 72px;
     }
     .carousel-caption-inner {
       flex: 1;
@@ -692,14 +692,14 @@ body {
     .carousel-title {
       font-family: "Poppins", sans-serif;
       font-weight: 700;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       margin: 0 0 6px;
       color: rgba(255, 255, 255, 0.95);
       letter-spacing: 0.02em;
     }
     .carousel-desc {
       font-family: "Source Code Pro", monospace;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
       color: rgba(255, 255, 255, 0.85);
       margin: 0;
@@ -736,7 +736,10 @@ body {
     }
 
     #descriptionBox {
-      display: none;
+      position: static;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 24px;
     }
 
     #loadingTitle {
