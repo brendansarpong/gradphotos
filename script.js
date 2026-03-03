@@ -195,6 +195,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   mobileCarousel.setAttribute("aria-hidden", "false");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Base cards as they appear in the DOM (we'll expect GRAD to be first there)
   const baseCards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
   if (!baseCards.length) return;
@@ -239,6 +240,14 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     const card = cards[index];
 >>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
     if (!card) return;
+=======
+  const cards = carouselTrack.querySelectorAll(".carousel-card");
+  let lastActiveIndex = 0;
+
+  function setCaption(index) {
+    const card = cards[index];
+    if (!card) return;
+>>>>>>> parent of 7f0ebd4 (Enhance mobile carousel functionality with infinite scrolling and improved caption handling)
     const cat = card.dataset.category;
     carouselTitle.textContent = cat;
     carouselDesc.textContent = descriptions[cat] || "";
@@ -251,15 +260,19 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   let lastLogicalActive = 0;
 
   // Watch for whichever card is visually centered and update caption
 =======
 >>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
+=======
+>>>>>>> parent of 7f0ebd4 (Enhance mobile carousel functionality with infinite scrolling and improved caption handling)
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
+<<<<<<< HEAD
 <<<<<<< HEAD
         const physicalIdx = cards.indexOf(entry.target);
         if (physicalIdx === -1) return;
@@ -268,10 +281,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
         lastLogicalActive = logicalIdx;
         setCaptionFromLogical(logicalIdx);
 =======
+=======
+>>>>>>> parent of 7f0ebd4 (Enhance mobile carousel functionality with infinite scrolling and improved caption handling)
         const idx = Array.from(cards).indexOf(entry.target);
         if (idx === -1 || idx === lastActiveIndex) return;
         lastActiveIndex = idx;
         setCaption(idx);
+<<<<<<< HEAD
 >>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
       });
     },
@@ -312,6 +328,15 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 >>>>>>> parent of 433dee2 (Update mobile carousel styles and functionality)
 
   // Tap a card to enter that category
+=======
+      });
+    },
+    { root: carouselTrack, threshold: 0.5 }
+  );
+  cards.forEach((card) => observer.observe(card));
+  setCaption(0);
+
+>>>>>>> parent of 7f0ebd4 (Enhance mobile carousel functionality with infinite scrolling and improved caption handling)
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));
   });
