@@ -229,6 +229,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     const target = cardCenter - carouselTrack.clientWidth / 2;
     carouselTrack.scrollTo({ left: Math.max(0, target), behavior });
   }
+  setCaption(0);
 
   function setCaptionFromLogical(logicalIndex) {
     const card = baseCards[logicalIndex];

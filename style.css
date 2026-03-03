@@ -651,10 +651,11 @@ body {
       max-height: 420px;
       border-radius: 14px;
       overflow: hidden;
-      background: #4E6151;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: none;
     }
     .carousel-card-img-wrap img {
       width: 100%;
@@ -723,6 +724,8 @@ body {
     .thumb {
       position: static;
       box-sizing: border-box;
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     #gallery {
