@@ -194,38 +194,11 @@ const carouselCaption = document.querySelector(".carousel-caption");
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
-  const baseCards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
-  if (baseCards.length >= 2) {
-    const firstClone = baseCards[0].cloneNode(true);
-    const lastClone = baseCards[baseCards.length - 1].cloneNode(true);
-    firstClone.classList.add("carousel-clone");
-    lastClone.classList.add("carousel-clone");
-    carouselTrack.insertBefore(lastClone, baseCards[0]);
-    carouselTrack.appendChild(firstClone);
-  }
+  const cards = carouselTrack.querySelectorAll(".carousel-card");
+  let lastActiveIndex = 0;
 
-  const cards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
-  if (!cards.length) return;
-
-  const n = baseCards.length;
-  const firstRealIndex = 1;
-  const lastRealIndex = n;
-
-  function logicalIndex(physicalIndex) {
-    if (physicalIndex <= 0) return n - 1;
-    if (physicalIndex > n) return 0;
-    return physicalIndex - 1;
-  }
-
-  function centerOnIndex(physicalIndex, behavior) {
-    const card = cards[physicalIndex];
-    if (!card) return;
-    const target = card.offsetLeft + card.offsetWidth / 2 - carouselTrack.clientWidth / 2;
-    carouselTrack.scrollTo({ left: Math.max(0, target), behavior: behavior || "auto" });
-  }
-
-  function setCaptionFromLogical(logicalIdx) {
-    const card = baseCards[logicalIdx];
+  function setCaption(index) {
+    const card = cards[index];
     if (!card) return;
     const cat = card.dataset.category;
     carouselTitle.textContent = cat;
@@ -238,39 +211,20 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     }
   }
 
-  let lastActiveLogical = 0;
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const physicalIdx = cards.indexOf(entry.target);
-        if (physicalIdx === -1) return;
-        const logicalIdx = logicalIndex(physicalIdx);
-        if (logicalIdx === lastActiveLogical) return;
-        lastActiveLogical = logicalIdx;
-        setCaptionFromLogical(logicalIdx);
+        const idx = Array.from(cards).indexOf(entry.target);
+        if (idx === -1 || idx === lastActiveIndex) return;
+        lastActiveIndex = idx;
+        setCaption(idx);
       });
     },
     { root: carouselTrack, threshold: 0.5 }
   );
   cards.forEach((card) => observer.observe(card));
-
-  centerOnIndex(firstRealIndex, "auto");
-  setCaptionFromLogical(0);
-
-  carouselTrack.addEventListener("scroll", () => {
-    const vw = carouselTrack.clientWidth;
-    const center = carouselTrack.scrollLeft + vw / 2;
-    const firstCard = cards[0];
-    const lastCard = cards[cards.length - 1];
-    if (!firstCard || !lastCard) return;
-    const firstCenter = firstCard.offsetLeft + firstCard.offsetWidth / 2;
-    const lastCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2;
-    const threshold = firstCard.offsetWidth * 0.3;
-    if (Math.abs(center - firstCenter) < threshold) centerOnIndex(lastRealIndex, "auto");
-    else if (Math.abs(center - lastCenter) < threshold) centerOnIndex(firstRealIndex, "auto");
-  });
+  setCaption(0);
 
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));
