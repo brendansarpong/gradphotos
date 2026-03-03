@@ -194,42 +194,11 @@ const carouselCaption = document.querySelector(".carousel-caption");
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
-  // Base cards as they appear in the DOM (we'll expect GRAD to be first there)
-  const baseCards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
-  if (!baseCards.length) return;
+  const cards = carouselTrack.querySelectorAll(".carousel-card");
+  let lastActiveIndex = 0;
 
-  // Clone first and last card to create an infinite-feeling loop
-  if (baseCards.length > 1) {
-    const firstClone = baseCards[0].cloneNode(true);
-    const lastClone = baseCards[baseCards.length - 1].cloneNode(true);
-    firstClone.classList.add("carousel-clone");
-    lastClone.classList.add("carousel-clone");
-    carouselTrack.insertBefore(lastClone, baseCards[0]);
-    carouselTrack.appendChild(firstClone);
-  }
-
-  const cards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
-  const totalReal = baseCards.length;
-  const firstRealIndex = 1;            // after the prepended lastClone
-  const lastRealIndex = totalReal;     // before the appended firstClone
-
-  function physicalToLogicalIndex(physicalIndex) {
-    // Map from physical index (including clones) to logical 0..totalReal-1
-    if (physicalIndex <= 0) return totalReal - 1;    // first clone -> last real
-    if (physicalIndex > totalReal) return 0;         // last clone -> first real
-    return physicalIndex - 1;                        // real cards: shift by 1
-  }
-
-  function centerOnCard(physicalIndex, behavior = "auto") {
-    const card = cards[physicalIndex];
-    if (!card) return;
-    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    const target = cardCenter - carouselTrack.clientWidth / 2;
-    carouselTrack.scrollTo({ left: Math.max(0, target), behavior });
-  }
-
-  function setCaptionFromLogical(logicalIndex) {
-    const card = baseCards[logicalIndex];
+  function setCaption(index) {
+    const card = cards[index];
     if (!card) return;
     const cat = card.dataset.category;
     carouselTitle.textContent = cat;
@@ -242,54 +211,21 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     }
   }
 
-  let lastLogicalActive = 0;
-
-  // Watch for whichever card is visually centered and update caption
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const physicalIdx = cards.indexOf(entry.target);
-        if (physicalIdx === -1) return;
-        const logicalIdx = physicalToLogicalIndex(physicalIdx);
-        if (logicalIdx === lastLogicalActive) return;
-        lastLogicalActive = logicalIdx;
-        setCaptionFromLogical(logicalIdx);
+        const idx = Array.from(cards).indexOf(entry.target);
+        if (idx === -1 || idx === lastActiveIndex) return;
+        lastActiveIndex = idx;
+        setCaption(idx);
       });
     },
-    { root: carouselTrack, threshold: 0.55 }
+    { root: carouselTrack, threshold: 0.5 }
   );
   cards.forEach((card) => observer.observe(card));
+  setCaption(0);
 
-  // On load, center on the first real card (expected to be GRAD) and set its caption
-  centerOnCard(firstRealIndex, "auto");
-  setCaptionFromLogical(0);
-
-  // When user scrolls onto a cloned card at either edge, jump to the corresponding real slide
-  carouselTrack.addEventListener("scroll", () => {
-    if (cards.length <= totalReal) return;
-
-    const viewportCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
-    const firstCard = cards[0];
-    const lastCard = cards[cards.length - 1];
-    if (!firstCard || !lastCard) return;
-
-    const firstCenter = firstCard.offsetLeft + firstCard.offsetWidth / 2;
-    const lastCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2;
-    const threshold = firstCard.offsetWidth * 0.3;
-
-    if (Math.abs(viewportCenter - firstCenter) < threshold) {
-      // Jump from leading clone to last real
-      centerOnCard(lastRealIndex, "auto");
-      return;
-    }
-    if (Math.abs(viewportCenter - lastCenter) < threshold) {
-      // Jump from trailing clone to first real
-      centerOnCard(firstRealIndex, "auto");
-    }
-  });
-
-  // Tap a card to enter that category
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));
   });
