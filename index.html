@@ -45,14 +45,39 @@
 <!-- CATEGORY LABEL (fades in on left when a category is selected) -->
 <div id="categoryLabel"></div>
 
-<!-- COLLAGE THUMBNAILS (_TN = category thumbnail) -->
+<!-- DESKTOP: collage thumbnails. MOBILE: carousel (see .mobile-carousel-wrap) -->
 <section class="collage" id="collage">
-
 <img src="images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg" class="thumb" data-category="PLACES" decoding="async">
 <img src="images/jpegs (smaller size)/image compress/studio_pyc_wk2 (hands)_TN.jpg" class="thumb" data-category="STUDIO" decoding="async">
 <img src="images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg" class="thumb" data-category="PEOPLE" decoding="async">
 <img src="images/jpegs (smaller size)/image compress/grad_mia_TN.jpg" class="thumb" data-category="GRAD" decoding="async">
 <p class="collage-mobile-hint">Tap a picture to see PLACES, STUDIO, PEOPLE, or GRAD photos.</p>
+</section>
+
+<!-- MOBILE ONLY: horizontal card carousel. Tap card to open category. -->
+<section class="mobile-carousel-wrap" id="mobileCarousel" aria-hidden="true">
+  <div class="carousel-track" id="carouselTrack">
+    <article class="carousel-card" data-category="PLACES">
+      <div class="carousel-card-img-wrap"><img src="images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg" alt="Places"></div>
+    </article>
+    <article class="carousel-card" data-category="STUDIO">
+      <div class="carousel-card-img-wrap"><img src="images/jpegs (smaller size)/image compress/studio_pyc_wk2 (hands)_TN.jpg" alt="Studio"></div>
+    </article>
+    <article class="carousel-card" data-category="PEOPLE">
+      <div class="carousel-card-img-wrap"><img src="images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg" alt="People"></div>
+    </article>
+    <article class="carousel-card" data-category="GRAD">
+      <div class="carousel-card-img-wrap"><img src="images/jpegs (smaller size)/image compress/grad_mia_TN.jpg" alt="Grad"></div>
+    </article>
+  </div>
+  <div class="carousel-caption">
+    <span class="carousel-swipe-hint carousel-swipe-hint-left" aria-hidden="true">‹</span>
+    <div class="carousel-caption-inner">
+      <h2 class="carousel-title" id="carouselTitle">PLACES</h2>
+      <p class="carousel-desc" id="carouselDesc">Places I've been.</p>
+    </div>
+    <span class="carousel-swipe-hint carousel-swipe-hint-right" aria-hidden="true">›</span>
+  </div>
 </section>
 
 <button id="backToTopBtn">BACK TO TOP / CATEGORIES</button>
