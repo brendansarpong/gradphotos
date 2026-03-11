@@ -115,21 +115,35 @@ const galleries = {
   ]
 };
 
-// Float thumbs opposite to cursor; different speeds per thumb for depth
+// Desktop: smooth float thumbnails opposite to cursor
 const thumbSpeed = [1.25, 0.65, 1, 0.85]; // PLACES, STUDIO, PEOPLE, GRAD
-const moveStrength = 44; // slightly faster movement
+const moveStrength = 44;
+let thumbTargetX = 0;
+let thumbTargetY = 0;
+let thumbCurrentX = 0;
+let thumbCurrentY = 0;
 
 if (!isMobile) {
   document.addEventListener("mousemove", e => {
-    const baseX = (e.clientX / window.innerWidth - 0.5) * -moveStrength;
-    const baseY = (e.clientY / window.innerHeight - 0.5) * -moveStrength;
+    thumbTargetX = (e.clientX / window.innerWidth - 0.5) * -moveStrength;
+    thumbTargetY = (e.clientY / window.innerHeight - 0.5) * -moveStrength;
+  });
+
+  function animateThumbs() {
+    const lerp = 0.14;
+    thumbCurrentX += (thumbTargetX - thumbCurrentX) * lerp;
+    thumbCurrentY += (thumbTargetY - thumbCurrentY) * lerp;
 
     thumbs.forEach((img, i) => {
       const s = thumbSpeed[i] ?? 1;
       img.style.transform =
-        `translateX(${baseX * s}px) translateY(${baseY * s}px) translateZ(${30 + s * 15}px)`;
+        `translateX(${thumbCurrentX * s}px) translateY(${thumbCurrentY * s}px)`;
     });
-  });
+
+    requestAnimationFrame(animateThumbs);
+  }
+
+  requestAnimationFrame(animateThumbs);
 }
 
 const GALLERY_SCROLL_TOP = () => gallery.offsetTop || window.innerHeight;
@@ -196,10 +210,20 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
   const cards = carouselTrack.querySelectorAll(".carousel-card");
   let lastActiveIndex = 0;
+  const START_INDEX = 1; // 0 = left clone, 1 = GRAD, 2 = PLACES, 3 = STUDIO, 4 = PEOPLE, 5 = right clone
+
+  function scrollToIndex(index) {
+    const card = cards[index];
+    if (!card) return;
+    const prev = carouselTrack.style.scrollBehavior;
+    carouselTrack.style.scrollBehavior = "auto";
+    carouselTrack.scrollLeft = card.offsetLeft;
+    carouselTrack.style.scrollBehavior = prev || "smooth";
+  }
 
   function updateCardTransforms() {
     if (!cards.length) return;
-    const cardWidth = cards[0].offsetWidth || 1;
+    const cardWidth = cards[START_INDEX].offsetWidth || 1;
     const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
 
     cards.forEach((card) => {
@@ -235,6 +259,34 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     }
   }
 
+  function initCarouselPosition() {
+    scrollToIndex(START_INDEX);
+    updateCardTransforms();
+    setCaption(START_INDEX);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => requestAnimationFrame(initCarouselPosition));
+  } else {
+    requestAnimationFrame(initCarouselPosition);
+  }
+
+  function checkInfiniteLoop() {
+    if (cards.length < 3) return;
+    const firstReal = cards[START_INDEX];
+    const lastReal = cards[cards.length - 2];
+    if (!firstReal || !lastReal) return;
+
+    const left = carouselTrack.scrollLeft;
+    const beforeFirst = firstReal.offsetLeft - firstReal.offsetWidth * 0.5;
+    const afterLast = lastReal.offsetLeft + lastReal.offsetWidth * 0.5;
+
+    if (left < beforeFirst) {
+      scrollToIndex(cards.length - 2);
+    } else if (left > afterLast) {
+      scrollToIndex(START_INDEX);
+    }
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -248,7 +300,6 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     { root: carouselTrack, threshold: 0.5 }
   );
   cards.forEach((card) => observer.observe(card));
-  setCaption(0);
   updateCardTransforms();
 
   let carouselRAF = null;
@@ -257,6 +308,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     () => {
       if (carouselRAF) cancelAnimationFrame(carouselRAF);
       carouselRAF = requestAnimationFrame(() => {
+        checkInfiniteLoop();
         updateCardTransforms();
         carouselRAF = null;
       });
@@ -277,6 +329,10 @@ function updateScrolledState() {
 
   document.body.classList.toggle("scrolled", shouldShowCategoryUI);
 
+  if (!shouldShowCategoryUI && descriptionBox) {
+    descriptionBox.innerText = "";
+  }
+
   if (categoryLabel) {
     if (shouldShowCategoryUI && currentCategory) {
       categoryLabel.textContent = currentCategory;
@@ -293,6 +349,7 @@ window.addEventListener("scroll", () => {
     document.body.classList.remove("in-category", "scrolled");
     currentCategory = null;
     if (categoryLabel) categoryLabel.classList.remove("visible");
+    if (descriptionBox) descriptionBox.innerText = "";
   }
   updateScrolledState();
 }, { passive: true });
