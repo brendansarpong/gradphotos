@@ -197,6 +197,30 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   const cards = carouselTrack.querySelectorAll(".carousel-card");
   let lastActiveIndex = 0;
 
+  function updateCardTransforms() {
+    if (!cards.length) return;
+    const cardWidth = cards[0].offsetWidth || 1;
+    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+
+    cards.forEach((card) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const raw = (trackCenter - cardCenter) / cardWidth; // +left, -right
+      const t = Math.max(-1.2, Math.min(1.2, raw));
+      const abs = Math.abs(t);
+
+      // Center card is front/straight; neighbors peek underneath.
+      const translateX = t * 34;
+      const translateY = abs * 10;
+      const rotateZ = t * 3.2;
+      const scale = 1 - abs * 0.09;
+      const opacity = 1 - Math.min(0.35, abs * 0.22);
+
+      card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotateZ(${rotateZ}deg) scale(${scale})`;
+      card.style.opacity = `${opacity}`;
+      card.style.zIndex = `${100 - Math.round(abs * 20)}`;
+    });
+  }
+
   function setCaption(index) {
     const card = cards[index];
     if (!card) return;
@@ -225,6 +249,20 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   );
   cards.forEach((card) => observer.observe(card));
   setCaption(0);
+  updateCardTransforms();
+
+  let carouselRAF = null;
+  carouselTrack.addEventListener(
+    "scroll",
+    () => {
+      if (carouselRAF) cancelAnimationFrame(carouselRAF);
+      carouselRAF = requestAnimationFrame(() => {
+        updateCardTransforms();
+        carouselRAF = null;
+      });
+    },
+    { passive: true }
+  );
 
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));
