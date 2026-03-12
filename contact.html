@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Brendan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/bworld_logo.png">
+</head>
+<body class="projects-page">
+  <header class="header">
+    <a href="index.html" class="logo"><img src="images/bworld_logo.png" alt="Bworld"></a>
+    <button class="menu-toggle" aria-label="Toggle navigation">MENU ▾</button>
+    <nav class="nav-item nav-photos"><a href="index.html">PHOTOS</a></nav>
+    <nav class="nav-item nav-about"><a href="about-me.html">ABOUT ME</a></nav>
+    <nav class="nav-item"><a href="pricing.html">PRICING</a></nav>
+    <nav class="nav-item"><a href="contact.html">CONTACT</a></nav>
+  </header>
+
+  <div class="mobile-nav-panel">
+    <a href="index.html">Photos</a>
+    <a href="about-me.html">About me</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <main class="projects-main contact-main">
+    <h1 class="projects-title"><br>Contact</h1>
+    <p class="projects-intro contact-intro">
+      Tell me about your grad shoot, a project idea, or anything else on your mind.
+    </p>
+
+    <section class="contact-card">
+      <form
+        action="https://formspree.io/f/mwvrozgd"
+        method="POST"
+        class="contact-form"
+      >
+        <div class="contact-row">
+          <label class="contact-label">
+            <span>Your name</span>
+            <input type="text" name="name" required>
+          </label>
+          <label class="contact-label">
+            <span>Your email</span>
+            <input type="email" name="email" required>
+          </label>
+        </div>
+
+        <label class="contact-label">
+          <span>What are you reaching out about?</span>
+          <select name="topic">
+            <option value="grad-photos">Grad photos</option>
+            <option value="photo-project">Photo project</option>
+            <option value="collab">Collab / other</option>
+          </select>
+        </label>
+
+        <label class="contact-label">
+          <span>Your message</span>
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+
+        <button type="submit" class="contact-submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="nav.js"></script>
+</body>
+</html>
+
