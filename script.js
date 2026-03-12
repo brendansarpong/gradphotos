@@ -204,6 +204,8 @@ const carouselTrack = document.getElementById("carouselTrack");
 const carouselTitle = document.getElementById("carouselTitle");
 const carouselDesc = document.getElementById("carouselDesc");
 const carouselCaption = document.querySelector(".carousel-caption");
+const carouselPrev = document.getElementById("carouselPrev");
+const carouselNext = document.getElementById("carouselNext");
 
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
@@ -212,36 +214,41 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let lastActiveIndex = 0;
   const START_INDEX = 1; // 0 = left clone, 1 = GRAD, 2 = PLACES, 3 = STUDIO, 4 = PEOPLE, 5 = right clone
 
-  function scrollToIndex(index) {
+  function scrollToIndex(index, behavior = "smooth") {
     const card = cards[index];
     if (!card) return;
     const prev = carouselTrack.style.scrollBehavior;
-    carouselTrack.style.scrollBehavior = "auto";
+    carouselTrack.style.scrollBehavior = behavior;
     carouselTrack.scrollLeft = card.offsetLeft;
     carouselTrack.style.scrollBehavior = prev || "smooth";
   }
 
-  function updateCardTransforms() {
-    if (!cards.length) return;
-    const cardWidth = cards[START_INDEX].offsetWidth || 1;
-    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+  function normalizeIndex(index) {
+    // Map clone indices to their equivalent “real” card for caption + UX.
+    if (index <= 0) return cards.length - 2; // left clone -> last real
+    if (index >= cards.length - 1) return START_INDEX; // right clone -> first real
+    return index;
+  }
 
-    cards.forEach((card) => {
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const raw = (trackCenter - cardCenter) / cardWidth; // +left, -right
-      const t = Math.max(-1.2, Math.min(1.2, raw));
+  function applyStackStyles(activeIndex) {
+    if (!cards.length) return;
+    const clamped = Math.max(0, Math.min(cards.length - 1, activeIndex));
+
+    cards.forEach((card, i) => {
+      const delta = i - clamped; // - = left, + = right
+      const t = Math.max(-2, Math.min(2, delta));
       const abs = Math.abs(t);
 
-      // Center card is front/straight; neighbors peek underneath.
-      const translateX = t * 34;
-      const translateY = abs * 10;
-      const rotateZ = t * 3.2;
-      const scale = 1 - abs * 0.09;
-      const opacity = 1 - Math.min(0.35, abs * 0.22);
+      // Fixed, per-card placement: center is straight; neighbors are subtly slanted/curved.
+      const translateX = t * 26;
+      const translateY = abs * 8;
+      const rotateZ = t * 3.6;
+      const scale = 1 - abs * 0.085;
+      const opacity = 1 - Math.min(0.32, abs * 0.18);
 
       card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotateZ(${rotateZ}deg) scale(${scale})`;
       card.style.opacity = `${opacity}`;
-      card.style.zIndex = `${100 - Math.round(abs * 20)}`;
+      card.style.zIndex = `${200 - abs * 20}`;
     });
   }
 
@@ -260,8 +267,9 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   }
 
   function initCarouselPosition() {
-    scrollToIndex(START_INDEX);
-    updateCardTransforms();
+    scrollToIndex(START_INDEX, "auto");
+    lastActiveIndex = START_INDEX;
+    applyStackStyles(START_INDEX);
     setCaption(START_INDEX);
   }
   if (document.readyState === "loading") {
@@ -281,9 +289,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     const afterLast = lastReal.offsetLeft + lastReal.offsetWidth * 0.5;
 
     if (left < beforeFirst) {
-      scrollToIndex(cards.length - 2);
+      scrollToIndex(cards.length - 2, "auto");
+      lastActiveIndex = cards.length - 2;
+      applyStackStyles(lastActiveIndex);
     } else if (left > afterLast) {
-      scrollToIndex(START_INDEX);
+      scrollToIndex(START_INDEX, "auto");
+      lastActiveIndex = START_INDEX;
+      applyStackStyles(lastActiveIndex);
     }
   }
 
@@ -292,35 +304,44 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const idx = Array.from(cards).indexOf(entry.target);
-        if (idx === -1 || idx === lastActiveIndex) return;
-        lastActiveIndex = idx;
-        setCaption(idx);
+        if (idx === -1) return;
+        const normalized = normalizeIndex(idx);
+        if (normalized === lastActiveIndex) return;
+        lastActiveIndex = normalized;
+        applyStackStyles(lastActiveIndex);
+        setCaption(lastActiveIndex);
       });
     },
     { root: carouselTrack, threshold: 0.5 }
   );
   cards.forEach((card) => observer.observe(card));
-  updateCardTransforms();
+  applyStackStyles(START_INDEX);
 
-  let carouselRAF = null;
   let scrollEndTimer = null;
   carouselTrack.addEventListener(
     "scroll",
     () => {
-      if (carouselRAF) cancelAnimationFrame(carouselRAF);
-      carouselRAF = requestAnimationFrame(() => {
-        updateCardTransforms();
-        carouselRAF = null;
-      });
-
       if (scrollEndTimer) clearTimeout(scrollEndTimer);
       scrollEndTimer = setTimeout(() => {
         checkInfiniteLoop();
-        updateCardTransforms();
+        applyStackStyles(lastActiveIndex);
       }, 140);
     },
     { passive: true }
   );
+
+  function goPrev() {
+    const target = Math.max(0, lastActiveIndex - 1);
+    scrollToIndex(target, "smooth");
+  }
+
+  function goNext() {
+    const target = Math.min(cards.length - 1, lastActiveIndex + 1);
+    scrollToIndex(target, "smooth");
+  }
+
+  if (carouselPrev) carouselPrev.addEventListener("click", goPrev);
+  if (carouselNext) carouselNext.addEventListener("click", goNext);
 
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));

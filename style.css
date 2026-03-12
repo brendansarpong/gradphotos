@@ -730,6 +730,7 @@ body {
       -webkit-overflow-scrolling: touch;
       perspective: 1400px;
       perspective-origin: center 40%;
+      position: relative;
     }
     .mobile-carousel-wrap[aria-hidden="false"] {
       display: flex;
@@ -767,7 +768,44 @@ body {
       transform-origin: center center;
       will-change: transform;
       backface-visibility: hidden;
+      transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.24s ease;
     }
+
+    .carousel-nav {
+      position: absolute;
+      top: 88px;
+      bottom: 120px;
+      width: max(52px, 10vw);
+      border: 0;
+      background: transparent;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .carousel-nav span {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 32px;
+      line-height: 1;
+      transform: translateZ(0);
+    }
+    .carousel-nav:active span {
+      transform: scale(0.96);
+    }
+    .carousel-nav-prev { left: 0; }
+    .carousel-nav-next { right: 0; }
 
     .thumb::after {
       display: none;
@@ -809,8 +847,8 @@ body {
       min-width: 0;
     }
     .carousel-swipe-hint {
-      font-size: 1.25rem;
-      color: rgba(255, 255, 255, 0.45);
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.38);
       line-height: 1;
       user-select: none;
       flex-shrink: 0;
