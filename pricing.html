@@ -30,9 +30,10 @@
     .addons th, .addons td { padding: 8px 0; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.15); font-weight: 400; }
     .addons .addon-price { font-weight: 500; }
     .most-popular {
-      display: inline-block;
+      display: block;
+      margin-top: 6px;
       padding: 2px 8px;
-      margin-right: 6px;
+      width: fit-content;
       border-radius: 999px;
       background: rgba(255,255,255,0.14);
       font-size: 10px;
@@ -73,7 +74,7 @@
       <tr>
         <th>Price</th>
         <td class="price">$80</td>
-        <td class="price"><span class="most-popular">Most popular</span> $150</td>
+        <td class="price">$150<br><span class="most-popular">Most popular</span></td>
         <td class="price">$190</td>
       </tr>
       <tr>
@@ -90,8 +91,8 @@
       </tr>
       <tr>
         <th>Edited digital photos</th>
-        <td class="y">12 photos</td>
-        <td class="y">20 photos</td>
+        <td class="y">10 photos</td>
+        <td class="y">15 photos</td>
         <td class="y">20 photos</td>
       </tr>
       <tr>
