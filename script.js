@@ -303,15 +303,21 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   updateCardTransforms();
 
   let carouselRAF = null;
+  let scrollEndTimer = null;
   carouselTrack.addEventListener(
     "scroll",
     () => {
       if (carouselRAF) cancelAnimationFrame(carouselRAF);
       carouselRAF = requestAnimationFrame(() => {
-        checkInfiniteLoop();
         updateCardTransforms();
         carouselRAF = null;
       });
+
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => {
+        checkInfiniteLoop();
+        updateCardTransforms();
+      }, 140);
     },
     { passive: true }
   );
