@@ -12,6 +12,16 @@ body {
     overflow-x: hidden;
   }
 
+  .site-subtitle {
+    margin-top: 78px;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
   /* Lock scroll only on the index page thumbnails view, not on pricing */
   body:not(.in-category):not(.pricing-page):not(.projects-page) {
     overflow-y: hidden;
@@ -310,6 +320,12 @@ body {
     pointer-events: none;
   }
 
+  @media (min-width: 769px) {
+    #loadingTitle {
+      display: none;
+    }
+  }
+
   #brandText {
     position: fixed;
     bottom: 16px;
@@ -417,9 +433,9 @@ body {
   
   /* Desktop layout: scale thumbnail widths with viewport for more consistent positioning */
   .thumb:nth-child(1) { left: 12%;  top: 12%; width: 27vw; }   /* PLACES */
-  .thumb:nth-child(2) { left: calc(50% - 11vw); top: 26%; width: 22vw; }   /* STUDIO */
-  .thumb:nth-child(3) { left: 58%; top: 38%; width: 25vw; }  /* PEOPLE */
-  .thumb:nth-child(4) { left: 14%;  top: 46%; width: 18vw; }  /* GRAD */
+  .thumb:nth-child(2) { left: 16%; top: 44%; width: 20vw; }    /* STUDIO (smaller, lower) */
+  .thumb:nth-child(3) { left: 58%; top: 38%; width: 25vw; }    /* PEOPLE */
+  .thumb:nth-child(4) { left: calc(50% - 13vw); top: 22%; width: 24vw; }  /* GRAD (larger, more central) */
   
   .thumb:hover {
     box-shadow: 0 20px 50px rgba(0,0,0,0.25);
