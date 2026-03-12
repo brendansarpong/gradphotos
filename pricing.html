@@ -29,6 +29,16 @@
     .addons table { width: 100%; border-collapse: collapse; font-size: 13px; color: rgba(255,255,255,0.9); }
     .addons th, .addons td { padding: 8px 0; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.15); font-weight: 400; }
     .addons .addon-price { font-weight: 500; }
+    .most-popular {
+      display: inline-block;
+      padding: 2px 8px;
+      margin-right: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body class="pricing-page">
@@ -60,9 +70,9 @@
     <tbody>
       <tr>
         <th>Price</th>
-        <td class="price">$70</td>
-        <td class="price">$150</td>
-        <td class="price">$180</td>
+        <td class="price">$80</td>
+        <td class="price"><span class="most-popular">Most popular</span> $150</td>
+        <td class="price">$190</td>
       </tr>
       <tr>
         <th>Location</th>
@@ -89,10 +99,10 @@
         <td class="y">✓</td>
       </tr>
       <tr>
-        <th>1 roll film (6–8 scans)</th>
+        <th>Film (per package)</th>
         <td class="n">—</td>
-        <td class="y">✓</td>
-        <td class="y">✓</td>
+        <td class="y">1 roll (6–8 scans)</td>
+        <td class="y">10–12 film scans included</td>
       </tr>
       <tr>
         <th>30-sec camcorder highlight</th>
@@ -109,7 +119,10 @@
     </tbody>
   </table>
 
-  <p class="pricing-note">25% deposit before booking. Anywhere on campus counts as 1 location.</p>
+  <p class="pricing-note">
+    25% deposit before booking. Anywhere on campus counts as 1 location.
+    If a friend referred you, you get <strong>15% off</strong> your package.
+  </p>
 
   <section class="addons">
     <h2>Add-ons</h2>
