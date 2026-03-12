@@ -204,15 +204,62 @@ const carouselTrack = document.getElementById("carouselTrack");
 const carouselTitle = document.getElementById("carouselTitle");
 const carouselDesc = document.getElementById("carouselDesc");
 const carouselCaption = document.querySelector(".carousel-caption");
-const carouselPrev = document.getElementById("carouselPrev");
-const carouselNext = document.getElementById("carouselNext");
 
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
+  // “Fake infinite” loop: repeat the 4-category sequence a few times on both sides,
+  // then start the user in the middle sequence on GRAD.
+  const baseCards = [
+    {
+      category: "GRAD",
+      src: "images/jpegs (smaller size)/image compress/grad_mia_TN.jpg",
+      alt: "Grad",
+    },
+    {
+      category: "PLACES",
+      src: "images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg",
+      alt: "Places",
+    },
+    {
+      category: "STUDIO",
+      src: "images/jpegs (smaller size)/image compress/studio_pyc_wk2 (hands)_TN.jpg",
+      alt: "Studio",
+    },
+    {
+      category: "PEOPLE",
+      src: "images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg",
+      alt: "People",
+    },
+  ];
+
+  const LOOPS_EACH_SIDE = 4; // total loops = (LOOPS_EACH_SIDE*2 + 1)
+  const LOOPS_TOTAL = LOOPS_EACH_SIDE * 2 + 1;
+
+  carouselTrack.innerHTML = "";
+  for (let loop = 0; loop < LOOPS_TOTAL; loop += 1) {
+    baseCards.forEach((cfg) => {
+      const article = document.createElement("article");
+      article.className = "carousel-card";
+      article.dataset.category = cfg.category;
+
+      const wrap = document.createElement("div");
+      wrap.className = "carousel-card-img-wrap";
+
+      const img = document.createElement("img");
+      img.src = cfg.src;
+      img.alt = cfg.alt;
+      img.decoding = "async";
+
+      wrap.appendChild(img);
+      article.appendChild(wrap);
+      carouselTrack.appendChild(article);
+    });
+  }
+
   const cards = carouselTrack.querySelectorAll(".carousel-card");
   let lastActiveIndex = 0;
-  const START_INDEX = 1; // 0 = left clone, 1 = GRAD, 2 = PLACES, 3 = STUDIO, 4 = PEOPLE, 5 = right clone
+  const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
 
   function scrollToIndex(index, behavior = "smooth") {
     const card = cards[index];
@@ -223,32 +270,27 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     carouselTrack.style.scrollBehavior = prev || "smooth";
   }
 
-  function normalizeIndex(index) {
-    // Map clone indices to their equivalent “real” card for caption + UX.
-    if (index <= 0) return cards.length - 2; // left clone -> last real
-    if (index >= cards.length - 1) return START_INDEX; // right clone -> first real
-    return index;
-  }
-
-  function applyStackStyles(activeIndex) {
+  function updateCardTransforms() {
     if (!cards.length) return;
-    const clamped = Math.max(0, Math.min(cards.length - 1, activeIndex));
+    const cardWidth = cards[START_INDEX].offsetWidth || 1;
+    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
 
-    cards.forEach((card, i) => {
-      const delta = i - clamped; // - = left, + = right
-      const t = Math.max(-2, Math.min(2, delta));
+    cards.forEach((card) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const raw = (trackCenter - cardCenter) / cardWidth; // +left, -right
+      const t = Math.max(-1.2, Math.min(1.2, raw));
       const abs = Math.abs(t);
 
-      // Fixed, per-card placement: center is straight; neighbors are subtly slanted/curved.
-      const translateX = t * 26;
-      const translateY = abs * 8;
-      const rotateZ = t * 3.6;
-      const scale = 1 - abs * 0.085;
-      const opacity = 1 - Math.min(0.32, abs * 0.18);
+      // Center card is front/straight; neighbors peek underneath.
+      const translateX = t * 34;
+      const translateY = abs * 10;
+      const rotateZ = t * 3.2;
+      const scale = 1 - abs * 0.09;
+      const opacity = 1 - Math.min(0.35, abs * 0.22);
 
       card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotateZ(${rotateZ}deg) scale(${scale})`;
       card.style.opacity = `${opacity}`;
-      card.style.zIndex = `${200 - abs * 20}`;
+      card.style.zIndex = `${100 - Math.round(abs * 20)}`;
     });
   }
 
@@ -269,7 +311,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   function initCarouselPosition() {
     scrollToIndex(START_INDEX, "auto");
     lastActiveIndex = START_INDEX;
-    applyStackStyles(START_INDEX);
+    updateCardTransforms();
     setCaption(START_INDEX);
   }
   if (document.readyState === "loading") {
@@ -278,70 +320,40 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     requestAnimationFrame(initCarouselPosition);
   }
 
-  function checkInfiniteLoop() {
-    if (cards.length < 3) return;
-    const firstReal = cards[START_INDEX];
-    const lastReal = cards[cards.length - 2];
-    if (!firstReal || !lastReal) return;
-
-    const left = carouselTrack.scrollLeft;
-    const beforeFirst = firstReal.offsetLeft - firstReal.offsetWidth * 0.5;
-    const afterLast = lastReal.offsetLeft + lastReal.offsetWidth * 0.5;
-
-    if (left < beforeFirst) {
-      scrollToIndex(cards.length - 2, "auto");
-      lastActiveIndex = cards.length - 2;
-      applyStackStyles(lastActiveIndex);
-    } else if (left > afterLast) {
-      scrollToIndex(START_INDEX, "auto");
-      lastActiveIndex = START_INDEX;
-      applyStackStyles(lastActiveIndex);
-    }
-  }
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const idx = Array.from(cards).indexOf(entry.target);
         if (idx === -1) return;
-        const normalized = normalizeIndex(idx);
-        if (normalized === lastActiveIndex) return;
-        lastActiveIndex = normalized;
-        applyStackStyles(lastActiveIndex);
+        if (idx === lastActiveIndex) return;
+        lastActiveIndex = idx;
         setCaption(lastActiveIndex);
       });
     },
     { root: carouselTrack, threshold: 0.5 }
   );
   cards.forEach((card) => observer.observe(card));
-  applyStackStyles(START_INDEX);
+  updateCardTransforms();
 
+  let carouselRAF = null;
   let scrollEndTimer = null;
   carouselTrack.addEventListener(
     "scroll",
     () => {
+      if (carouselRAF) cancelAnimationFrame(carouselRAF);
+      carouselRAF = requestAnimationFrame(() => {
+        updateCardTransforms();
+        carouselRAF = null;
+      });
+
       if (scrollEndTimer) clearTimeout(scrollEndTimer);
       scrollEndTimer = setTimeout(() => {
-        checkInfiniteLoop();
-        applyStackStyles(lastActiveIndex);
+        updateCardTransforms();
       }, 140);
     },
     { passive: true }
   );
-
-  function goPrev() {
-    const target = Math.max(0, lastActiveIndex - 1);
-    scrollToIndex(target, "smooth");
-  }
-
-  function goNext() {
-    const target = Math.min(cards.length - 1, lastActiveIndex + 1);
-    scrollToIndex(target, "smooth");
-  }
-
-  if (carouselPrev) carouselPrev.addEventListener("click", goPrev);
-  if (carouselNext) carouselNext.addEventListener("click", goNext);
 
   cards.forEach((card) => {
     card.addEventListener("click", () => enterCategory(card.dataset.category));
