@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mqWide.addListener(syncProjectPanels);
   }
 
-  document.querySelectorAll(".project-card-summary .project-link").forEach((a) => {
+  document.querySelectorAll(".project-card-expandable .project-link").forEach((a) => {
     a.addEventListener("click", (e) => e.stopPropagation());
   });
 

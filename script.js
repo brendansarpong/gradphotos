@@ -276,49 +276,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
 
-  function scrollLeftToCenterCard(card, behavior = "smooth") {
-    if (!card) return;
-    const track = carouselTrack;
-    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    let target = cardCenter - track.clientWidth / 2;
-    target = Math.max(0, Math.min(target, maxScroll));
-    const prev = track.style.scrollBehavior;
-    track.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
-    track.scrollLeft = target;
-    track.style.scrollBehavior = prev || "";
-  }
-
   function scrollToIndex(index, behavior = "smooth") {
     const card = cards[index];
-    scrollLeftToCenterCard(card, behavior);
-  }
-
-  function nearestCardIndex() {
-    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
-    let best = 0;
-    let bestDist = Infinity;
-    cards.forEach((card, i) => {
-      const c = card.offsetLeft + card.offsetWidth / 2;
-      const d = Math.abs(c - trackCenter);
-      if (d < bestDist) {
-        bestDist = d;
-        best = i;
-      }
-    });
-    return best;
-  }
-
-  function snapToNearestCard(behavior = "auto") {
-    const idx = nearestCardIndex();
-    const card = cards[idx];
     if (!card) return;
-    const track = carouselTrack;
-    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    const target = Math.max(0, Math.min(cardCenter - track.clientWidth / 2, maxScroll));
-    if (Math.abs(track.scrollLeft - target) < 2) return;
-    scrollToIndex(idx, behavior);
+    const prev = carouselTrack.style.scrollBehavior;
+    carouselTrack.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
+    carouselTrack.scrollLeft = card.offsetLeft;
+    carouselTrack.style.scrollBehavior = prev || "";
   }
 
   function updateCardTransforms() {
@@ -371,27 +335,30 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     requestAnimationFrame(initCarouselPosition);
   }
 
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const idx = Array.from(cards).indexOf(entry.target);
+        if (idx === -1) return;
+        if (idx === lastActiveIndex) return;
+        lastActiveIndex = idx;
+        setCaption(lastActiveIndex);
+      });
+    },
+    { root: carouselTrack, threshold: 0.5 }
+  );
+  cards.forEach((card) => observer.observe(card));
   updateCardTransforms();
 
   let carouselRAF = null;
   let scrollEndTimer = null;
-  let scrollSettleTimer = null;
-
-  function onCarouselScrollSettled() {
-    snapToNearestCard("auto");
-  }
-
   carouselTrack.addEventListener(
     "scroll",
     () => {
       if (carouselRAF) cancelAnimationFrame(carouselRAF);
       carouselRAF = requestAnimationFrame(() => {
         updateCardTransforms();
-        const idx = nearestCardIndex();
-        if (idx !== lastActiveIndex) {
-          lastActiveIndex = idx;
-          setCaption(idx);
-        }
         carouselRAF = null;
       });
 
@@ -399,20 +366,9 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       scrollEndTimer = setTimeout(() => {
         updateCardTransforms();
       }, 140);
-
-      if (scrollSettleTimer) clearTimeout(scrollSettleTimer);
-      scrollSettleTimer = setTimeout(onCarouselScrollSettled, 180);
     },
     { passive: true }
   );
-
-  carouselTrack.addEventListener("scrollend", () => {
-    if (scrollSettleTimer) {
-      clearTimeout(scrollSettleTimer);
-      scrollSettleTimer = null;
-    }
-    requestAnimationFrame(() => snapToNearestCard("auto"));
-  });
 
   window.addEventListener(
     "resize",
@@ -420,11 +376,6 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       requestAnimationFrame(() => {
         scrollToIndex(lastActiveIndex, "auto");
         updateCardTransforms();
-        const idx = nearestCardIndex();
-        if (idx !== lastActiveIndex) {
-          lastActiveIndex = idx;
-          setCaption(idx);
-        }
       });
     },
     { passive: true }
