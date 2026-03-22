@@ -31,8 +31,7 @@
 
   <main class="projects-main">
     <h1 class="projects-title">About me</h1>
-    <details class="projects-intro-details">
-      <summary class="projects-intro-summary">Full introduction</summary>
+    <div class="projects-intro">
       <div class="projects-intro-body">
         <p>
           I'm Brendan, a student at Columbia University. I study Computer Science with a minor in Africana Studies.
@@ -46,7 +45,7 @@
           Outside of photos, here are some projects I've done and some places to find me.
         </p>
       </div>
-    </details>
+    </div>
 
     <div class="projects-contacts">
       <a href="https://open.spotify.com/user/brendansarpong?si=fb0cfb9e07f647f4" target="_blank" rel="noopener noreferrer">
@@ -64,110 +63,162 @@
     </div>
 
     <section class="projects-grid">
+      <article class="project-card">
+        <details class="project-card-details">
+          <summary class="project-card-summary">
+            <h2>Global Thought Scholars Digital Literacy Curriculum</h2>
+            <a class="project-link" href="https://brendansarpong.github.io/gts-misinfo/" target="_blank" rel="noopener noreferrer">
+              Visit site
+            </a>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              I designed a curriculum and website for a research project to help students navigate the modern
+              web landscape, from misinformation to AI generated photos.
+            </p>
+          </div>
+        </details>
+      </article>
+
+      <article class="project-card">
+        <details class="project-card-details">
+          <summary class="project-card-summary">
+            <h2>Gr8 Eagle Cyber</h2>
+            <a class="project-link" href="https://gr8eaglecyber.com/" target="_blank" rel="noopener noreferrer">
+              Visit site
+            </a>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              I interned at cybersecurity startup Gr8 Eagle Cyber as a Security Intern and also spearheaded the website and marketing.
+            </p>
+          </div>
+        </details>
+      </article>
+
       <article class="project-card project-card-paintings">
-        <h2>Paintings</h2>
-        <p>
-          A few personal pieces. Tap or click any thumbnail for a full view.
-        </p>
-        <div class="paintings-strip">
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_beachmoon.png"
-            data-alt="Painting: beach at moonlight">
-            <img src="images/paintings/paintings_beachmoon.png" alt="Painting: beach at moonlight" width="280" height="280" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_DOOM.png"
-            data-alt="Painting: DOOM-inspired scene">
-            <img src="images/paintings/paintings_DOOM.png" alt="Painting: DOOM-inspired scene" width="280" height="280" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_houseinmountain.png"
-            data-alt="Painting: house in the mountains">
-            <img src="images/paintings/paintings_houseinmountain.png" alt="Painting: house in the mountains" width="280" height="280" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_island.png"
-            data-alt="Painting: island">
-            <img src="images/paintings/paintings_island.png" alt="Painting: island" width="280" height="280" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_lighthouse.png"
-            data-alt="Painting: lighthouse">
-            <img src="images/paintings/paintings_lighthouse.png" alt="Painting: lighthouse" width="280" height="280" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_mountain.png"
-            data-alt="Painting: mountain landscape">
-            <img src="images/paintings/paintings_mountain.png" alt="Painting: mountain landscape" width="280" height="280" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="painting-thumb"
-            data-full-src="images/paintings/paintings_snowhouse.png"
-            data-alt="Painting: house in snow">
-            <img src="images/paintings/paintings_snowhouse.png" alt="Painting: house in snow" width="280" height="280" loading="lazy" decoding="async">
-          </button>
+        <div class="project-card-paintings-header">
+          <h2>Paintings</h2>
+          <div class="paintings-strip">
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_beachmoon.png"
+              data-alt="Painting: beach at moonlight">
+              <img src="images/paintings/paintings_beachmoon.png" alt="Painting: beach at moonlight" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_DOOM.png"
+              data-alt="Painting: DOOM-inspired scene">
+              <img src="images/paintings/paintings_DOOM.png" alt="Painting: DOOM-inspired scene" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_houseinmountain.png"
+              data-alt="Painting: house in the mountains">
+              <img src="images/paintings/paintings_houseinmountain.png" alt="Painting: house in the mountains" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_island.png"
+              data-alt="Painting: island">
+              <img src="images/paintings/paintings_island.png" alt="Painting: island" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_lighthouse.png"
+              data-alt="Painting: lighthouse">
+              <img src="images/paintings/paintings_lighthouse.png" alt="Painting: lighthouse" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_mountain.png"
+              data-alt="Painting: mountain landscape">
+              <img src="images/paintings/paintings_mountain.png" alt="Painting: mountain landscape" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+            <button type="button" class="painting-thumb"
+              data-full-src="images/paintings/paintings_snowhouse.png"
+              data-alt="Painting: house in snow">
+              <img src="images/paintings/paintings_snowhouse.png" alt="Painting: house in snow" width="280" height="280" loading="lazy" decoding="async">
+            </button>
+          </div>
         </div>
+        <details class="project-card-details project-card-details--paintings-more">
+          <summary class="project-card-summary project-card-summary--paintings-more">
+            <span class="project-card-summary-label">About these pieces</span>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              A few personal pieces. Tap or click any thumbnail for a full view.
+            </p>
+          </div>
+        </details>
       </article>
 
       <article class="project-card">
-        <h2>Global Thought Scholars Digital Literacy Curriculum</h2>
-        <p>
-          I designed a curriculum and website for a research project to help students navigate the modern
-          web landscape, from misinformation to AI generated photos.
-        </p>
-        <a class="project-link" href="https://brendansarpong.github.io/gts-misinfo/" target="_blank" rel="noopener noreferrer">
-          Visit site
-        </a>
+        <details class="project-card-details">
+          <summary class="project-card-summary">
+            <h2>Surgery Turnover Time App</h2>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              Using React Native and Firebase, I built an app with a peer + surgeons at the Spine
+              Institute of San Diego to help reduce turnover time between surgeries.
+            </p>
+            <p style="font-size:11px; color:#fff; margin:0;">
+              (Many implementation details are confidential &mdash; reach out if you want to hear more.)
+            </p>
+          </div>
+        </details>
       </article>
 
       <article class="project-card">
-        <h2>SampleSearch</h2>
-        <p>
-          I made this website game that teaches you how to detect the regional origin of hip hop samples.
-        </p>
-        <a class="project-link" href="https://brendan-sarpong.github.io/samplesearch/" target="_blank" rel="noopener noreferrer">
-          Play here
-        </a>
-      </article>
-
-      <article class="project-card project-card-3">
-        <h2>Surgery Turnover Time App</h2>
-        <p>
-          Using React Native and Firebase, I built an app with a peer + surgeons at the Spine
-          Institute of San Diego to help reduce turnover time between surgeries.
-        </p>
-        <p style="font-size:11px; color:#fff; margin:0;">
-          (Many implementation details are confidential &mdash; reach out if you want to hear more.)
-        </p>
+        <details class="project-card-details">
+          <summary class="project-card-summary">
+            <h2>WKCR</h2>
+            <a class="project-link" href="https://wkcr.org" target="_blank" rel="noopener noreferrer">
+              wkcr.org
+            </a>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              I volunteer at WKCR, a radio station based in NYC. My main shows are hip hop. Tune your dial to 89.9 FM, or support below:
+            </p>
+          </div>
+        </details>
       </article>
 
       <article class="project-card">
-        <h2>Gr8 Eagle Cyber</h2>
-        <p>
-          I interned at cybersecurity startup Gr8 Eagle Cyber as a Security Intern and also spearheaded the website and marketing.
-        </p>
-        <a class="project-link" href="https://gr8eaglecyber.com/" target="_blank" rel="noopener noreferrer">
-          Visit site
-        </a>
+        <details class="project-card-details">
+          <summary class="project-card-summary">
+            <h2>SampleSearch</h2>
+            <a class="project-link" href="https://brendan-sarpong.github.io/samplesearch/" target="_blank" rel="noopener noreferrer">
+              Play here
+            </a>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              I made this website game that teaches you how to detect the regional origin of hip hop samples.
+            </p>
+          </div>
+        </details>
       </article>
 
       <article class="project-card">
-        <h2>Amateur Game Design</h2>
-        <p>
-          I used to make games in my free time. They were bad and I love them. Here's an example, called Updog. Click the link to play.
-        </p>
-        <a class="project-link" href="https://notbrendan.itch.io/updog" target="_blank" rel="noopener noreferrer">
-          Play here
-        </a>
-      </article>
-
-      <article class="project-card">
-        <h2>WKCR</h2>
-        <p>
-          I volunteer at WKCR, a radio station based in NYC. My main shows are hip hop. Tune your dial to 89.9 FM, or support below:
-        </p>
-        <a class="project-link" href="https://wkcr.org" target="_blank" rel="noopener noreferrer">
-          wkcr.org
-        </a>
+        <details class="project-card-details">
+          <summary class="project-card-summary">
+            <h2>Amateur Game Design</h2>
+            <a class="project-link" href="https://notbrendan.itch.io/updog" target="_blank" rel="noopener noreferrer">
+              Play here
+            </a>
+            <span class="project-card-summary-cue" aria-hidden="true"></span>
+          </summary>
+          <div class="project-card-expandable">
+            <p>
+              I used to make games in my free time. They were bad and I love them. Here's an example, called Updog. Click the link to play.
+            </p>
+          </div>
+        </details>
       </article>
     </section>
   </main>

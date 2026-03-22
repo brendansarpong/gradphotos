@@ -1,17 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const introDetails = document.querySelector(".projects-intro-details");
   const mqWide = window.matchMedia("(min-width: 769px)");
+  const projectDetails = document.querySelectorAll(".project-card-details");
 
-  function syncIntroOpen() {
-    if (!introDetails) return;
-    introDetails.open = mqWide.matches;
+  function syncProjectPanels() {
+    const open = mqWide.matches;
+    projectDetails.forEach((d) => {
+      d.open = open;
+    });
   }
-  syncIntroOpen();
+  syncProjectPanels();
   if (typeof mqWide.addEventListener === "function") {
-    mqWide.addEventListener("change", syncIntroOpen);
+    mqWide.addEventListener("change", syncProjectPanels);
   } else {
-    mqWide.addListener(syncIntroOpen);
+    mqWide.addListener(syncProjectPanels);
   }
+
+  document.querySelectorAll(".project-card-summary .project-link").forEach((a) => {
+    a.addEventListener("click", (e) => e.stopPropagation());
+  });
 
   const lightbox = document.getElementById("paintingLightbox");
   const lightboxImg = document.querySelector("#paintingLightbox .painting-lightbox-img");
