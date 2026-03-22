@@ -11,23 +11,96 @@
   <link rel="icon" type="image/png" href="images/bworld_logo.png">
   <style>
     .pricing-page { background: #4E6151; color: rgba(255,255,255,0.95); min-height: 100vh; padding: 0 0 80px; font-family: "Source Code Pro", monospace; }
-    .pricing-page h1 { font-family: "Source Code Pro", monospace; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; margin: 96px 0 48px; text-align: center; color: rgba(255,255,255,0.95); }
-    .pricing-table { width: 100%; max-width: 900px; margin: 0 auto; border-collapse: collapse; font-size: 13px; color: rgba(255,255,255,0.9); }
-    .pricing-table th, .pricing-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.2); font-weight: 400; }
-    .pricing-table th { font-weight: 500; color: rgba(255,255,255,0.95); }
-    .pricing-table thead th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; padding-top: 0; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.95); }
-    .pricing-table .col-package { width: 22%; }
-    .pricing-table .col-digital { width: 26%; }
-    .pricing-table .col-digital-film { width: 26%; }
+    .pricing-page h1 { font-family: "Source Code Pro", monospace; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; margin: 96px 0 40px; text-align: center; color: rgba(255,255,255,0.95); }
+
+    .pricing-table {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+    }
+    .pricing-table thead th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 20px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.95);
+      font-weight: 600;
+    }
+    .pricing-table th,
+    .pricing-table td {
+      padding: 10px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-weight: 400;
+    }
+    .pricing-table tbody th {
+      font-weight: 600;
+      color: rgba(255,255,255,0.96);
+      white-space: nowrap;
+    }
+    .pricing-table tbody tr:nth-child(even) {
+      background: rgba(0, 0, 0, 0.10);
+    }
+    .pricing-table tbody tr:nth-child(odd) {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .pricing-table .col-package { width: 26%; }
+    .pricing-table .col-digital { width: 24%; }
+    .pricing-table .col-digital-film { width: 24%; }
     .pricing-table .col-full { width: 26%; }
-    .pricing-table .price { font-weight: 600; font-size: 18px; color: rgba(255,255,255,0.95); }
+    .pricing-table .price {
+      font-weight: 700;
+      font-size: 18px;
+      color: rgba(255,255,255,0.98);
+    }
     .pricing-table .y { color: rgba(255,255,255,0.9); }
-    .pricing-table .n { color: rgba(255,255,255,0.5); }
-    .pricing-note { max-width: 900px; margin: 32px auto 0; font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.6; }
-    .addons { max-width: 900px; margin: 56px auto 0; }
-    .addons h2 { font-family: "Source Code Pro", monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; color: rgba(255,255,255,0.95); }
-    .addons table { width: 100%; border-collapse: collapse; font-size: 13px; color: rgba(255,255,255,0.9); }
-    .addons th, .addons td { padding: 8px 0; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.15); font-weight: 400; }
+    .pricing-table .n { color: rgba(255,255,255,0.55); }
+
+    .pricing-note {
+      max-width: 900px;
+      margin: 26px auto 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.6;
+    }
+
+    .addons {
+      max-width: 900px;
+      margin: 40px auto 0;
+    }
+    .addons h2 {
+      font-family: "Source Code Pro", monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.95);
+    }
+    .addons table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+    }
+    .addons th,
+    .addons td {
+      padding: 8px 0;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      font-weight: 400;
+    }
+    .group-pricing-table th {
+      font-weight: 600;
+    }
+    .group-pricing-table td:first-child {
+      width: 40%;
+      font-weight: 500;
+    }
     .addons .addon-price { font-weight: 500; }
     .most-popular {
       display: block;
@@ -44,7 +117,9 @@
 </head>
 <body class="pricing-page">
   <header class="header">
-    <a href="index.html" class="logo"><img src="images/bworld_logo.png" alt="Bworld"></a>
+    <div class="logo-block">
+      <a href="index.html" class="logo"><img src="images/bworld_logo.png" alt="Bworld"></a>
+    </div>
     <button class="menu-toggle" aria-label="Toggle navigation">MENU ▾</button>
     <nav class="nav-item nav-photos"><a href="index.html">PHOTOS</a></nav>
     <nav class="nav-item"><a href="pricing.html">PRICING</a></nav>
@@ -60,14 +135,13 @@
   </div>
 
   <h1>Grad photo packages</h1>
-  <div class="site-subtitle">brendan's pictures</div>
 
   <table class="pricing-table">
     <thead>
       <tr>
         <th class="col-package"></th>
-        <th class="col-digital">Digital Session</th>
-        <th class="col-digital-film">Digital + Film</th>
+        <th class="col-digital">Classic Session</th>
+        <th class="col-digital-film">Memory Package</th>
         <th class="col-full">Full Memory Package</th>
       </tr>
     </thead>
@@ -76,7 +150,7 @@
         <th>Price</th>
         <td class="price">$80</td>
         <td class="price">$150<br><span class="most-popular">Most popular</span></td>
-        <td class="price">$190</td>
+        <td class="price">$210</td>
       </tr>
       <tr>
         <th>Location</th>
@@ -95,12 +169,6 @@
         <td class="y">10 photos</td>
         <td class="y">15 photos</td>
         <td class="y">20 photos</td>
-      </tr>
-      <tr>
-        <th>Online gallery</th>
-        <td class="y">✓</td>
-        <td class="y">✓</td>
-        <td class="y">✓</td>
       </tr>
       <tr>
         <th>Film (per package)</th>
@@ -129,15 +197,40 @@
   </p>
 
   <section class="addons">
+    <h2>Group pricing (up to 4 people)</h2>
+    <table class="addons group-pricing-table">
+      <tr>
+        <th></th>
+        <th>Solo</th>
+        <th>Group (per person)</th>
+      </tr>
+      <tr>
+        <td>Classic Session</td>
+        <td>$80</td>
+        <td>$65 each</td>
+      </tr>
+      <tr>
+        <td>Memory Package</td>
+        <td>$150</td>
+        <td>$135 each</td>
+      </tr>
+      <tr>
+        <td>Full Memory Package</td>
+        <td>$210</td>
+        <td>$195 each</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="addons">
     <h2>Add-ons</h2>
     <table class="addons">
-      <tr><td>Video postcard (30 second digital or camcorder highlight)</td><td class="addon-price">+$20</td></tr>
-      <tr><td>Extra location</td><td class="addon-price">+$10</td></tr>
+      <tr><td>Video postcard (30 second digital or camcorder highlight)</td><td class="addon-price">+$30</td></tr>
+      <tr><td>Extra location</td><td class="addon-price">+$20</td></tr>
       <tr><td>Extra outfit</td><td class="addon-price">+$10</td></tr>
       <tr><td>Extra edited photo</td><td class="addon-price">$4</td></tr>
-      <tr><td>Additional film roll</td><td class="addon-price">+$20</td></tr>
-      <tr><td>Camcorder snippet (if not included)</td><td class="addon-price">+$10</td></tr>
-      <tr><td>Rush delivery (48 hrs for digital/video)</td><td class="addon-price">+$15</td></tr>
+      <tr><td>Additional film roll</td><td class="addon-price">+$35</td></tr>
+      <tr><td>Rush delivery (48 hrs for digital/video)</td><td class="addon-price">+$25</td></tr>
     </table>
   </section>
   <script src="nav.js"></script>

@@ -108,10 +108,9 @@ const galleries = {
   ],
   GRAD: [
     "grad_mia_TN.jpg",
+    "grad_miaalma.jpg",
     "grad_miapillar.jpg",
-    "grad_miasubway.jpg",
-    "grad_miasunlight.jpg",
-    "grad_miaalma.jpg"
+    "grad_miasubway.jpg"
   ]
 };
 

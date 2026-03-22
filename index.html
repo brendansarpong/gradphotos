@@ -18,7 +18,10 @@
 <body>
 
 <header class="header">
-  <a href="#" class="logo"><img src="images/bworld_logo.png" alt="Bworld"></a>
+  <div class="logo-block">
+    <a href="#" class="logo"><img src="images/bworld_logo.png" alt="Bworld"></a>
+    <div class="site-subtitle">brendan's pictures</div>
+  </div>
   <button class="menu-toggle" aria-label="Toggle navigation">MENU ▾</button>
   <nav class="nav-item nav-photos"><a href="index.html">PHOTOS</a></nav>
   <nav class="nav-item"><a href="pricing.html">PRICING</a></nav>
@@ -33,12 +36,11 @@
   <a href="about-me.html">About me</a>
 </div>
 
-<!-- LOADING TITLE (fades out after 2s or first thumb interaction; hidden on desktop) -->
+<!-- LOADING TITLE (kept for JS timing but visually hidden) -->
 <h1 id="loadingTitle">Brendan's Portfolio</h1>
 
 <!-- CENTER TITLE (category on hover) -->
 <h1 id="mainTitle">Brendan's Photos</h1>
-<div class="site-subtitle">brendan's pictures</div>
 
 <!-- FIXED BOTTOM-LEFT BRAND (fades in as loading title fades out) -->
 <div id="brandText">BRENDAN'S PORTFOLIO</div>
