@@ -147,11 +147,8 @@ if (!isMobile) {
 
 const GALLERY_SCROLL_TOP = () => gallery.offsetTop || window.innerHeight;
 
-const mobileHint = document.querySelector(".collage-mobile-hint");
-
 function enterCategory(category) {
   dismissLoading();
-  if (mobileHint) mobileHint.classList.add("dismissed");
 
   currentCategory = category;
   title.classList.add("hidden");

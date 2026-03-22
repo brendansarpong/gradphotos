@@ -127,6 +127,207 @@ body {
     color: rgba(255, 255, 255, 0.9);
   }
 
+  .projects-intro-details {
+    max-width: 640px;
+    margin: 0 auto 40px;
+    border: none;
+    text-align: center;
+  }
+
+  .projects-intro-details > summary {
+    list-style: none;
+  }
+
+  .projects-intro-details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .projects-intro-summary {
+    cursor: pointer;
+    font-family: "Source Code Pro", monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+    padding: 8px 18px;
+    margin: 0 auto 14px;
+    display: inline-block;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(0, 0, 0, 0.12);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .projects-intro-summary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .projects-intro-body {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 4px 0 0;
+  }
+
+  .projects-intro-body p {
+    margin: 0 0 14px;
+  }
+
+  .projects-intro-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 769px) {
+    .projects-intro-summary {
+      display: none;
+    }
+
+    .projects-intro-body {
+      padding-top: 0;
+    }
+  }
+
+  .project-card-paintings {
+    grid-column: 1 / -1;
+  }
+
+  .paintings-strip {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    overflow-x: auto;
+    padding: 4px 2px 12px;
+    margin-left: -2px;
+    margin-right: -2px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+
+  .paintings-strip::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  .paintings-strip::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 4px;
+  }
+
+  .painting-thumb {
+    flex: 0 0 auto;
+    width: min(44vw, 176px);
+    height: min(44vw, 176px);
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    scroll-snap-align: start;
+    background: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .painting-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  .painting-thumb:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .painting-thumb:focus {
+    outline: none;
+  }
+
+  .painting-thumb:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.65);
+    outline-offset: 3px;
+  }
+
+  .painting-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.55);
+    padding: 52px 12px 36px;
+    box-sizing: border-box;
+  }
+
+  .painting-lightbox[hidden] {
+    display: none !important;
+  }
+
+  .painting-lightbox-img {
+    max-width: min(92vw, 960px);
+    max-height: min(78vh, 900px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .painting-lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 10px;
+    opacity: 0.92;
+  }
+
+  .painting-lightbox-close:hover {
+    opacity: 1;
+  }
+
+  .painting-lightbox-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1;
+    padding: 12px 14px;
+    cursor: pointer;
+    opacity: 0.88;
+  }
+
+  .painting-lightbox-arrow:hover {
+    opacity: 1;
+  }
+
+  .painting-lightbox-arrow[hidden] {
+    display: none;
+  }
+
+  .painting-lightbox-prev {
+    left: 2px;
+  }
+
+  .painting-lightbox-next {
+    right: 2px;
+  }
+
   .contact-intro {
     max-width: 520px;
   }
@@ -405,7 +606,35 @@ body {
     margin-bottom: 40px;
   }
 
-  .collage-mobile-hint {
+  .category-expand-hint {
+    margin: 0;
+    font-family: "Source Code Pro", monospace;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    z-index: 4;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+
+  body.in-category .category-expand-hint {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .collage .category-expand-hint {
+    position: fixed;
+    bottom: max(18px, env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    text-align: center;
+  }
+
+  .category-expand-hint--carousel {
     display: none;
   }
 
@@ -722,7 +951,33 @@ body {
     }
 
     .projects-main {
-      padding: 80px 16px 56px;
+      padding: 72px 14px 44px;
+    }
+
+    .projects-title {
+      margin-bottom: 12px;
+    }
+
+    .projects-intro-details {
+      margin-bottom: 22px;
+    }
+
+    .projects-intro-body {
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    .projects-intro-body p {
+      margin-bottom: 12px;
+    }
+
+    .projects-contacts {
+      margin-bottom: 22px;
+      gap: 14px;
+    }
+
+    .projects-contacts img {
+      height: 26px;
     }
 
     .projects-grid {
@@ -730,8 +985,8 @@ body {
       height: auto;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-top: 32px;
+      gap: 12px;
+      margin-top: 22px;
     }
 
     .project-card {
@@ -741,11 +996,53 @@ body {
       animation: none;
       transform: none;
       margin: 0;
+      padding: 14px 16px 16px;
+    }
+
+    .project-card h2 {
+      margin: 0 0 8px;
+      font-size: 12px;
+    }
+
+    .project-card p {
+      font-size: 11.5px;
+      line-height: 1.55;
+      margin: 0 0 10px;
+    }
+
+    .project-card .project-link {
+      font-size: 10px;
+    }
+
+    .painting-thumb {
+      width: min(38vw, 148px);
+      height: min(38vw, 148px);
+    }
+
+    .painting-lightbox-prev {
+      left: 0;
+    }
+
+    .painting-lightbox-next {
+      right: 0;
     }
 
     /* Mobile home: hide desktop collage, show carousel */
     .collage {
       display: none;
+    }
+
+    .collage .category-expand-hint {
+      display: none;
+    }
+
+    .category-expand-hint--carousel {
+      display: block;
+      flex: 0 0 auto;
+      text-align: center;
+      padding: 2px 24px 0;
+      align-self: center;
+      max-width: 20rem;
     }
 
     .mobile-carousel-wrap {

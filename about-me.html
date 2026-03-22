@@ -30,10 +30,23 @@
   </div>
 
   <main class="projects-main">
-    <br><h1 class="projects-title">About me</h1>
-    <p class="projects-intro">
-      I'm Brendan, a student at Columbia University. I study Computer Science with a minor in Africana Studies. I like hip hop, painting, cybersecurity, streetwear, soccer (go Chelsea), and of course, photography <br> <br> <br> I started taking 35 mm film pictures a few years back before switching to digital. I love capturing slices of life; I enjoy finding the charm in imperfection and immortalizing candid moments. Portraits remain my favorite type of photo to take, though. <br> <br> Outside of photos, here are some projects I've done and some places to find me.
-    </p>
+    <h1 class="projects-title">About me</h1>
+    <details class="projects-intro-details">
+      <summary class="projects-intro-summary">Full introduction</summary>
+      <div class="projects-intro-body">
+        <p>
+          I'm Brendan, a student at Columbia University. I study Computer Science with a minor in Africana Studies.
+          I like hip hop, painting, cybersecurity, streetwear, soccer (guess my Premier League team), and of course, photography.
+        </p>
+        <p>
+          I started taking 35 mm film pictures a few years back before switching to digital. I love capturing slices of life;
+          I enjoy finding the charm in imperfection and immortalizing candid moments. Portraits remain my favorite type of photo to take, though.
+        </p>
+        <p>
+          Outside of photos, here are some projects I've done and some places to find me.
+        </p>
+      </div>
+    </details>
 
     <div class="projects-contacts">
       <a href="https://open.spotify.com/user/brendansarpong?si=fb0cfb9e07f647f4" target="_blank" rel="noopener noreferrer">
@@ -51,6 +64,50 @@
     </div>
 
     <section class="projects-grid">
+      <article class="project-card project-card-paintings">
+        <h2>Paintings</h2>
+        <p>
+          A few personal pieces. Tap or click any thumbnail for a full view.
+        </p>
+        <div class="paintings-strip">
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_beachmoon.png"
+            data-alt="Painting: beach at moonlight">
+            <img src="images/paintings/paintings_beachmoon.png" alt="Painting: beach at moonlight" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_DOOM.png"
+            data-alt="Painting: DOOM-inspired scene">
+            <img src="images/paintings/paintings_DOOM.png" alt="Painting: DOOM-inspired scene" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_houseinmountain.png"
+            data-alt="Painting: house in the mountains">
+            <img src="images/paintings/paintings_houseinmountain.png" alt="Painting: house in the mountains" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_island.png"
+            data-alt="Painting: island">
+            <img src="images/paintings/paintings_island.png" alt="Painting: island" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_lighthouse.png"
+            data-alt="Painting: lighthouse">
+            <img src="images/paintings/paintings_lighthouse.png" alt="Painting: lighthouse" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_mountain.png"
+            data-alt="Painting: mountain landscape">
+            <img src="images/paintings/paintings_mountain.png" alt="Painting: mountain landscape" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="painting-thumb"
+            data-full-src="images/paintings/paintings_snowhouse.png"
+            data-alt="Painting: house in snow">
+            <img src="images/paintings/paintings_snowhouse.png" alt="Painting: house in snow" width="280" height="280" loading="lazy" decoding="async">
+          </button>
+        </div>
+      </article>
+
       <article class="project-card">
         <h2>Global Thought Scholars Digital Literacy Curriculum</h2>
         <p>
@@ -114,6 +171,15 @@
       </article>
     </section>
   </main>
+
+  <div id="paintingLightbox" class="painting-lightbox" hidden aria-hidden="true">
+    <button type="button" class="painting-lightbox-close" aria-label="Close full view">✕</button>
+    <button type="button" class="painting-lightbox-arrow painting-lightbox-prev" aria-label="Previous painting">&#10094;</button>
+    <img class="painting-lightbox-img" alt="">
+    <button type="button" class="painting-lightbox-arrow painting-lightbox-next" aria-label="Next painting">&#10095;</button>
+  </div>
+
   <script src="nav.js"></script>
+  <script src="about-me.js"></script>
 </body>
 </html>
