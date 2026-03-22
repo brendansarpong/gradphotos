@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pricing — Brendan's Portfolio</title>
+  <title>Brendan's Pictures</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -113,6 +113,90 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
+    /* Mobile: fit full comparison table in viewport — no horizontal scroll needed to see all packages */
+    @media (max-width: 768px) {
+      .pricing-page {
+        padding-left: 10px;
+        padding-right: 10px;
+        box-sizing: border-box;
+      }
+      .pricing-page h1 {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0 4px;
+      }
+
+      .pricing-table-shell {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .pricing-table {
+        table-layout: fixed;
+        width: 100%;
+        max-width: 100%;
+        font-size: 9px;
+      }
+      .pricing-table thead th {
+        font-size: 8px;
+        letter-spacing: 0.04em;
+        padding: 6px 3px 8px;
+        line-height: 1.2;
+        white-space: normal;
+        vertical-align: bottom;
+        word-wrap: break-word;
+        hyphens: auto;
+      }
+      .pricing-table th,
+      .pricing-table td {
+        padding: 5px 3px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+      }
+      .pricing-table tbody th {
+        white-space: normal;
+        font-size: 8px;
+        line-height: 1.25;
+      }
+      .pricing-table .col-package {
+        width: 20%;
+      }
+      .pricing-table .price {
+        font-size: 12px;
+        line-height: 1.2;
+      }
+      .pricing-table .most-popular {
+        font-size: 7px;
+        margin-top: 4px;
+        padding: 2px 5px;
+        max-width: 100%;
+      }
+
+      .pricing-note {
+        padding: 0 4px;
+      }
+
+      .addons {
+        padding: 0 4px;
+      }
+      .addons table {
+        table-layout: fixed;
+        width: 100%;
+        font-size: 10px;
+      }
+      .addons th,
+      .addons td {
+        padding: 6px 4px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+      .group-pricing-table td:first-child {
+        width: 36%;
+        font-size: 9px;
+      }
+    }
   </style>
 </head>
 <body class="pricing-page">
@@ -136,6 +220,7 @@
 
   <h1>Grad photo packages</h1>
 
+  <div class="pricing-table-shell">
   <table class="pricing-table">
     <thead>
       <tr>
@@ -190,6 +275,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 
   <p class="pricing-note">
     25% deposit before booking. <br> Anywhere on campus counts as 1 location. <br> <br>
