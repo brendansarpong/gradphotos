@@ -82,7 +82,8 @@ const galleries = {
     "places_amsterdamtrainstop.jpg",
     "places_dczoo.jpg",
     "places_eiffeltower.jpg",
-    "places_parisguy.jpg"
+    "places_parisguy.jpg",
+    "images/places_colombiaredeemer.JPEG"
   ],
   STUDIO: [
     "studio_pyc_wk2 (hands)_TN.jpg",
@@ -94,25 +95,32 @@ const galleries = {
   ],
   PEOPLE: [
     "people_caymanfriends_TN.jpg",
+    "people_miaguitar.jpg",
+    "people_lindacar.jpg",
+    "images/people_girlsundernumber.JPEG",
     "people_aashi.jpg",
     "people_aashistreet.jpg",
     "people_friendspoint.jpg",
-    "people_lindacar.jpg",
     "people_me_faces.jpg",
     "people_peoplesjazznight_beyourself.jpg",
     "people_peoplesjazznight_keyanna.jpg",
     "people_joesclothesbros.jpg",
-    "people_miaguitar.jpg",
     "people_oisin.jpg",
     "people_adpfriends.jpg",
     "people_miahutton.jpg",
-    "people_lawrencecigarette.jpg"
+    "people_lawrencecigarette.jpg",
+    "images/people_colombiafamily.JPEG",
+    "images/people_nickcolombiawalk.JPEG",
+    "images/people_girlsundernumber.JPEG",
+    "images/people_mialookback.JPEG"
   ],
   GRAD: [
     "grad_mia_TN.jpg",
     "grad_miaalma.jpg",
     "grad_miapillar.jpg",
-    "grad_miasubway.jpg"
+    "grad_miasubway.jpg",
+    "grad_miasubway-2.jpg",
+    "grad_miasunlight.png"
   ]
 };
 
@@ -170,7 +178,7 @@ function enterCategory(category) {
   const base = category === "GRAD" ? GRAD_IMAGE_BASE : IMAGE_BASE;
   galleries[category].forEach((img, index) => {
     const image = document.createElement("img");
-    image.src = `${base}${img}`;
+    image.src = img.includes("/") ? img : `${base}${img}`;
     image.loading = "lazy";
     image.decoding = "async";
     image.classList.add("gallery-img");
@@ -276,35 +284,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
 
-  function getCenteredScrollLeft(card) {
-    // Keep active card mathematically centered in the viewport.
-    return card.offsetLeft - (carouselTrack.clientWidth - card.offsetWidth) / 2;
-  }
-
   function scrollToIndex(index, behavior = "smooth") {
     const card = cards[index];
     if (!card) return;
     const prev = carouselTrack.style.scrollBehavior;
     carouselTrack.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
-    carouselTrack.scrollLeft = getCenteredScrollLeft(card);
+    carouselTrack.scrollLeft = card.offsetLeft;
     carouselTrack.style.scrollBehavior = prev || "";
-  }
-
-  function getNearestIndex() {
-    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
-    let nearestIndex = 0;
-    let nearestDistance = Infinity;
-
-    cards.forEach((card, index) => {
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const distance = Math.abs(trackCenter - cardCenter);
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestIndex = index;
-      }
-    });
-
-    return nearestIndex;
   }
 
   function updateCardTransforms() {
@@ -386,12 +372,6 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
       if (scrollEndTimer) clearTimeout(scrollEndTimer);
       scrollEndTimer = setTimeout(() => {
-        const snapIndex = getNearestIndex();
-        if (snapIndex !== lastActiveIndex) {
-          lastActiveIndex = snapIndex;
-          setCaption(lastActiveIndex);
-        }
-        scrollToIndex(snapIndex, "smooth");
         updateCardTransforms();
       }, 140);
     },
