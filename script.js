@@ -22,7 +22,6 @@ document.querySelector(".header .logo").addEventListener("click", (e) => {
 
 title.classList.add("hidden");
 
-// Fade-in thumbnails once loaded
 thumbs.forEach(img => {
   if (img.complete) {
     img.classList.add("loaded");
@@ -31,7 +30,6 @@ thumbs.forEach(img => {
   }
 });
 
-// Dismiss loading title after fixed 2s only (no early dismiss on interaction)
 let loadingDismissed = false;
 let loadingTimeout = setTimeout(dismissLoading, 2000);
 
@@ -63,9 +61,7 @@ const descriptions = {
   GRAD: "Graduation photos of my friend Mia."
 };
 
-// Compressed images in images/jpegs (smaller size)/image compress/
 const IMAGE_BASE = "images/jpegs (smaller size)/image compress/";
-// Grad set lives in site root images/ (Lightroom exports)
 const GRAD_IMAGE_BASE = "images/";
 
 const galleries = {
@@ -87,10 +83,10 @@ const galleries = {
   ],
   STUDIO: [
     "studio_pyc_wk2 (hands)_TN.jpg",
+    "studio_sayffoot.jpg",
     "studio_birthday.jpg",
     "studio_pyc_wk2 (ezinne).jpg",
     "studio_pyc_wk2.jpg",
-    "studio_sayffoot.jpg",
     "studio_sayfsit.jpg"
   ],
   PEOPLE: [
@@ -122,7 +118,6 @@ const galleries = {
   ]
 };
 
-// Desktop: smooth float thumbnails opposite to cursor
 const thumbSpeed = [1.25, 0.65, 1, 0.85]; // PLACES, STUDIO, PEOPLE, GRAD
 const moveStrength = 44;
 let thumbTargetX = 0;
@@ -219,7 +214,6 @@ thumbs.forEach(thumb => {
   thumb.addEventListener("click", () => enterCategory(thumb.dataset.category));
 });
 
-// Mobile-only: horizontal card carousel — swipe to change card, tap to open category
 const mobileCarousel = document.getElementById("mobileCarousel");
 const carouselTrack = document.getElementById("carouselTrack");
 const carouselTitle = document.getElementById("carouselTitle");
@@ -229,8 +223,6 @@ const carouselCaption = document.querySelector(".carousel-caption");
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
-  // “Fake infinite” loop: repeat the 4-category sequence a few times on both sides,
-  // then start the user in the middle sequence on GRAD.
   const baseCards = [
     {
       category: "GRAD",
@@ -254,7 +246,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     },
   ];
 
-  const LOOPS_EACH_SIDE = 4; // total loops = (LOOPS_EACH_SIDE*2 + 1)
+  const LOOPS_EACH_SIDE = 4;
   const LOOPS_TOTAL = LOOPS_EACH_SIDE * 2 + 1;
 
   carouselTrack.innerHTML = "";
@@ -298,11 +290,10 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
     cards.forEach((card) => {
       const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const raw = (trackCenter - cardCenter) / cardWidth; // +left, -right
+      const raw = (trackCenter - cardCenter) / cardWidth;
       const t = Math.max(-1.2, Math.min(1.2, raw));
       const abs = Math.abs(t);
 
-      // Center card is front/straight; neighbors peek underneath.
       const translateX = t * 34;
       const translateY = abs * 10;
       const rotateZ = t * 3.2;
