@@ -1253,7 +1253,7 @@ body {
       display: flex;
       overflow-x: auto;
       overflow-y: visible;
-      scroll-snap-type: none;
+      scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       gap: 0;
       flex: 0 0 auto;
@@ -1271,6 +1271,8 @@ body {
       flex: 0 0 auto;
       width: 82vw;
       max-width: 390px;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       padding: 0 6px;
