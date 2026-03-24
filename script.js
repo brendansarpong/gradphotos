@@ -84,10 +84,11 @@ const galleries = {
   STUDIO: [
     "studio_pyc_wk2 (hands)_TN.jpg",
     "studio_sayffoot.jpg",
-    "studio_birthday.jpg",
     "studio_pyc_wk2 (ezinne).jpg",
     "studio_pyc_wk2.jpg",
-    "studio_sayfsit.jpg"
+    "studio_sayfsit.jpg",
+    "people_me_faces.jpg",
+    "studio_birthday.jpg"
   ],
   PEOPLE: [
     "people_caymanfriends_TN.jpg",
@@ -96,8 +97,8 @@ const galleries = {
     "images/people_girlsundernumber.JPEG",
     "people_aashi.jpg",
     "people_aashistreet.jpg",
+    "people_brendansyracuse.jpg",
     "people_friendspoint.jpg",
-    "people_me_faces.jpg",
     "people_peoplesjazznight_beyourself.jpg",
     "people_peoplesjazznight_keyanna.jpg",
     "people_joesclothesbros.jpg",
