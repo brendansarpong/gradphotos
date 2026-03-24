@@ -161,15 +161,19 @@ function enterCategory(category) {
   gallery.innerHTML = "";
   currentGalleryImages = [];
 
-  const loader = document.createElement("div");
-  loader.id = "galleryLoading";
-  loader.textContent = "Loading photos…";
-  gallery.appendChild(loader);
-
-  let remaining = galleries[category].length;
-
   const base = category === "GRAD" ? GRAD_IMAGE_BASE : IMAGE_BASE;
   galleries[category].forEach((img, index) => {
+    const item = document.createElement("div");
+    item.className = "gallery-item";
+
+    const placeholder = document.createElement("div");
+    placeholder.className = "gallery-img-placeholder";
+    placeholder.setAttribute("aria-hidden", "true");
+    const placeholderText = document.createElement("span");
+    placeholderText.className = "gallery-img-placeholder-text";
+    placeholderText.textContent = "Loading photos…";
+    placeholder.appendChild(placeholderText);
+
     const image = document.createElement("img");
     image.src = img.includes("/") ? img : `${base}${img}`;
     image.loading = "lazy";
@@ -177,17 +181,23 @@ function enterCategory(category) {
     image.classList.add("gallery-img");
     image.dataset.index = index;
 
-    image.addEventListener("load", () => {
+    const markLoaded = () => {
       image.classList.add("loaded");
-      remaining -= 1;
-      if (remaining <= 0 && loader.parentNode) {
-        loader.parentNode.removeChild(loader);
-      }
-    });
+      item.classList.add("gallery-item--loaded");
+    };
+
+    image.addEventListener("load", markLoaded);
+    image.addEventListener("error", markLoaded);
     image.addEventListener("click", () => openLightbox(index));
 
-    gallery.appendChild(image);
+    item.appendChild(placeholder);
+    item.appendChild(image);
+    gallery.appendChild(item);
     currentGalleryImages.push(image.src);
+
+    if (image.complete) {
+      markLoaded();
+    }
   });
 
   document.body.classList.add("in-category");

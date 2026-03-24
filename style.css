@@ -817,33 +817,64 @@ body {
     display: none;
   }
   
+  .gallery-item {
+    break-inside: avoid;
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .gallery-item:not(.gallery-item--loaded) {
+    min-height: min(28vh, 200px);
+  }
+
+  .gallery-item--loaded {
+    min-height: 0;
+  }
+
+  .gallery-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .gallery-img-placeholder-text {
+    font-family: "Source Code Pro", monospace;
+    font-size: 11px;
+    text-align: center;
+    padding: 0 12px;
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
+    animation: galleryPulse 1.2s ease-in-out infinite;
+  }
+
+  .gallery-item--loaded .gallery-img-placeholder {
+    display: none;
+  }
+
   .gallery-img {
     width: 100%;
     height: auto;
     display: block;
-    break-inside: avoid;
-    margin-bottom: 16px;
+    margin-bottom: 0;
     opacity: 0;
     transition: opacity 0.4s ease, transform 0.2s ease;
     cursor: pointer;
+    position: relative;
+    z-index: 2;
   }
 
   .gallery-img.loaded {
     opacity: 1;
   }
-  
-  .gallery-img:hover {
+
+  .gallery-item--loaded .gallery-img:hover {
     transform: scale(1.02);
-  }
-  
-  #galleryLoading {
-    font-family: "Source Code Pro", monospace;
-    font-size: 12px;
-    text-align: center;
-    padding: 40px 0;
-    color: rgba(255, 255, 255, 0.9);
-    opacity: 0.9;
-    animation: galleryPulse 1.2s ease-in-out infinite;
   }
 
   @keyframes galleryEnterMobile {
@@ -1225,23 +1256,23 @@ body {
       display: none;
     }
 
+    /* Main carousel: plain text only (pill styling is for in-category gallery hint). */
     .category-expand-hint--carousel {
       display: block;
       flex: 0 0 auto;
       text-align: center;
-      padding: 8px 18px 9px;
+      padding: 2px 24px 0;
       align-self: center;
       max-width: 20rem;
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255, 255, 255, 0.52);
       font-size: 10px;
-      letter-spacing: 0.09em;
-      background: rgba(20, 18, 16, 0.52);
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      letter-spacing: 0.08em;
+      background: none;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      text-shadow: none;
     }
 
     .mobile-carousel-wrap {
@@ -1388,7 +1419,7 @@ body {
       column-gap: 12px;
     }
 
-    .gallery-img {
+    .gallery-item {
       margin-bottom: 12px;
     }
 
@@ -1401,6 +1432,7 @@ body {
 
     #loadingTitle {
       font-size: 1.25rem;
+      top: 58px;
     }
 
     #mainTitle {
