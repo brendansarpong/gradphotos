@@ -1229,9 +1229,19 @@ body {
       display: block;
       flex: 0 0 auto;
       text-align: center;
-      padding: 2px 24px 0;
+      padding: 8px 18px 9px;
       align-self: center;
       max-width: 20rem;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 10px;
+      letter-spacing: 0.09em;
+      background: rgba(20, 18, 16, 0.52);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
     }
 
     .mobile-carousel-wrap {
@@ -1405,7 +1415,17 @@ body {
     body.in-category.scrolled .gallery-expand-hint {
       top: 128px;
       left: 16px;
-      max-width: 9.5rem;
+      max-width: 11.5rem;
+      color: rgba(255, 255, 255, 0.88);
+      padding: 7px 12px 8px;
+      background: rgba(20, 18, 16, 0.52);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      line-height: 1.4;
     }
 
     /* Lightbox adjustments on mobile: keep arrows on the side, off the photo */

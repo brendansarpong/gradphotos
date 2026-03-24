@@ -68,12 +68,12 @@ const galleries = {
   PLACES: [
     "places_cali_mountains_TN.jpg",
     "places_cali_betweentrees.jpg",
+    "places_amsterdamwater.jpg",
     "places_cali_mountainswithme.jpg",
     "places_cali_paintedladies.jpg",
     "places_cali_thethinker.jpg",
     "places_capitol.jpg",
     "places_mexicanspot.jpg",
-    "places_amsterdamwater.jpg",
     "places_amsterdamauntie.jpg",
     "places_amsterdamtrainstop.jpg",
     "places_dczoo.jpg",
