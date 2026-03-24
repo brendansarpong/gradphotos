@@ -276,25 +276,25 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
 
-  function getCenteredScrollLeft(index) {
-    const card = cards[index];
-    if (!card) return null;
+  function getCenteredScrollLeft(card) {
+    // Keep active card mathematically centered in the viewport.
     return card.offsetLeft - (carouselTrack.clientWidth - card.offsetWidth) / 2;
   }
 
   function scrollToIndex(index, behavior = "smooth") {
-    const centeredScrollLeft = getCenteredScrollLeft(index);
-    if (centeredScrollLeft === null) return;
+    const card = cards[index];
+    if (!card) return;
     const prev = carouselTrack.style.scrollBehavior;
     carouselTrack.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
-    carouselTrack.scrollLeft = centeredScrollLeft;
+    carouselTrack.scrollLeft = getCenteredScrollLeft(card);
     carouselTrack.style.scrollBehavior = prev || "";
   }
 
   function getNearestIndex() {
+    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
     let nearestIndex = 0;
     let nearestDistance = Infinity;
-    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+
     cards.forEach((card, index) => {
       const cardCenter = card.offsetLeft + card.offsetWidth / 2;
       const distance = Math.abs(trackCenter - cardCenter);
@@ -303,6 +303,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
         nearestIndex = index;
       }
     });
+
     return nearestIndex;
   }
 
@@ -385,18 +386,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
       if (scrollEndTimer) clearTimeout(scrollEndTimer);
       scrollEndTimer = setTimeout(() => {
-        const nearestIndex = getNearestIndex();
-        const targetLeft = getCenteredScrollLeft(nearestIndex);
-        const drift = targetLeft === null ? 0 : Math.abs(carouselTrack.scrollLeft - targetLeft);
-
-        lastActiveIndex = nearestIndex;
-        setCaption(nearestIndex);
-        updateCardTransforms();
-
-        // Tiny correction for momentum drift, avoids visibly "snapping" large distances.
-        if (targetLeft !== null && drift > 0.75 && drift < 18) {
-          scrollToIndex(nearestIndex, "smooth");
+        const snapIndex = getNearestIndex();
+        if (snapIndex !== lastActiveIndex) {
+          lastActiveIndex = snapIndex;
+          setCaption(lastActiveIndex);
         }
+        scrollToIndex(snapIndex, "smooth");
+        updateCardTransforms();
       }, 140);
     },
     { passive: true }
