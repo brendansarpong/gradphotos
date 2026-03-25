@@ -1265,11 +1265,16 @@ body {
     .category-expand-hint--carousel {
       display: block;
       flex: 0 0 auto;
-      text-align: center;
-      padding: 6px 24px 0;
-      margin-top: 26px;
       align-self: center;
-      max-width: 20rem;
+      width: 100%;
+      max-width: min(22rem, calc(100vw - 32px));
+      box-sizing: border-box;
+      margin-top: auto;
+      margin-bottom: 0;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding: 28px 20px 0;
       color: rgba(255, 255, 255, 0.52);
       font-size: 10px;
       letter-spacing: 0.08em;
@@ -1283,9 +1288,14 @@ body {
 
     .category-book-hint {
       display: block;
-      margin: 12px 24px 0;
-      padding: 0 8px max(8px, env(safe-area-inset-bottom, 0px));
+      align-self: center;
+      width: 100%;
+      max-width: min(22rem, calc(100vw - 32px));
+      box-sizing: border-box;
+      margin: 16px auto 0;
+      padding: 0 20px max(16px, env(safe-area-inset-bottom, 0px));
       text-align: center;
+      text-wrap: balance;
       font-family: "Source Code Pro", monospace;
       font-size: 10px;
       font-weight: 400;
@@ -1293,6 +1303,7 @@ body {
       text-transform: none;
       line-height: 1.45;
       color: rgba(255, 255, 255, 0.46);
+      pointer-events: auto;
     }
 
     .category-book-hint a {
@@ -1309,6 +1320,7 @@ body {
     .mobile-carousel-wrap {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
       min-height: calc(100vh - 120px);
       padding: 88px 0 24px;
       box-sizing: border-box;
