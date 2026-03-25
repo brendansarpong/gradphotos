@@ -74,7 +74,6 @@ const galleries = {
     "places_cali_paintedladies.jpg",
     "places_cali_thethinker.jpg",
     "places_capitol.jpg",
-    "places_mexicanspot.jpg",
     "places_amsterdamauntie.jpg",
     "places_amsterdamtrainstop.jpg",
     "places_dczoo.jpg",
