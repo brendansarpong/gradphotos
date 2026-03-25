@@ -282,11 +282,12 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   const cards = carouselTrack.querySelectorAll(".carousel-card");
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
-  const SWIPE_DISTANCE_THRESHOLD = 36;
-  const SWIPE_VELOCITY_THRESHOLD = 0.25;
+  const SWIPE_DISTANCE_THRESHOLD = 44;
   const SNAP_ANIM_MS = 280;
   let isAnimatingScroll = false;
   let scrollAnimRAF = null;
+  let isDraggingCarousel = false;
+  let gestureAnchorIndex = START_INDEX;
 
   function scrollToIndex(index, behavior = "smooth") {
     const card = cards[index];
@@ -420,10 +421,12 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       if (carouselRAF) cancelAnimationFrame(carouselRAF);
       carouselRAF = requestAnimationFrame(() => {
         updateCardTransforms();
-        const nearest = getNearestIndex();
-        if (nearest !== lastActiveIndex && !isAnimatingScroll) {
-          lastActiveIndex = nearest;
-          setCaption(nearest);
+        if (!isDraggingCarousel && !isAnimatingScroll) {
+          const nearest = getNearestIndex();
+          if (nearest !== lastActiveIndex) {
+            lastActiveIndex = nearest;
+            setCaption(nearest);
+          }
         }
         carouselRAF = null;
       });
@@ -434,9 +437,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let touchStartX = 0;
   let touchStartY = 0;
   let touchStartScrollLeft = 0;
-  let touchStartTime = 0;
   let lastTouchX = 0;
-  let lastTouchTime = 0;
   let isHorizontalSwipe = null;
   let moved = false;
 
@@ -445,13 +446,14 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     (e) => {
       if (!e.touches.length) return;
       cancelScrollAnimation();
+      isDraggingCarousel = true;
+      gestureAnchorIndex = getNearestIndex();
+      lastActiveIndex = gestureAnchorIndex;
       const touch = e.touches[0];
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
       touchStartScrollLeft = carouselTrack.scrollLeft;
-      touchStartTime = performance.now();
       lastTouchX = touch.clientX;
-      lastTouchTime = touchStartTime;
       isHorizontalSwipe = null;
       moved = false;
     },
@@ -479,28 +481,45 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       moved = true;
       carouselTrack.scrollLeft = touchStartScrollLeft - dx;
       lastTouchX = touch.clientX;
-      lastTouchTime = performance.now();
     },
     { passive: false }
   );
 
+  function finishCarouselGesture() {
+    isDraggingCarousel = false;
+  }
+
   carouselTrack.addEventListener(
     "touchend",
     () => {
-      if (!moved || !isHorizontalSwipe) return;
+      if (!moved || !isHorizontalSwipe) {
+        finishCarouselGesture();
+        return;
+      }
       const totalDx = lastTouchX - touchStartX;
-      const dt = Math.max(1, lastTouchTime - touchStartTime);
-      const velocity = totalDx / dt;
-      const strongSwipe =
-        Math.abs(totalDx) > SWIPE_DISTANCE_THRESHOLD ||
-        Math.abs(velocity) > SWIPE_VELOCITY_THRESHOLD;
-
-      let targetIndex = getNearestIndex();
-      if (strongSwipe) {
-        targetIndex = totalDx < 0 ? lastActiveIndex + 1 : lastActiveIndex - 1;
+      const absDx = Math.abs(totalDx);
+      let targetIndex = gestureAnchorIndex;
+      if (absDx >= SWIPE_DISTANCE_THRESHOLD) {
+        targetIndex = totalDx < 0 ? gestureAnchorIndex + 1 : gestureAnchorIndex - 1;
       }
       targetIndex = Math.max(0, Math.min(cards.length - 1, targetIndex));
       animateToIndex(targetIndex);
+      finishCarouselGesture();
+    },
+    { passive: true }
+  );
+
+  carouselTrack.addEventListener(
+    "touchcancel",
+    () => {
+      cancelScrollAnimation();
+      scrollToIndex(gestureAnchorIndex, "auto");
+      updateCardTransforms();
+      lastActiveIndex = gestureAnchorIndex;
+      setCaption(gestureAnchorIndex);
+      finishCarouselGesture();
+      isHorizontalSwipe = null;
+      moved = false;
     },
     { passive: true }
   );
