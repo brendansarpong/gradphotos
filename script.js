@@ -284,7 +284,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
   const SWIPE_DISTANCE_THRESHOLD = 44;
-  const SNAP_ANIM_MS = 190;
+  const SNAP_ANIM_MS = 150;
   let isAnimatingScroll = false;
   let scrollAnimRAF = null;
   let isDraggingCarousel = false;
@@ -315,8 +315,9 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     const card = cards[index];
     if (!card) return;
     const prev = carouselTrack.style.scrollBehavior;
+    const centeredLeft = card.offsetLeft - (carouselTrack.clientWidth - card.offsetWidth) / 2;
     carouselTrack.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
-    carouselTrack.scrollLeft = card.offsetLeft;
+    carouselTrack.scrollLeft = centeredLeft;
     carouselTrack.style.scrollBehavior = prev || "";
   }
 
@@ -334,7 +335,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     cancelScrollAnimation();
 
     const start = carouselTrack.scrollLeft;
-    const end = card.offsetLeft;
+    const end = card.offsetLeft - (carouselTrack.clientWidth - card.offsetWidth) / 2;
     const delta = end - start;
 
     if (Math.abs(delta) < 0.5 || duration <= 0) {
@@ -348,12 +349,12 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
     isAnimatingScroll = true;
     const startTime = performance.now();
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    const easeOutQuad = (t) => 1 - (1 - t) * (1 - t);
 
     function tick(now) {
       const elapsed = now - startTime;
       const t = Math.min(1, elapsed / duration);
-      carouselTrack.scrollLeft = start + delta * easeOutCubic(t);
+      carouselTrack.scrollLeft = start + delta * easeOutQuad(t);
       updateCardTransforms();
       if (t < 1) {
         scrollAnimRAF = requestAnimationFrame(tick);
@@ -380,13 +381,11 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       const t = Math.max(-1.2, Math.min(1.2, raw));
       const abs = Math.abs(t);
 
-      const translateX = t * 34;
-      const translateY = abs * 10;
-      const rotateZ = t * 3.2;
-      const scale = 1 - abs * 0.09;
-      const opacity = 1 - Math.min(0.35, abs * 0.22);
+      const translateY = abs * 6;
+      const scale = 1 - abs * 0.07;
+      const opacity = 1 - Math.min(0.32, abs * 0.2);
 
-      card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotateZ(${rotateZ}deg) scale(${scale})`;
+      card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale})`;
       card.style.opacity = `${opacity}`;
       card.style.zIndex = `${100 - Math.round(abs * 20)}`;
     });
