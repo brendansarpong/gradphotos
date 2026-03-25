@@ -57,39 +57,24 @@
 <p class="category-expand-hint">Click/tap to see more, swipe to see categories</p>
 </section>
 
-<!-- MOBILE ONLY: vertical snap-scroller. Tap any card to open category. -->
-<section class="mobile-carousel-wrap" id="mobileCarousel" aria-hidden="false">
-  <div class="carousel-track" id="carouselTrack" role="list">
-    <article class="carousel-card" role="listitem" data-category="GRAD" aria-label="Open GRAD category">
-      <div class="carousel-card-img-wrap">
-        <img src="images/grad_mia_TN.jpg" alt="Grad" decoding="async">
-      </div>
-    </article>
-    <article class="carousel-card" role="listitem" data-category="PLACES" aria-label="Open PLACES category">
-      <div class="carousel-card-img-wrap">
-        <img src="images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg" alt="Places" decoding="async">
-      </div>
-    </article>
-    <article class="carousel-card" role="listitem" data-category="STUDIO" aria-label="Open STUDIO category">
-      <div class="carousel-card-img-wrap">
-        <img src="images/jpegs (smaller size)/image compress/studio_pyc_wk2 (hands)_TN.jpg" alt="Studio" decoding="async">
-      </div>
-    </article>
-    <article class="carousel-card" role="listitem" data-category="PEOPLE" aria-label="Open PEOPLE category">
-      <div class="carousel-card-img-wrap">
-        <img src="images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg" alt="People" decoding="async">
-      </div>
-    </article>
+<!-- MOBILE ONLY: horizontal card carousel. Tap card to open category. -->
+<section class="mobile-carousel-wrap" id="mobileCarousel" aria-hidden="true">
+  <div class="carousel-track" id="carouselTrack">
+    <!-- Populated by script.js on mobile with repeated loops -->
   </div>
-  <div class="carousel-caption" aria-live="polite">
-    <span class="carousel-swipe-hint carousel-swipe-hint-left" aria-hidden="true">˄</span>
+  <div class="carousel-caption">
+    <div class="carousel-dots" id="carouselDots" aria-label="Carousel position">
+      <button class="carousel-dot" type="button" aria-label="Item 1 of 4" aria-current="true"></button>
+      <button class="carousel-dot" type="button" aria-label="Item 2 of 4"></button>
+      <button class="carousel-dot" type="button" aria-label="Item 3 of 4"></button>
+      <button class="carousel-dot" type="button" aria-label="Item 4 of 4"></button>
+    </div>
     <div class="carousel-caption-inner">
       <h2 class="carousel-title" id="carouselTitle">GRAD</h2>
       <p class="carousel-desc" id="carouselDesc">Graduation photos of my friend Mia.</p>
     </div>
-    <span class="carousel-swipe-hint carousel-swipe-hint-right" aria-hidden="true">˅</span>
   </div>
-  <p class="category-expand-hint category-expand-hint--carousel">Swipe up/down, tap to expand</p>
+  <p class="category-expand-hint category-expand-hint--carousel">Click or tap to expand</p>
 </section>
 
 <button id="backToTopBtn">BACK TO TOP / CATEGORIES</button>

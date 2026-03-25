@@ -1292,22 +1292,17 @@ body {
 
     .carousel-track {
       display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      overflow-x: hidden;
-      scroll-snap-type: y mandatory;
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
-      gap: 14px;
-      flex: 1 1 auto;
-      height: 68vh;
-      max-height: 520px;
-      padding: 10px 9vw 10px;
+      gap: 0;
+      flex: 0 0 auto;
+      padding: 18px 9vw 6px;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      scroll-padding-top: 10px;
-      scroll-padding-bottom: 10px;
-      overscroll-behavior: contain;
-      touch-action: pan-y;
+      scroll-padding-left: 9vw;
+      scroll-padding-right: 9vw;
     }
     .carousel-track::-webkit-scrollbar {
       display: none;
@@ -1327,19 +1322,7 @@ body {
       transform-origin: center center;
       will-change: transform;
       backface-visibility: hidden;
-      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease, filter 0.24s ease;
-      opacity: 0.78;
-      filter: saturate(0.92) contrast(1.02);
-    }
-
-    .carousel-card.is-active {
-      opacity: 1;
-      filter: saturate(1.06) contrast(1.04);
-      transform: translate3d(0, -2px, 0) scale(1.01);
-    }
-
-    .carousel-card:active {
-      transform: translate3d(0, 0, 0) scale(0.99);
+      transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.24s ease;
     }
 
     .thumb::after {
@@ -1347,43 +1330,22 @@ body {
     }
     .carousel-card-img-wrap {
       width: 100%;
-      height: 58vh;
+      height: 64vh;
       max-height: 420px;
-      border-radius: 22px;
+      border-radius: 18px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.03);
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: none;
-      position: relative;
     }
-
-    .carousel-card-img-wrap::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        120% 85% at 50% 12%,
-        rgba(255, 255, 255, 0.18),
-        rgba(255, 255, 255, 0) 54%
-      );
-      opacity: 0.9;
-      pointer-events: none;
-      transition: opacity 0.22s ease;
-    }
-
-    .carousel-card.is-active .carousel-card-img-wrap::after {
-      opacity: 1;
-    }
-
     .carousel-card-img-wrap img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
-      transition: transform 0.35s ease, filter 0.35s ease;
-      border-radius: 22px;
+      transition: transform 0.35s ease;
     }
     .carousel-card:active .carousel-card-img-wrap img {
       transform: scale(0.98);
@@ -1398,6 +1360,33 @@ body {
       text-align: center;
       justify-content: center;
       min-height: 72px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      margin-right: 2px;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      padding: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: default;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .carousel-dot[aria-current="true"] {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(255, 255, 255, 0.92);
+      transform: scale(1.25);
     }
     .carousel-caption-inner {
       flex: 1;
@@ -1446,22 +1435,6 @@ body {
       }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .carousel-track {
-        scroll-behavior: auto;
-      }
-
-      .carousel-card,
-      .carousel-card-img-wrap img {
-        transition: none;
-      }
-
-      .carousel-caption.animate .carousel-title,
-      .carousel-caption.animate .carousel-desc {
-        animation: none;
-      }
-    }
-
     .thumb {
       position: static;
       box-sizing: border-box;
@@ -1475,6 +1448,12 @@ body {
 
     .gallery-item {
       margin-bottom: 12px;
+    }
+
+    .gallery-img,
+    .gallery-img-placeholder {
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     #descriptionBox {

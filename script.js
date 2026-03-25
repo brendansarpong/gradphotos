@@ -228,70 +228,356 @@ const carouselTrack = document.getElementById("carouselTrack");
 const carouselTitle = document.getElementById("carouselTitle");
 const carouselDesc = document.getElementById("carouselDesc");
 const carouselCaption = document.querySelector(".carousel-caption");
+const carouselDots = document.getElementById("carouselDots");
 
 if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc) {
   mobileCarousel.setAttribute("aria-hidden", "false");
 
-  const cards = Array.from(carouselTrack.querySelectorAll(".carousel-card"));
-  if (!cards.length) {
-    // Fallback: if markup changes and cards are missing, don't break the page.
-  } else {
-    let lastActiveCard = null;
-    let scrollRAF = null;
+  const baseCards = [
+    {
+      category: "GRAD",
+      src: "images/grad_mia_TN.jpg",
+      alt: "Grad",
+    },
+    {
+      category: "PLACES",
+      src: "images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg",
+      alt: "Places",
+    },
+    {
+      category: "STUDIO",
+      src: "images/jpegs (smaller size)/image compress/studio_pyc_wk2 (hands)_TN.jpg",
+      alt: "Studio",
+    },
+    {
+      category: "PEOPLE",
+      src: "images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg",
+      alt: "People",
+    },
+  ];
 
-    function animateCaption() {
-      if (!carouselCaption) return;
+  const LOOPS_EACH_SIDE = 4;
+  const LOOPS_TOTAL = LOOPS_EACH_SIDE * 2 + 1;
+
+  carouselTrack.innerHTML = "";
+  for (let loop = 0; loop < LOOPS_TOTAL; loop += 1) {
+    baseCards.forEach((cfg) => {
+      const article = document.createElement("article");
+      article.className = "carousel-card";
+      article.dataset.category = cfg.category;
+
+      const wrap = document.createElement("div");
+      wrap.className = "carousel-card-img-wrap";
+
+      const img = document.createElement("img");
+      img.src = cfg.src;
+      img.alt = cfg.alt;
+      img.decoding = "async";
+
+      wrap.appendChild(img);
+      article.appendChild(wrap);
+      carouselTrack.appendChild(article);
+    });
+  }
+
+  const cards = carouselTrack.querySelectorAll(".carousel-card");
+  let lastActiveIndex = 0;
+  const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
+  const SWIPE_DISTANCE_THRESHOLD = 44;
+  const SNAP_ANIM_MS = 190;
+  let isAnimatingScroll = false;
+  let scrollAnimRAF = null;
+  let isDraggingCarousel = false;
+  let gestureAnchorIndex = START_INDEX;
+  const baseLen = baseCards.length;
+  const dotButtons = carouselDots
+    ? Array.from(carouselDots.querySelectorAll(".carousel-dot"))
+    : [];
+
+  function getBaseIndexFromIndex(loopedIndex) {
+    if (!baseLen) return 0;
+    return ((loopedIndex % baseLen) + baseLen) % baseLen;
+  }
+
+  function setDots(loopedIndex) {
+    if (!dotButtons.length) return;
+    const baseIndex = getBaseIndexFromIndex(loopedIndex);
+    dotButtons.forEach((btn, i) => {
+      if (i === baseIndex) {
+        btn.setAttribute("aria-current", "true");
+      } else {
+        btn.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function scrollToIndex(index, behavior = "smooth") {
+    const card = cards[index];
+    if (!card) return;
+    const prev = carouselTrack.style.scrollBehavior;
+    carouselTrack.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
+    carouselTrack.scrollLeft = card.offsetLeft;
+    carouselTrack.style.scrollBehavior = prev || "";
+  }
+
+  function cancelScrollAnimation() {
+    if (scrollAnimRAF) {
+      cancelAnimationFrame(scrollAnimRAF);
+      scrollAnimRAF = null;
+    }
+    isAnimatingScroll = false;
+  }
+
+  function animateToIndex(index, duration = SNAP_ANIM_MS) {
+    const card = cards[index];
+    if (!card) return;
+    cancelScrollAnimation();
+
+    const start = carouselTrack.scrollLeft;
+    const end = card.offsetLeft;
+    const delta = end - start;
+
+    if (Math.abs(delta) < 0.5 || duration <= 0) {
+      carouselTrack.scrollLeft = end;
+      lastActiveIndex = index;
+      setCaption(index);
+      setDots(index);
+      updateCardTransforms();
+      return;
+    }
+
+    isAnimatingScroll = true;
+    const startTime = performance.now();
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      carouselTrack.scrollLeft = start + delta * easeOutCubic(t);
+      updateCardTransforms();
+      if (t < 1) {
+        scrollAnimRAF = requestAnimationFrame(tick);
+        return;
+      }
+      scrollAnimRAF = null;
+      isAnimatingScroll = false;
+      lastActiveIndex = index;
+      setCaption(index);
+      setDots(index);
+    }
+
+    scrollAnimRAF = requestAnimationFrame(tick);
+  }
+
+  function updateCardTransforms() {
+    if (!cards.length) return;
+    const cardWidth = cards[START_INDEX].offsetWidth || 1;
+    const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+
+    cards.forEach((card) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const raw = (trackCenter - cardCenter) / cardWidth;
+      const t = Math.max(-1.2, Math.min(1.2, raw));
+      const abs = Math.abs(t);
+
+      const translateX = t * 34;
+      const translateY = abs * 10;
+      const rotateZ = t * 3.2;
+      const scale = 1 - abs * 0.09;
+      const opacity = 1 - Math.min(0.35, abs * 0.22);
+
+      card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotateZ(${rotateZ}deg) scale(${scale})`;
+      card.style.opacity = `${opacity}`;
+      card.style.zIndex = `${100 - Math.round(abs * 20)}`;
+    });
+  }
+
+  function setCaption(index) {
+    const card = cards[index];
+    if (!card) return;
+    const cat = card.dataset.category;
+    carouselTitle.textContent = cat;
+    carouselDesc.textContent = descriptions[cat] || "";
+    if (carouselCaption) {
       carouselCaption.classList.remove("animate");
       void carouselCaption.offsetWidth;
       carouselCaption.classList.add("animate");
       setTimeout(() => carouselCaption.classList.remove("animate"), 420);
     }
+  }
 
-    function setActiveCard(card) {
-      if (!card || card === lastActiveCard) return;
-      lastActiveCard = card;
+  function initCarouselPosition() {
+    scrollToIndex(START_INDEX, "auto");
+    lastActiveIndex = START_INDEX;
+    updateCardTransforms();
+    setCaption(START_INDEX);
+    setDots(START_INDEX);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => requestAnimationFrame(initCarouselPosition));
+  } else {
+    requestAnimationFrame(initCarouselPosition);
+  }
 
-      const cat = card.dataset.category;
-      carouselTitle.textContent = cat;
-      carouselDesc.textContent = descriptions[cat] || "";
-      animateCaption();
+  function getNearestIndex() {
+    const midpoint = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+    let nearestIndex = lastActiveIndex;
+    let nearestDistance = Infinity;
+    cards.forEach((card, index) => {
+      const center = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(center - midpoint);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+    return nearestIndex;
+  }
 
-      cards.forEach((c) => c.classList.toggle("is-active", c === card));
-    }
+  updateCardTransforms();
+  carouselTrack.style.scrollBehavior = "auto";
+  carouselTrack.style.scrollSnapType = "none";
+  carouselTrack.style.touchAction = "pan-y";
 
-    function getNearestCard() {
-      const trackMid = carouselTrack.scrollTop + carouselTrack.clientHeight / 2;
-      let nearest = cards[0];
-      let nearestDistance = Infinity;
-      for (const card of cards) {
-        const mid = card.offsetTop + card.offsetHeight / 2;
-        const d = Math.abs(mid - trackMid);
-        if (d < nearestDistance) {
-          nearestDistance = d;
-          nearest = card;
+  let carouselRAF = null;
+  carouselTrack.addEventListener(
+    "scroll",
+    () => {
+      if (carouselRAF) cancelAnimationFrame(carouselRAF);
+      carouselRAF = requestAnimationFrame(() => {
+        updateCardTransforms();
+        if (!isDraggingCarousel && !isAnimatingScroll) {
+          const nearest = getNearestIndex();
+          if (nearest !== lastActiveIndex) {
+            lastActiveIndex = nearest;
+            setCaption(nearest);
+            setDots(nearest);
+          }
+        }
+        carouselRAF = null;
+      });
+    },
+    { passive: true }
+  );
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartScrollLeft = 0;
+  let lastTouchX = 0;
+  let isHorizontalSwipe = null;
+  let moved = false;
+
+  carouselTrack.addEventListener(
+    "touchstart",
+    (e) => {
+      if (!e.touches.length) return;
+      cancelScrollAnimation();
+      isDraggingCarousel = true;
+      gestureAnchorIndex = getNearestIndex();
+      lastActiveIndex = gestureAnchorIndex;
+      setDots(gestureAnchorIndex);
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchStartScrollLeft = carouselTrack.scrollLeft;
+      lastTouchX = touch.clientX;
+      isHorizontalSwipe = null;
+      moved = false;
+    },
+    { passive: true }
+  );
+
+  carouselTrack.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!e.touches.length) return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+
+      if (isHorizontalSwipe === null) {
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        if (absX > 6 || absY > 6) {
+          isHorizontalSwipe = absX > absY;
         }
       }
-      return nearest;
-    }
 
-    function syncActiveFromScroll() {
-      if (scrollRAF) cancelAnimationFrame(scrollRAF);
-      scrollRAF = requestAnimationFrame(() => {
-        setActiveCard(getNearestCard());
-        scrollRAF = null;
-      });
-    }
+      if (!isHorizontalSwipe) return;
+      e.preventDefault();
+      moved = true;
+      carouselTrack.scrollLeft = touchStartScrollLeft - dx;
+      lastTouchX = touch.clientX;
+    },
+    { passive: false }
+  );
 
-    // Start on the first card (GRAD in markup).
-    requestAnimationFrame(() => setActiveCard(getNearestCard()));
-
-    carouselTrack.addEventListener("scroll", syncActiveFromScroll, { passive: true });
-    window.addEventListener("resize", syncActiveFromScroll, { passive: true });
-
-    cards.forEach((card) => {
-      card.addEventListener("click", () => enterCategory(card.dataset.category));
-    });
+  function finishCarouselGesture() {
+    isDraggingCarousel = false;
   }
+
+  carouselTrack.addEventListener(
+    "touchend",
+    () => {
+      if (!moved || !isHorizontalSwipe) {
+        finishCarouselGesture();
+        return;
+      }
+      const totalDx = lastTouchX - touchStartX;
+      const absDx = Math.abs(totalDx);
+      let targetIndex = gestureAnchorIndex;
+      if (absDx >= SWIPE_DISTANCE_THRESHOLD) {
+        targetIndex = totalDx < 0 ? gestureAnchorIndex + 1 : gestureAnchorIndex - 1;
+      }
+      targetIndex = Math.max(0, Math.min(cards.length - 1, targetIndex));
+      animateToIndex(targetIndex);
+      finishCarouselGesture();
+    },
+    { passive: true }
+  );
+
+  carouselTrack.addEventListener(
+    "touchcancel",
+    () => {
+      cancelScrollAnimation();
+      scrollToIndex(gestureAnchorIndex, "auto");
+      updateCardTransforms();
+      lastActiveIndex = gestureAnchorIndex;
+      setCaption(gestureAnchorIndex);
+      finishCarouselGesture();
+      isHorizontalSwipe = null;
+      moved = false;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "resize",
+    () => {
+      requestAnimationFrame(() => {
+        cancelScrollAnimation();
+        scrollToIndex(lastActiveIndex, "auto");
+        updateCardTransforms();
+      });
+    },
+    { passive: true }
+  );
+
+  cards.forEach((card) => {
+    // If the user taps while the carousel is still settling, stop the settle immediately
+    // so the tap feels responsive instead of "blocked" by the animation.
+    card.addEventListener(
+      "touchstart",
+      () => {
+        if (isAnimatingScroll) cancelScrollAnimation();
+      },
+      { passive: true }
+    );
+    card.addEventListener("click", () => {
+      cancelScrollAnimation();
+      enterCategory(card.dataset.category);
+    });
+  });
 }
 
 function updateScrolledState() {
