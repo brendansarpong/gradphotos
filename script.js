@@ -284,7 +284,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
   const SWIPE_DISTANCE_THRESHOLD = 44;
-  const SNAP_ANIM_MS = 175;
+  const SNAP_ANIM_MS = 195;
   let isAnimatingScroll = false;
   let scrollAnimRAF = null;
   let isDraggingCarousel = false;
@@ -349,13 +349,13 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
     isAnimatingScroll = true;
     const startTime = performance.now();
-    // Smooth deceleration at the end (not linear; avoids springy bounce).
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    // Fast start, soft landing — stronger ease-out than cubic, still no overshoot.
+    const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
 
     function tick(now) {
       const elapsed = now - startTime;
       const t = Math.min(1, elapsed / duration);
-      carouselTrack.scrollLeft = start + delta * easeOutCubic(t);
+      carouselTrack.scrollLeft = start + delta * easeOutQuint(t);
       updateCardTransforms();
       if (t < 1) {
         scrollAnimRAF = requestAnimationFrame(tick);
