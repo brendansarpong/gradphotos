@@ -742,10 +742,6 @@ body {
     display: none;
   }
 
-  .category-book-hint {
-    display: none;
-  }
-
   .mobile-carousel-wrap {
     display: none;
   }
@@ -1269,12 +1265,12 @@ body {
       width: 100%;
       max-width: min(22rem, calc(100vw - 32px));
       box-sizing: border-box;
-      margin-top: auto;
+      margin-top: 20px;
       margin-bottom: 0;
       margin-left: auto;
       margin-right: auto;
       text-align: center;
-      padding: 28px 20px 0;
+      padding: 12px 20px max(10px, env(safe-area-inset-bottom, 0px));
       color: rgba(255, 255, 255, 0.52);
       font-size: 10px;
       letter-spacing: 0.08em;
@@ -1286,43 +1282,12 @@ body {
       text-shadow: none;
     }
 
-    .category-book-hint {
-      display: block;
-      align-self: center;
-      width: 100%;
-      max-width: min(22rem, calc(100vw - 32px));
-      box-sizing: border-box;
-      margin: 16px auto 0;
-      padding: 0 20px max(16px, env(safe-area-inset-bottom, 0px));
-      text-align: center;
-      text-wrap: balance;
-      font-family: "Source Code Pro", monospace;
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      text-transform: none;
-      line-height: 1.45;
-      color: rgba(255, 255, 255, 0.46);
-      pointer-events: auto;
-    }
-
-    .category-book-hint a {
-      color: rgba(255, 255, 255, 0.72);
-      text-decoration: underline;
-      text-decoration-color: rgba(255, 255, 255, 0.35);
-      text-underline-offset: 2px;
-    }
-
-    .category-book-hint a:active {
-      color: rgba(255, 255, 255, 0.9);
-    }
-
     .mobile-carousel-wrap {
       display: flex;
       flex-direction: column;
       align-items: stretch;
       min-height: calc(100vh - 120px);
-      padding: 88px 0 24px;
+      padding: 88px 0 12px;
       box-sizing: border-box;
       -webkit-overflow-scrolling: touch;
       perspective: 1400px;
@@ -1515,8 +1480,20 @@ body {
     }
 
     #loadingTitle {
-      font-size: 1.25rem;
+      font-family: "Poppins", sans-serif;
+      font-size: clamp(0.68rem, 2.9vw, 0.82rem);
+      font-weight: 700;
       top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: min(17.5rem, calc(100vw - 28px));
+      padding: 0 14px;
+      box-sizing: border-box;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.28;
+      letter-spacing: 0.04em;
+      text-transform: none;
     }
 
     #mainTitle {

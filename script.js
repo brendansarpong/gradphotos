@@ -31,7 +31,8 @@ thumbs.forEach(img => {
 });
 
 let loadingDismissed = false;
-let loadingTimeout = setTimeout(dismissLoading, 2000);
+const LOADING_DISMISS_MS = isMobile ? 2500 : 2000;
+let loadingTimeout = setTimeout(dismissLoading, LOADING_DISMISS_MS);
 
 function dismissLoading() {
   if (loadingDismissed) return;
