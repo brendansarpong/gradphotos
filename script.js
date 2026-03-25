@@ -241,9 +241,9 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       alt: "Grad",
     },
     {
-      category: "PLACES",
-      src: "images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg",
-      alt: "Places",
+      category: "PEOPLE",
+      src: "images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg",
+      alt: "People",
     },
     {
       category: "STUDIO",
@@ -251,9 +251,9 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       alt: "Studio",
     },
     {
-      category: "PEOPLE",
-      src: "images/jpegs (smaller size)/image compress/people_caymanfriends_TN.jpg",
-      alt: "People",
+      category: "PLACES",
+      src: "images/jpegs (smaller size)/image compress/places_cali_mountains_TN.jpg",
+      alt: "Places",
     },
   ];
 
