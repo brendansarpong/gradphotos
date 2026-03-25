@@ -94,10 +94,8 @@ const galleries = {
     "people_caymanfriends_TN.jpg",
     "people_miaguitar.jpg",
     "people_lindacar.jpg",
-    "images/people_girlsundernumber.JPEG",
     "people_aashi.jpg",
     "people_aashistreet.jpg",
-    "people_brendansyracuse.jpg",
     "people_friendspoint.jpg",
     "people_peoplesjazznight_beyourself.jpg",
     "people_peoplesjazznight_keyanna.jpg",
@@ -284,6 +282,11 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   const cards = carouselTrack.querySelectorAll(".carousel-card");
   let lastActiveIndex = 0;
   const START_INDEX = LOOPS_EACH_SIDE * baseCards.length; // middle loop, GRAD
+  const SWIPE_DISTANCE_THRESHOLD = 36;
+  const SWIPE_VELOCITY_THRESHOLD = 0.25;
+  const SNAP_ANIM_MS = 280;
+  let isAnimatingScroll = false;
+  let scrollAnimRAF = null;
 
   function scrollToIndex(index, behavior = "smooth") {
     const card = cards[index];
@@ -292,6 +295,53 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     carouselTrack.style.scrollBehavior = behavior === "smooth" ? "smooth" : "auto";
     carouselTrack.scrollLeft = card.offsetLeft;
     carouselTrack.style.scrollBehavior = prev || "";
+  }
+
+  function cancelScrollAnimation() {
+    if (scrollAnimRAF) {
+      cancelAnimationFrame(scrollAnimRAF);
+      scrollAnimRAF = null;
+    }
+    isAnimatingScroll = false;
+  }
+
+  function animateToIndex(index, duration = SNAP_ANIM_MS) {
+    const card = cards[index];
+    if (!card) return;
+    cancelScrollAnimation();
+
+    const start = carouselTrack.scrollLeft;
+    const end = card.offsetLeft;
+    const delta = end - start;
+
+    if (Math.abs(delta) < 0.5 || duration <= 0) {
+      carouselTrack.scrollLeft = end;
+      lastActiveIndex = index;
+      setCaption(index);
+      updateCardTransforms();
+      return;
+    }
+
+    isAnimatingScroll = true;
+    const startTime = performance.now();
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      carouselTrack.scrollLeft = start + delta * easeOutCubic(t);
+      updateCardTransforms();
+      if (t < 1) {
+        scrollAnimRAF = requestAnimationFrame(tick);
+        return;
+      }
+      scrollAnimRAF = null;
+      isAnimatingScroll = false;
+      lastActiveIndex = index;
+      setCaption(index);
+    }
+
+    scrollAnimRAF = requestAnimationFrame(tick);
   }
 
   function updateCardTransforms() {
@@ -343,37 +393,114 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     requestAnimationFrame(initCarouselPosition);
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const idx = Array.from(cards).indexOf(entry.target);
-        if (idx === -1) return;
-        if (idx === lastActiveIndex) return;
-        lastActiveIndex = idx;
-        setCaption(lastActiveIndex);
-      });
-    },
-    { root: carouselTrack, threshold: 0.5 }
-  );
-  cards.forEach((card) => observer.observe(card));
+  function getNearestIndex() {
+    const midpoint = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+    let nearestIndex = lastActiveIndex;
+    let nearestDistance = Infinity;
+    cards.forEach((card, index) => {
+      const center = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(center - midpoint);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+    return nearestIndex;
+  }
+
   updateCardTransforms();
+  carouselTrack.style.scrollBehavior = "auto";
+  carouselTrack.style.scrollSnapType = "none";
+  carouselTrack.style.touchAction = "pan-y";
 
   let carouselRAF = null;
-  let scrollEndTimer = null;
   carouselTrack.addEventListener(
     "scroll",
     () => {
       if (carouselRAF) cancelAnimationFrame(carouselRAF);
       carouselRAF = requestAnimationFrame(() => {
         updateCardTransforms();
+        const nearest = getNearestIndex();
+        if (nearest !== lastActiveIndex && !isAnimatingScroll) {
+          lastActiveIndex = nearest;
+          setCaption(nearest);
+        }
         carouselRAF = null;
       });
+    },
+    { passive: true }
+  );
 
-      if (scrollEndTimer) clearTimeout(scrollEndTimer);
-      scrollEndTimer = setTimeout(() => {
-        updateCardTransforms();
-      }, 140);
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartScrollLeft = 0;
+  let touchStartTime = 0;
+  let lastTouchX = 0;
+  let lastTouchTime = 0;
+  let isHorizontalSwipe = null;
+  let moved = false;
+
+  carouselTrack.addEventListener(
+    "touchstart",
+    (e) => {
+      if (!e.touches.length) return;
+      cancelScrollAnimation();
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchStartScrollLeft = carouselTrack.scrollLeft;
+      touchStartTime = performance.now();
+      lastTouchX = touch.clientX;
+      lastTouchTime = touchStartTime;
+      isHorizontalSwipe = null;
+      moved = false;
+    },
+    { passive: true }
+  );
+
+  carouselTrack.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!e.touches.length) return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+
+      if (isHorizontalSwipe === null) {
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        if (absX > 6 || absY > 6) {
+          isHorizontalSwipe = absX > absY;
+        }
+      }
+
+      if (!isHorizontalSwipe) return;
+      e.preventDefault();
+      moved = true;
+      carouselTrack.scrollLeft = touchStartScrollLeft - dx;
+      lastTouchX = touch.clientX;
+      lastTouchTime = performance.now();
+    },
+    { passive: false }
+  );
+
+  carouselTrack.addEventListener(
+    "touchend",
+    () => {
+      if (!moved || !isHorizontalSwipe) return;
+      const totalDx = lastTouchX - touchStartX;
+      const dt = Math.max(1, lastTouchTime - touchStartTime);
+      const velocity = totalDx / dt;
+      const strongSwipe =
+        Math.abs(totalDx) > SWIPE_DISTANCE_THRESHOLD ||
+        Math.abs(velocity) > SWIPE_VELOCITY_THRESHOLD;
+
+      let targetIndex = getNearestIndex();
+      if (strongSwipe) {
+        targetIndex = totalDx < 0 ? lastActiveIndex + 1 : lastActiveIndex - 1;
+      }
+      targetIndex = Math.max(0, Math.min(cards.length - 1, targetIndex));
+      animateToIndex(targetIndex);
     },
     { passive: true }
   );
@@ -382,6 +509,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
     "resize",
     () => {
       requestAnimationFrame(() => {
+        cancelScrollAnimation();
         scrollToIndex(lastActiveIndex, "auto");
         updateCardTransforms();
       });
@@ -390,7 +518,10 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   );
 
   cards.forEach((card) => {
-    card.addEventListener("click", () => enterCategory(card.dataset.category));
+    card.addEventListener("click", () => {
+      cancelScrollAnimation();
+      enterCategory(card.dataset.category);
+    });
   });
 }
 
