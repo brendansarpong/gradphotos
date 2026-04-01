@@ -1316,6 +1316,17 @@ body {
       display: none;
     }
 
+    @keyframes mobileThumbSlideUp {
+      from {
+        opacity: 0.88;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .carousel-card {
       flex: 0 0 auto;
       width: 82vw;
@@ -1347,6 +1358,16 @@ body {
       align-items: center;
       justify-content: center;
       box-shadow: none;
+      animation: mobileThumbSlideUp 0.68s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: var(--intro-delay, 0s);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-card-img-wrap {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
     }
     .carousel-card-img-wrap img {
       width: 100%;
