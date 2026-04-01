@@ -260,7 +260,6 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   const LOOPS_TOTAL = LOOPS_EACH_SIDE * 2 + 1;
 
   carouselTrack.innerHTML = "";
-  let introCardIndex = 0;
   for (let loop = 0; loop < LOOPS_TOTAL; loop += 1) {
     baseCards.forEach((cfg) => {
       const article = document.createElement("article");
@@ -269,7 +268,6 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
 
       const wrap = document.createElement("div");
       wrap.className = "carousel-card-img-wrap";
-      wrap.style.setProperty("--intro-delay", `${(introCardIndex % 4) * 42}ms`);
 
       const img = document.createElement("img");
       img.src = cfg.src;
@@ -279,7 +277,6 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
       wrap.appendChild(img);
       article.appendChild(wrap);
       carouselTrack.appendChild(article);
-      introCardIndex += 1;
     });
   }
 
