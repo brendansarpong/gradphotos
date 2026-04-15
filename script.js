@@ -59,7 +59,7 @@ const descriptions = {
   PLACES: "Places I've been.",
   STUDIO: "Studio pictures.",
   PEOPLE: "Portraits of people I know.",
-  GRAD: "Graduation photos of my friend Mia."
+  GRAD: "Graduation photos."
 };
 
 const IMAGE_BASE = "images/jpegs (smaller size)/image compress/";
@@ -113,7 +113,12 @@ const galleries = {
     "grad_mia_TN.jpg",
     "grad_miaalma.jpg",
     "grad_miapillar.jpg",
-    "grad_miasubway-2.jpg"
+    "grad_miasubway-2.jpg",
+    "images/jpegs (smaller size)/grad_butlerlookup.jpg",
+    "images/jpegs (smaller size)/grad_claireonlion.jpg",
+    "images/jpegs (smaller size)/grad_groupembrace.jpg",
+    "images/jpegs (smaller size)/grad_perrytuffbutler.jpg",
+    "images/jpegs (smaller size)/grad_sebas.jpg"
   ]
 };
 
