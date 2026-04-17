@@ -118,7 +118,7 @@ const galleries = {
     "images/jpegs (smaller size)/grad_claireonlion.jpg",
     "images/jpegs (smaller size)/grad_groupembrace.jpg",
     "images/jpegs (smaller size)/grad_perrytuffbutler.jpg",
-    "images/jpegs (smaller size)/grad_sebas.jpg"
+    // "images/jpegs (smaller size)/grad_sebas.jpg"
   ]
 };
 
