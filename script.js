@@ -118,7 +118,18 @@ const galleries = {
     "images/jpegs (smaller size)/grad_claireonlion.jpg",
     "images/jpegs (smaller size)/grad_groupembrace.jpg",
     "images/jpegs (smaller size)/grad_perrytuffbutler.jpg",
-    "images/jpegs (smaller size)/grad_sebas.jpg"
+    "images/jpegs (smaller size)/grad_sebas.jpg",
+    "images/jpegs (smaller size)/grad_aashigroup.jpg",
+    "images/jpegs (smaller size)/grad_ayaansky.jpg",
+    "images/jpegs (smaller size)/grad_brendanchair.jpg",
+    "images/jpegs (smaller size)/grad_huttonchair.jpg",
+    "images/jpegs (smaller size)/grad_kavitaaashistairs.jpg",
+    "images/jpegs (smaller size)/grad_lindasundial.jpg",
+    "images/jpegs (smaller size)/grad_lucasgrouptoss.jpg",
+    "images/jpegs (smaller size)/grad_lucybook.jpg",
+    "images/jpegs (smaller size)/grad_lucylook.jpg",
+    "images/jpegs (smaller size)/grad_polina.jpg",
+    "images/jpegs (smaller size)/grad_sameertoss.jpg"
   ]
 };
 
