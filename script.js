@@ -255,7 +255,7 @@ if (isMobile && mobileCarousel && carouselTrack && carouselTitle && carouselDesc
   const baseCards = [
     {
       category: "GRAD",
-      src: "images/grad_mia_TN.jpg",
+      src: "images/jpegs (smaller size)/grad_polina.jpg",
       alt: "Grad",
     },
     {
